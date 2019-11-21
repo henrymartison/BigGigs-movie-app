@@ -6,7 +6,7 @@ import { fsr } from '../../../commons/metrics';
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    // marginTop: 17
+    marginTop: 50
   },
   description: {
     fontSize: fsr(2.1),

@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
 import {
   darkBlue,
@@ -9,7 +9,6 @@ import {
   lightGreen
 } from '../../../../styles/Colors';
 import { fsr } from '../../../../components/commons/metrics';
-
 const styles = StyleSheet.create({
   containerItem: {
     paddingRight: 20,
@@ -19,12 +18,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   containerTwoItem: {
-    paddingTop: 10,
-    marginBottom: 20,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '50%'
+    // marginTop: 10,
+    marginHorizontal: 10,
+    // margin: 20,
+    // flexDirection: 'row',
+    alignItems: 'flex-start',
+    // justifyContent: 'center',
+    width: Dimensions.get('window').width / 3
   },
   photo: {
     borderRadius: 8
@@ -45,9 +45,9 @@ const styles = StyleSheet.create({
     fontSize: fsr(2),
     color: white,
     fontWeight: 'bold',
-    paddingRight: 20,
-    paddingLeft: 20,
-    paddingTop: 20
+    // paddingRight: 20,
+    // paddingLeft: 20,
+    paddingTop: 7
   },
   textRow: {
     flexDirection: 'row'
@@ -82,11 +82,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     // justifyContent: 'center',
     // alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,.4)',
+    // backgroundColor: 'rgba(0,0,0,.4)',
     position: 'absolute',
-    top: 7,
-    right: 7,
-    paddingVertical: 2
+    top: 5,
+    left: 5
   },
   low: {
     backgroundColor: lightRed
@@ -101,7 +100,8 @@ const styles = StyleSheet.create({
     fontSize: fsr(2.1),
     fontWeight: '500',
     color: white,
-    textAlign: 'center'
+    textAlign: 'center',
+    paddingLeft: 10
   },
   containerModal: {
     justifyContent: 'center',

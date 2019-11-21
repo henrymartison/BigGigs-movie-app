@@ -1,52 +1,55 @@
-import React from 'react';
-import { View, Text, Image } from 'react-native';
+import React from "react";
+import { View, Text, Image } from "react-native";
 
-import { FontAwesome, Feather } from '@expo/vector-icons';
+import { FontAwesome, Feather, Ionicons } from "@expo/vector-icons";
 
-// import ImagesModal from '../../../modals/ImagesModal';
-import { TouchableOpacity } from '../../../commons/TouchableOpacity';
-import { width } from '../../../commons/metrics';
+import ImagesModal from "../../../modals/ImageModal";
+import { TouchableOpacity } from "../../../commons/TouchableOpacity";
 
-import { notFound } from '../../../../utils/StaticImages'
-import { white, darkBlue } from '../../../../styles/Colors';
+import { width } from "../../../commons/metrics";
+import { notFound } from "../../../../utils/StaticImages";
+import {
+  white,
+  pink,
+  secondaryTint,
+  primaryTint
+} from "../../../../styles/Colors";
 
-import styles from './styles';
+import styles from "./styles";
 
 getImageApi = backdropPath => {
   return backdropPath
     ? { uri: `https://image.tmdb.org/t/p/w500/${backdropPath}` }
     : notFound;
 };
-
-getPosterPathApi = posterPath => {
+getPosterImageApi = posterPath => {
   return posterPath
     ? { uri: `https://image.tmdb.org/t/p/w500/${posterPath}` }
     : notFound;
 };
 
-// convertRatingToStars = voteAverage => {
-//   const average = voteAverage > 5 ? Math.round(voteAverage) : voteAverage;
-//   const length =
-//     average !== 10 ? parseInt(`${average}`.charAt(0)) - 5 : average - 5;
-//   return average <= 5
-//     ? null
-//     : 
-//       [...Array(length)].map((e, i) => (
-//         <FontAwesome
-//           key={i}
-//           name="star"
-//           size={width * 0.06}
-//           color={white}
-//           style={styles.star}
-//         />
-//       ));
-// };
+convertRatingToStars = voteAverage => {
+  const average = voteAverage > 5 ? Math.round(voteAverage) : voteAverage;
+  const length =
+    average !== 10 ? parseInt(`${average}`.charAt(0)) - 5 : average - 5;
+  return average <= 5
+    ? null
+    : [...Array(length)].map((e, i) => (
+        <FontAwesome
+          key={i}
+          name="star"
+          size={width * 0.06}
+          color={white}
+          style={styles.star}
+        />
+      ));
+};
 
-// actionPlayVideo = (video, navigate) => {
-//   const { key } = video;
+actionPlayVideo = (video, navigate) => {
+  const { key } = video;
 
-//   navigate('WebView', { key });
-// };
+  navigate("WebView", { key });
+};
 
 const PosterRow = ({
   title,
@@ -60,47 +63,90 @@ const PosterRow = ({
   navigate
 }) => (
   <View style={styles.containerMainPhoto}>
-    <Image
-      source={getImageApi(backdropPath)}
-      style={styles.mainPhoto}
-      resizeMode="cover"
-    />
-    <TouchableOpacity style={styles.addToFavButton}>
-        <Feather name='plus-circle' size={30} color={darkBlue} />
-    </TouchableOpacity>
-    {/* {video && video.site === 'YouTube' && (
-      <TouchableOpacity
-        style={styles.play}
-        // onPress={() => actionPlayVideo(video, navigate)}
-      >
-        <Image
-            source={getPosterPathApi(posterPath)}
-            style={styles.subPhoto}
-            resizeMode="cover"
-        />
-      </TouchableOpacity>
-    )} */}
     <TouchableOpacity
-      style={styles.containerMainPhotoInfo}
+      // style={styles.containerMainPhotoInfo}
       activeOpacity={images.length ? 0.5 : 1}
-    //   onPress={images.length ? onPress : null}
+      onPress={images.length ? onPress : null}
     >
+      <Image
+        source={getPosterImageApi(backdropPath)}
+        style={styles.mainPhoto}
+        resizeMode="cover"
+      />
+    </TouchableOpacity>
+    {video && video.site === "YouTube" && (
+      <View style={{ alignItems: "center" }}>
+        {/* <TouchableOpacity
+          style={styles.play}
+          onPress={() => actionPlayVideo(video, navigate)}
+        >
+          <FontAwesome
+            name="play"
+            size={width * 0.07}
+            color={white}
+            style={styles.buttonPlay}
+          />
+        </TouchableOpacity> */}
+      </View>
+    )}
+    <View style={styles.containerMainPhotoInfo}>
       <View style={styles.containerBackgroundPhotoInfo}>
-        <Text numberOfLines={2} style={styles.photoInfo}>
+        <Text numberOfLines={1} style={styles.photoInfo}>
           {title}
         </Text>
-        {/* <View style={styles.photoStar}>
+        <View style={styles.photoStar}>
           {convertRatingToStars(voteAverage)}
-        </View> */}
+        </View>
       </View>
-    </TouchableOpacity>
-    {/* {images.length ? (
+      {video && video.site === "YouTube" && (
+        <View style={{ alignItems: "center" }}>
+          <TouchableOpacity
+            style={styles.playButtonContainer}
+            onPress={() => actionPlayVideo(video, navigate)}
+          >
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Feather name="play" size={20} color={secondaryTint} />
+              <Text
+                style={{
+                  fontWeight: "600",
+                  fontSize: 17,
+                  color: secondaryTint
+                }}
+              >
+                Watch Trailer
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      )}
+    </View>
+    <View
+      style={{
+        height: width * 0.35,
+        width: width * 0.25,
+        borderRadius: 8,
+        backgroundColor: secondaryTint,
+        // marginLeft: 20,
+        // marginTop: 200,
+        position: "absolute",
+        bottom: -40,
+        left: 40
+      }}
+    >
+      <Image
+        source={getImageApi(posterPath)}
+        style={{ flex: 1, borderRadius: 8 }}
+        // width={width * 0.33}
+      />
+    </View>
+
+    {images.length ? (
       <ImagesModal
         showImage={showImage}
         images={images}
         actionClose={onPress}
       />
-    ) : null} */}
+    ) : null}
   </View>
 );
 

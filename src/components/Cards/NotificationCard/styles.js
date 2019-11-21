@@ -1,25 +1,25 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
-import { white, blue, lightGray } from '../../../styles/Colors';
-import { fsr } from '../../commons/metrics';
+import { white, blue, lightGray, primaryTint } from "../../../styles/Colors";
+import { fsr } from "../../commons/metrics";
 
 const styles = StyleSheet.create({
   containerError: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: white,
-    width: '100%'
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: primaryTint,
+    width: "100%"
   },
   errorInfo: {
     fontSize: fsr(2.6),
-    color: blue,
-    textAlign: 'center',
+    color: white,
+    textAlign: "center",
     padding: 25
   },
   loadingButton: {
     padding: 10,
-    width: '50%',
+    width: "50%",
     borderWidth: 1,
     borderRadius: 100,
     borderColor: lightGray
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   loadingText: {
     fontSize: fsr(2.1),
     color: blue,
-    textAlign: 'center'
+    textAlign: "center"
   }
 });
 

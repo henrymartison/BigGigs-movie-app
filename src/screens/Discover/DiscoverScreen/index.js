@@ -1,31 +1,33 @@
-import React, { Component } from 'react';
-import { Asset } from 'expo';
-import { View, Text } from 'react-native';
-import { Feather } from '@expo/vector-icons';
-import { DotIndicator } from 'react-native-indicators';
+import React, { Component } from "react";
+import { Asset } from "expo";
+import { View, ScrollView, Text } from "react-native";
+
+import { Feather } from "@expo/vector-icons";
 // import { Assets as StackAssets } from 'react-navigation-stack';
 
-import NotificationCard from '../../../components/Cards/NotificationCard';
-import FilterModal from '../../../components/modals/FilterModal';
-import MovieListRow from '../../../components/Cards/Rows/MovieListRow';
-import MovieRow from '../../../components/Cards/Rows/MovieRow';
-import { TouchableOpacity } from '../../../components/commons/TouchableOpacity';
+// import Spinner from '../../components/common/Spinner';
+import NotificationCard from "../../../components/Cards/NotificationCard";
+import FilterModal from "../../../components/modals/FilterModal";
+import MovieListCol from "../../../components/Cards/Rows/MovieListCol";
+import MovieCol from "../../../components/Cards/Rows/MovieCol";
+import { TouchableOpacity } from "../../../components/commons/TouchableOpacity";
 
-import request from '../../../services/api';
+import request from "../../../services/api";
 
-import { getItem } from '../../../utils/AsyncStorage';
-import { darkBlue, primaryTint, white } from '../../../styles/Colors';
+import { getItem } from "../../../utils/AsyncStorage";
+import { darkBlue, primaryTint, white } from "../../../styles/Colors";
 
-import styles from './styles';
-import CustomMenuIcon from '../../../components/commons/MenuIcon';
-import Loader from '../../../components/commons/Loader';
+import styles from "./styles";
+import CustomMenuIcon from "../../../components/commons/MenuIcon";
+import Loader from "../../../components/commons/Loader";
+import MovieCarousel from "../../../components/carousels/MovieCarousel";
 
 export default class MovieListScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     const params = navigation.state.params || {};
 
     return {
-      title: 'CinemaHD',
+      title: "CinemaHD",
       headerTitleStyle: { color: white },
       headerStyle: {
         backgroundColor: primaryTint,
@@ -34,30 +36,30 @@ export default class MovieListScreen extends Component {
       headerRight: (
         <TouchableOpacity
           style={{ paddingRight: 10 }}
-          onPress={params.actionFilter}
+          //   onPress={params.actionFilter}
         >
-          <Feather name='sliders' size={23} color={darkBlue} />
+          <Feather name="plus" size={23} color={darkBlue} />
         </TouchableOpacity>
       ),
       headerLeft: (
         <CustomMenuIcon
-          menutext='Menu'
+          menutext="Menu"
           menustyle={{
             marginRight: 16,
-            flexDirection: 'row',
-            justifyContent: 'flex-end',
+            flexDirection: "row",
+            justifyContent: "flex-end",
             paddingLeft: 10
           }}
           textStyle={{
-            color: 'white'
+            color: "white"
           }}
           option1Click={() => {
-            navigation.navigate('Search');
+            navigation.navigate("Search");
           }}
           option2Click={() => {}}
           option3Click={() => {}}
           option4Click={() => {
-            alert('Option 4');
+            alert("Option 4");
           }}
         />
       )
@@ -71,8 +73,8 @@ export default class MovieListScreen extends Component {
     isLoadingMore: false,
     isError: false,
     hasAdultContent: false,
-    filterType: 'popularity.desc',
-    filterName: 'Trending now🔥',
+    filterType: "popularity.desc",
+    // filterName: '⭐ Top Rated ️',
     results: [],
     page: 1,
     numColumns: 1,
@@ -85,7 +87,7 @@ export default class MovieListScreen extends Component {
       //   Asset.loadAsync(StackAssets);
       this.props.navigation.setParams({ actionFilter: this.actionFilter });
 
-      const hasAdultContent = await getItem('@ConfigKey', 'hasAdultContent');
+      const hasAdultContent = await getItem("@ConfigKey", "hasAdultContent");
 
       this.setState({ hasAdultContent }, () => {
         this.requestMoviesList();
@@ -124,14 +126,36 @@ export default class MovieListScreen extends Component {
     try {
       this.setState({ isLoading: true });
 
-      const { page, filterType, hasAdultContent } = this.state;
+      const { page, filterType, hasAdultContent, filterName } = this.state;
       const dateRelease = new Date().toISOString().slice(0, 10);
+      const filterTitles = [
+        // { name: 'upcoming', id: '1' },
+        // { name: 'latest', id: '2' },
+        // { name: 'now_playing', id: '3' },
+        // { name: 'popular', id: '4' }
+        "latest",
+        "now_playing",
+        "popular",
+        "top_rated",
+        "upcoming"
+      ];
+      // function renderFilterTitles() {
+      //   return filterTitles.map(item => {
+      //     if (item.name == 'upcoming') {
+      //       return item.name;
+      //       console.log(item.name);
+      //     } else {
+      //       console.log('error');
+      //     }
+      //     return;
+      //   });
+      // }
 
-      const data = await request('trending/movie/week', {
+      const data = await request(`movie/${filterTitles[1]}`, {
         page,
-        'release_date.lte': dateRelease,
+        "release_date.lte": dateRelease,
         sort_by: filterType,
-        with_release_type: '1|2|3|4|5|6|7',
+        with_release_type: "1|2|3|4|5|6|7",
         include_adult: hasAdultContent
       });
 
@@ -150,11 +174,12 @@ export default class MovieListScreen extends Component {
         isLoadingMore: false,
         isError: true
       });
+      // console.log(err);
     }
   };
 
   renderItem = (item, type, isSearch, numColumns, navigate) => (
-    <MovieRow
+    <MovieCol
       item={item}
       type={type}
       isSearch={isSearch}
@@ -166,7 +191,7 @@ export default class MovieListScreen extends Component {
   renderFooter = () => {
     const { isLoadingMore, totalPages, page, results } = this.state;
 
-    if (isLoadingMore) return <Loader />;
+    if (isLoadingMore) return <Spinner size="small" />;
 
     if (totalPages !== page && results.length > 0) {
       return (
@@ -175,11 +200,7 @@ export default class MovieListScreen extends Component {
             style={styles.loadingButton}
             onPress={this.actionLoadMore}
           >
-            {!isLoadingMore ? (
-              <Text style={styles.loadingText}>Load more</Text>
-            ) : (
-              <DotIndicator size={10} color={darkBlue} />
-            )}
+            <Text style={styles.loadingText}>Load more</Text>
           </TouchableOpacity>
         </View>
       );
@@ -260,48 +281,39 @@ export default class MovieListScreen extends Component {
           <Loader />
         ) : isError ? (
           <NotificationCard
-            icon='alert-octagon'
+            icon="alert-circle"
             action={this.requestMoviesList}
           />
         ) : results.length === 0 ? (
           <NotificationCard
-            icon='thumbs-down'
-            textError='No results available.'
+            icon="thumbs-down"
+            textError="No results available."
           />
         ) : (
           <View style={styles.containerList}>
-            {results.length > 0 && (
+            {/* {results.length > 0 && (
               <View style={styles.containerMainText}>
                 <Text style={styles.textMain} numberOfLines={1}>
                   {filterName}
                 </Text>
-                <TouchableOpacity
-                  style={[
-                    styles.buttonGrid,
-                    numColumns === 2 && styles.buttonGridActive
-                  ]}
-                  onPress={this.actionGrid}
-                >
-                  {numColumns === 2 ? (
-                    <Feather name='list' size={22} color={darkBlue} />
-                  ) : (
-                    <Feather name='grid' size={22} color={darkBlue} />
-                  )}
-                </TouchableOpacity>
               </View>
-            )}
-            <MovieListRow
-              data={results}
-              type='normal'
-              isSearch={false}
-              keyGrid={keyGrid}
-              numColumns={numColumns}
-              refreshing={isRefresh}
-              onRefresh={this.actionRefresh}
-              ListFooterComponent={this.renderFooter}
-              navigate={navigate}
-              renderItem={this.renderItem}
-            />
+            )} */}
+            <ScrollView>
+              {/* <MovieCarousel /> */}
+              <MovieListCol
+                data={results}
+                type="normal"
+                isSearch={false}
+                keyGrid={keyGrid}
+                numColumns={numColumns}
+                refreshing={isRefresh}
+                onRefresh={this.actionRefresh}
+                ListFooterComponent={this.renderFooter}
+                navigate={navigate}
+                renderItem={this.renderItem}
+                filterName="️📺 Latest"
+              />
+            </ScrollView>
           </View>
         )}
         <FilterModal

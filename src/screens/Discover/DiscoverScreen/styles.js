@@ -25,8 +25,10 @@ const styles = StyleSheet.create({
     flex: 1
   },
   containerMainText: {
-    paddingVertical: 25,
-    paddingHorizontal: 20
+    paddingBottom: 20,
+    paddingTop: 10,
+    paddingHorizontal: 20,
+    justifyContent: 'center'
   },
   textMain: {
     fontSize: fsr(3),
@@ -56,9 +58,9 @@ const styles = StyleSheet.create({
   },
   loadingButton: {
     padding: 10,
-    width: '30%',
+    width: '50%',
     borderWidth: 1,
-    borderRadius: 50,
+    borderRadius: 100,
     borderColor: inactiveTint
   },
   loadingText: {

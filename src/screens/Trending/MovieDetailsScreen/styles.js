@@ -1,6 +1,12 @@
 import { StyleSheet } from 'react-native';
 
-import { white, pink, blue, primaryTint, primary } from '../../../styles/Colors';
+import {
+  white,
+  pink,
+  blue,
+  primaryTint,
+  primary
+} from '../../../styles/Colors';
 import { fsr } from '../../../components/commons/metrics';
 
 const styles = StyleSheet.create({
@@ -26,7 +32,8 @@ const styles = StyleSheet.create({
   readMore: {
     color: primary,
     marginTop: 5,
-    textAlign: 'right'
+    textAlign: 'left',
+    fontWeight: '600'
   },
   bottomModal: {
     justifyContent: 'flex-end',

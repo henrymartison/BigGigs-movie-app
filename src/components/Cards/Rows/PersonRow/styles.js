@@ -4,7 +4,7 @@ import { blue, white } from '../../../../styles/Colors';
 
 const styles = StyleSheet.create({
   containerCast: {
-    marginRight: 30,
+    marginRight: 10,
     alignItems: 'center',
     width: 80
   },

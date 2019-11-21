@@ -1,90 +1,67 @@
 import React, { Component } from 'react';
-import { Asset } from 'expo';
 import { View, Text } from 'react-native';
-import { Feather } from '@expo/vector-icons';
-import { DotIndicator } from 'react-native-indicators';
-// import { Assets as StackAssets } from 'react-navigation-stack';
 
-import NotificationCard from '../../../components/Cards/NotificationCard';
-import FilterModal from '../../../components/modals/FilterModal';
-import MovieListRow from '../../../components/Cards/Rows/MovieListRow';
-import MovieRow from '../../../components/Cards/Rows/MovieRow';
-import { TouchableOpacity } from '../../../components/commons/TouchableOpacity';
+import { Feather, Ionicons } from '@expo/vector-icons';
 
-import request from '../../../services/api';
+import NotificationCard from '../../../../components/Cards/NotificationCard';
+import MovieListRow from '../../../../components/Cards/Rows/MovieListRow';
+import MovieRow from '../../../../components/Cards/Rows/MovieRow';
+import { TouchableOpacity } from '../../../../components/commons/TouchableOpacity';
 
-import { getItem } from '../../../utils/AsyncStorage';
-import { darkBlue, primaryTint, white } from '../../../styles/Colors';
+import request from '../../../../services/api';
+
+import { getItem } from '../../../../utils/AsyncStorage';
+import { darkBlue, primaryTint, white } from '../../../../styles/Colors';
 
 import styles from './styles';
-import CustomMenuIcon from '../../../components/commons/MenuIcon';
-import Loader from '../../../components/commons/Loader';
+import Loader from '../../../../components/commons/Loader';
 
-export default class MovieListScreen extends Component {
+export default class SearchResultsScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     const params = navigation.state.params || {};
 
     return {
-      title: 'CinemaHD',
-      headerTitleStyle: { color: white },
+      title: 'Search Results',
       headerStyle: {
         backgroundColor: primaryTint,
         borderBottomColor: primaryTint
       },
-      headerRight: (
-        <TouchableOpacity
-          style={{ paddingRight: 10 }}
-          onPress={params.actionFilter}
-        >
-          <Feather name='sliders' size={23} color={darkBlue} />
-        </TouchableOpacity>
-      ),
+      headerTitleStyle: { color: white },
+      // headerRight: (
+      //   <TouchableOpacity
+      //     style={styles.buttonShare}
+      //     onPress={params.actionShare}
+      //   >
+      //     <Feather name='share' size={23} color={darkBlue} />
+      //   </TouchableOpacity>
+      // ),
       headerLeft: (
-        <CustomMenuIcon
-          menutext='Menu'
-          menustyle={{
-            marginRight: 16,
-            flexDirection: 'row',
-            justifyContent: 'flex-end',
-            paddingLeft: 10
-          }}
-          textStyle={{
-            color: 'white'
-          }}
-          option1Click={() => {
-            navigation.navigate('Search');
-          }}
-          option2Click={() => {}}
-          option3Click={() => {}}
-          option4Click={() => {
-            alert('Option 4');
-          }}
-        />
+        <TouchableOpacity
+          style={styles.buttonShare}
+          onPress={() => navigation.goBack()}
+        >
+          <Ionicons name='ios-arrow-back' size={27} color={darkBlue} />
+        </TouchableOpacity>
       )
     };
   };
 
   state = {
-    isVisible: false,
     isLoading: false,
-    isRefresh: false,
     isLoadingMore: false,
     isError: false,
     hasAdultContent: false,
-    filterType: 'popularity.desc',
-    filterName: 'Trending now🔥',
     results: [],
     page: 1,
     numColumns: 1,
     keyGrid: 1,
-    gridActive: false
+    id: this.props.navigation.state.params.id,
+    name: this.props.navigation.state.params.name,
+    typeRequest: this.props.navigation.state.params.typeRequest
   };
 
   async componentDidMount() {
     try {
-      //   Asset.loadAsync(StackAssets);
-      this.props.navigation.setParams({ actionFilter: this.actionFilter });
-
       const hasAdultContent = await getItem('@ConfigKey', 'hasAdultContent');
 
       this.setState({ hasAdultContent }, () => {
@@ -96,21 +73,11 @@ export default class MovieListScreen extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const {
-      results,
-      isVisible,
-      isLoading,
-      isRefresh,
-      isLoadingMore,
-      isError,
-      keyGrid
-    } = this.state;
+    const { results, isLoading, isLoadingMore, isError, keyGrid } = this.state;
 
     if (
       results !== nextState.results ||
-      isVisible !== nextState.isVisible ||
       isLoading !== nextState.isLoading ||
-      isRefresh !== nextState.isRefresh ||
       isLoadingMore !== nextState.isLoadingMore ||
       isError !== nextState.isError ||
       keyGrid !== nextState.keyGrid
@@ -124,29 +91,31 @@ export default class MovieListScreen extends Component {
     try {
       this.setState({ isLoading: true });
 
-      const { page, filterType, hasAdultContent } = this.state;
+      const { page, name, id, typeRequest, hasAdultContent } = this.state;
       const dateRelease = new Date().toISOString().slice(0, 10);
+      const query =
+        typeRequest === 'search'
+          ? { query: `${name.trim()}` }
+          : { with_genres: `${id}` };
 
-      const data = await request('trending/movie/week', {
+      const data = await request(`${typeRequest}/movie`, {
         page,
         'release_date.lte': dateRelease,
-        sort_by: filterType,
         with_release_type: '1|2|3|4|5|6|7',
-        include_adult: hasAdultContent
+        include_adult: hasAdultContent,
+        ...{ ...query }
       });
 
-      this.setState(({ isRefresh, results }) => ({
+      this.setState(({ results }) => ({
         isLoading: false,
-        isRefresh: false,
         isLoadingMore: false,
         isError: false,
         totalPages: data.total_pages,
-        results: isRefresh ? data.results : [...results, ...data.results]
+        results: [...results, ...data.results]
       }));
     } catch (err) {
       this.setState({
         isLoading: false,
-        isRefresh: false,
         isLoadingMore: false,
         isError: true
       });
@@ -175,11 +144,7 @@ export default class MovieListScreen extends Component {
             style={styles.loadingButton}
             onPress={this.actionLoadMore}
           >
-            {!isLoadingMore ? (
-              <Text style={styles.loadingText}>Load more</Text>
-            ) : (
-              <DotIndicator size={10} color={darkBlue} />
-            )}
+            <Text style={styles.loadingText}>Load more</Text>
           </TouchableOpacity>
         </View>
       );
@@ -188,18 +153,6 @@ export default class MovieListScreen extends Component {
     if (results.length > 0) return <View style={styles.loadingMore} />;
 
     return null;
-  };
-
-  actionRefresh = () => {
-    this.setState(
-      {
-        isRefresh: true,
-        page: 1
-      },
-      () => {
-        this.requestMoviesList();
-      }
-    );
   };
 
   actionLoadMore = () => {
@@ -220,60 +173,39 @@ export default class MovieListScreen extends Component {
     });
   };
 
-  actionFilter = () => {
-    this.setState(({ isVisible }) => {
-      return { isVisible: !isVisible };
-    });
-  };
-
-  actionSwitchMovie = (filterType, filterName, isVisible) => {
-    if (this.state.filterType !== filterType) {
-      this.setState(
-        { filterType, filterName, isVisible, page: 1, results: [] },
-        () => {
-          this.requestMoviesList();
-        }
-      );
-    } else {
-      this.setState({ isVisible });
-    }
-  };
-
   render() {
     const { navigate } = this.props.navigation;
     const {
+      name,
+      typeRequest,
       isLoading,
-      isRefresh,
       isLoadingMore,
       isError,
       results,
-      filterName,
-      isVisible,
-      filterType,
       numColumns,
       keyGrid
     } = this.state;
 
     return (
       <View style={styles.container}>
-        {isLoading && !isRefresh && !isLoadingMore ? (
+        {isLoading && !isLoadingMore ? (
           <Loader />
         ) : isError ? (
           <NotificationCard
-            icon='alert-octagon'
+            icon='alert-circle'
             action={this.requestMoviesList}
           />
         ) : results.length === 0 ? (
           <NotificationCard
-            icon='thumbs-down'
-            textError='No results available.'
+            icon='alert-circle'
+            textError='Sorry, search not found.'
           />
         ) : (
           <View style={styles.containerList}>
             {results.length > 0 && (
               <View style={styles.containerMainText}>
                 <Text style={styles.textMain} numberOfLines={1}>
-                  {filterName}
+                  {name}
                 </Text>
                 <TouchableOpacity
                   style={[
@@ -292,26 +224,18 @@ export default class MovieListScreen extends Component {
             )}
             <MovieListRow
               data={results}
-              type='normal'
-              isSearch={false}
+              type={name}
+              isSearch={typeRequest === 'search'}
               keyGrid={keyGrid}
               numColumns={numColumns}
-              refreshing={isRefresh}
-              onRefresh={this.actionRefresh}
+              refreshing={null}
+              onRefresh={null}
               ListFooterComponent={this.renderFooter}
               navigate={navigate}
               renderItem={this.renderItem}
             />
           </View>
         )}
-        <FilterModal
-          isVisible={isVisible}
-          filterType={filterType}
-          filterName={filterName}
-          actionFilter={this.actionFilter}
-          actionSwitchMovie={this.actionSwitchMovie}
-          style={styles.bottomModal}
-        />
       </View>
     );
   }

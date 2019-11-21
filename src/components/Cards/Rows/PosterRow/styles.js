@@ -1,67 +1,80 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from "react-native";
 
-import { white, pink, primaryTint } from '../../../../styles/Colors';
-import { fsr, width } from '../../../commons/metrics';
-
+import {
+  white,
+  pink,
+  primaryTint,
+  secondaryTint,
+  primary
+} from "../../../../styles/Colors";
+import { fsr, width } from "../../../commons/metrics";
 
 const styles = StyleSheet.create({
   containerMainPhoto: {
     width,
-    height: width * 0.6,
-    // margin: 20
+    height: width * 0.58
   },
   mainPhoto: {
-    width: '100%',
-    height: '100%'
-  },
-  subPhoto: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 10
+    width: "90%",
+    height: "80%",
+    marginHorizontal: 20,
+    borderRadius: 8,
+    marginTop: 15
   },
   play: {
-    position: 'absolute',
-    zIndex: 1,
-    bottom: -20,
-    right: 15,
-    borderRadius: 10,
-    backgroundColor: primaryTint,
-    width: width * 0.3,
-    height: width * 0.35,
-    justifyContent: 'center',
-    alignItems: 'center'
+    position: "absolute",
+    zIndex: 1000,
+    bottom: -30,
+    right: 20,
+    borderRadius: width * 0.32,
+    backgroundColor: secondaryTint,
+    width: width * 0.16,
+    height: width * 0.16,
+    justifyContent: "center",
+    alignItems: "center"
   },
-  addToFavButton: {
-      position: 'absolute',
-      zIndex: 1,
-      top: 30,
-      right: 30,
-      alignItems: 'center',
-      justifyContent: 'center'
+  playButtonContainer: {
+    width: Platform.OS === "ios" ? "50%" : "45%",
+    height: 30,
+    backgroundColor: primary,
+    position: "absolute",
+    top: 40,
+    right: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 4
   },
   containerMainPhotoInfo: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)'
+    // position: "absolute",
+    width: "100%",
+    height: "100%"
+    // backgroundColor: "red"
+    // marginHorizontal: 20
   },
   containerBackgroundPhotoInfo: {
-    position: 'absolute',
-    bottom: 20,
-    left: 20,
-    right: 20
+    position: "absolute",
+    top: -15,
+    // right: 100,
+    right: 40,
+    // backgroundColor: "red",
+    // paddingLeft: 180
+    // marginLeft: 180,
+    alignItems: "flex-start",
+    justifyContent: "center",
+    // flex: 1,
+    width: Platform.OS === "ios" ? "50%" : "45%"
   },
   photoInfo: {
-    fontSize: fsr(3.8),
+    fontSize: fsr(2.5),
     color: white,
-    fontWeight: 'bold'
+    fontWeight: "bold"
   },
   photoStar: {
-    flexDirection: 'row',
-    marginTop: 8
+    flexDirection: "row",
+    marginTop: 5
   },
   buttonPlay: {
-    marginLeft: 5,
+    marginLeft: 5
   },
   star: {
     marginRight: 5

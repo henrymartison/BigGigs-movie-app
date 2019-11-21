@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-import { ScrollView, View, Text, ActivityIndicator } from "react-native";
+import { ScrollView, View, Text } from "react-native";
 
-import { Feather, Ionicons } from "@expo/vector-icons";
+import { Feather, Ionicons, EvilIcons } from "@expo/vector-icons";
 import ReadMore from "react-native-read-more-text";
 
 import { Alert } from "../../../components/commons/Alert";
 import { Share } from "../../../components/commons/Share";
 import NotificationCard from "../../../components/Cards/NotificationCard";
 import PosterRow from "../../../components/Cards/Rows/PosterRow";
-// import PersonModal from '../../components/modals/PersonModal';
+import PersonModal from "../../../components/modals/PersonModal";
 import PersonListRow from "../../../components/Cards/Rows/PersonListRow";
 import PersonRow from "../../../components/Cards/Rows/PersonRow";
 import SectionRow from "../../../components/Cards/Rows/SectionRow";
@@ -22,6 +22,7 @@ import language from "../../../assets/language/iso.json";
 import { darkBlue, primaryTint, white } from "../../../styles/Colors";
 
 import styles from "./styles";
+import Loader from "../../../components/commons/Loader";
 
 const uninformed = "Uninformed";
 
@@ -43,22 +44,30 @@ export default class MovieDetailsScreen extends Component {
 
     return {
       title: "Movie details",
-      headerStyle: { backgroundColor: primaryTint },
+      headerStyle: {
+        backgroundColor: primaryTint,
+        borderBottomColor: primaryTint
+      },
       headerTitleStyle: { color: white },
       headerRight: (
-        <TouchableOpacity
-          style={styles.buttonShare}
-          onPress={params.actionShare}
-        >
-          <Feather name='share' size={23} color={darkBlue} />
-        </TouchableOpacity>
+        <View style={{ flexDirection: "row" }}>
+          <TouchableOpacity onPress={params.actionSave}>
+            <Feather name="bookmark" size={25} color={darkBlue} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonShare}
+            onPress={params.actionShare}
+          >
+            <EvilIcons name="share-apple" size={33} color={darkBlue} />
+          </TouchableOpacity>
+        </View>
       ),
       headerLeft: (
         <TouchableOpacity
-          style={styles.buttonShare}
+          style={{ paddingLeft: 10 }}
           onPress={() => navigation.goBack()}
         >
-          <Ionicons name='ios-arrow-back' size={27} color={darkBlue} />
+          <Ionicons name="ios-arrow-back" size={27} color={darkBlue} />
         </TouchableOpacity>
       )
     };
@@ -69,11 +78,16 @@ export default class MovieDetailsScreen extends Component {
     isError: false,
     isVisible: false,
     showImage: false,
-    creditId: null
+    creditId: null,
+    saved: false
   };
 
   componentDidMount() {
-    this.props.navigation.setParams({ actionShare: this.actionShare });
+    this.props.navigation.setParams({
+      actionShare: this.actionShare,
+      actionSave: this.actionSave,
+      renderBookmark: this.renderBookmark
+    });
     this.requestMoviesInfo();
   }
 
@@ -87,6 +101,18 @@ export default class MovieDetailsScreen extends Component {
       return true;
     }
     return false;
+  }
+
+  actionSave = () => {
+    this.setState({ saved: true });
+  };
+
+  renderBookmark() {
+    if (this.state.saved) {
+      <Ionicons name="md-bookmark" size={20} color={darkBlue} />;
+    } else {
+      <Feather name="bookmark" size={25} color={darkBlue} />;
+    }
   }
 
   requestMoviesInfo = async () => {
@@ -127,7 +153,6 @@ export default class MovieDetailsScreen extends Component {
     }
   };
 
-  /* eslint-disable camelcase */
   getInfosDetail = ({
     runtime,
     genres,
@@ -149,7 +174,6 @@ export default class MovieDetailsScreen extends Component {
       Adult: this.convertAdult(adult || "")
     };
   };
-  /* eslint-enable camelcase */
 
   formatImageUrl = images => {
     return this.sliceArrayLength(images, 15).map(item => {
@@ -263,10 +287,10 @@ export default class MovieDetailsScreen extends Component {
     return (
       <View style={styles.container}>
         {isLoading ? (
-          <ActivityIndicator />
+          <Loader />
         ) : isError ? (
           <NotificationCard
-            icon='alert-octagon'
+            icon="alert-octagon"
             action={this.requestMoviesInfo}
           />
         ) : (
@@ -285,7 +309,7 @@ export default class MovieDetailsScreen extends Component {
             <View style={styles.containerMovieInfo}>
               {/* <OptionsRow data={infosDetail} /> */}
               <MainInfoRow data={infosDetail} />
-              <SectionRow title='Synopsis'>
+              <SectionRow title="Synopsis">
                 <ReadMore
                   numberOfLines={3}
                   renderTruncatedFooter={renderTruncatedFooter}
@@ -294,31 +318,31 @@ export default class MovieDetailsScreen extends Component {
                   <Text style={styles.subTitleInfo}>{overview}</Text>
                 </ReadMore>
               </SectionRow>
-              <SectionRow title='Main cast'>
+              <SectionRow title="Main cast">
                 <PersonListRow
                   data={cast}
-                  type='character'
-                  keyItem='creditId'
+                  type="character"
+                  keyItem="creditId"
                   ListEmptyComponent={this.renderListEmpty}
                   actionTeamDetail={this.actionPerson}
                   renderItem={this.renderItem}
                 />
               </SectionRow>
-              <SectionRow title='Main technical team'>
+              <SectionRow title="Main Crew">
                 <PersonListRow
                   data={crew}
-                  type='job'
-                  keyItem='creditId'
+                  type="job"
+                  keyItem="creditId"
                   ListEmptyComponent={this.renderListEmpty}
                   actionTeamDetail={this.actionPerson}
                   renderItem={this.renderItem}
                 />
               </SectionRow>
-              <SectionRow title='Producer' isLast>
+              <SectionRow title="Producer" isLast>
                 <PersonListRow
                   data={productionCompanies}
-                  type='production'
-                  keyItem='id'
+                  type="production"
+                  keyItem="id"
                   ListEmptyComponent={this.renderListEmpty}
                   actionTeamDetail={this.actionPerson}
                   renderItem={this.renderItem}
@@ -327,12 +351,12 @@ export default class MovieDetailsScreen extends Component {
             </View>
           </ScrollView>
         )}
-        {/* <PersonModal
+        <PersonModal
           isVisible={isVisible}
           creditId={creditId}
           actionClose={this.actionPerson}
           style={styles.bottomModal}
-        /> */}
+        />
       </View>
     );
   }

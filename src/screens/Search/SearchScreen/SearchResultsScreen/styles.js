@@ -2,19 +2,13 @@ import { StyleSheet } from 'react-native';
 
 import {
   white,
-  lightGray,
   darkBlue,
-  inactiveTint,
-  primaryTint,
-  primary
-} from '../../../styles/Colors';
-import { fsr } from '../../../components/commons/metrics';
+  lightGray,
+  primaryTint
+} from '../../../../styles/Colors';
+import { fsr } from '../../../../components/commons/metrics';
 
 const styles = StyleSheet.create({
-  buttonFilter: {
-    paddingRight: 15,
-    paddingLeft: 20
-  },
   container: {
     flex: 1,
     backgroundColor: primaryTint,
@@ -42,11 +36,11 @@ const styles = StyleSheet.create({
     borderRadius: 100
   },
   buttonGridActive: {
-    backgroundColor: primaryTint
+    backgroundColor: 'transparent'
   },
-  bottomModal: {
-    justifyContent: 'flex-end',
-    margin: 0
+  buttonShare: {
+    paddingRight: 15,
+    paddingLeft: 20
   },
   loadingMore: {
     paddingTop: 20,
@@ -56,14 +50,14 @@ const styles = StyleSheet.create({
   },
   loadingButton: {
     padding: 10,
-    width: '30%',
+    width: '50%',
     borderWidth: 1,
-    borderRadius: 50,
-    borderColor: inactiveTint
+    borderRadius: 100,
+    borderColor: lightGray
   },
   loadingText: {
     fontSize: fsr(2.1),
-    color: white,
+    color: darkBlue,
     textAlign: 'center'
   }
 });
