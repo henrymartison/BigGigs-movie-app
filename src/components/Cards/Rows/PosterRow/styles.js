@@ -19,7 +19,8 @@ const styles = StyleSheet.create({
     height: "80%",
     marginHorizontal: 20,
     borderRadius: 8,
-    marginTop: 15
+    marginTop: 15,
+    backgroundColor: secondaryTint
   },
   play: {
     position: "absolute",
@@ -34,15 +35,28 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   playButtonContainer: {
-    width: Platform.OS === "ios" ? "50%" : "45%",
+    width: Platform.OS === "ios" ? "40%" : "35%",
     height: 30,
     backgroundColor: primary,
     position: "absolute",
-    top: 40,
-    right: 40,
+    top: 41,
+    right: 80,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 4
+  },
+  playButtonText: {
+    fontWeight: "600",
+    fontSize: 17,
+    color: secondaryTint,
+    paddingLeft: 10
+  },
+  saveButtonContainer: {
+    // backgroundColor: primary,
+    position: "absolute",
+    top: 38,
+    right: 30,
+    paddingHorizontal: 10
   },
   containerMainPhotoInfo: {
     // position: "absolute",
@@ -53,7 +67,7 @@ const styles = StyleSheet.create({
   },
   containerBackgroundPhotoInfo: {
     position: "absolute",
-    top: -15,
+    top: -18,
     // right: 100,
     right: 40,
     // backgroundColor: "red",
@@ -71,13 +85,20 @@ const styles = StyleSheet.create({
   },
   photoStar: {
     flexDirection: "row",
-    marginTop: 5
+    marginTop: 5,
+    alignItems: "center"
   },
   buttonPlay: {
     marginLeft: 5
   },
   star: {
     marginRight: 5
+  },
+
+  textPercent: {
+    color: white,
+    fontSize: fsr(2.3),
+    fontWeight: "500"
   }
 });
 

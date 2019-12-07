@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { ScrollView, View, Text } from "react-native";
 
+import { Toast } from "native-base";
 import { Feather, Ionicons, EvilIcons } from "@expo/vector-icons";
 import ReadMore from "react-native-read-more-text";
 
@@ -19,10 +20,17 @@ import { TouchableOpacity } from "../../../components/commons/TouchableOpacity";
 import request from "../../../services/api";
 
 import language from "../../../assets/language/iso.json";
-import { darkBlue, primaryTint, white } from "../../../styles/Colors";
+import {
+  darkBlue,
+  primaryTint,
+  white,
+  secondaryTint,
+  primary
+} from "../../../styles/Colors";
 
 import styles from "./styles";
 import Loader from "../../../components/commons/Loader";
+import SimilarMovieRow from "../../../components/Cards/Rows/SimilarMovieRow";
 
 const uninformed = "Uninformed";
 
@@ -43,24 +51,19 @@ export default class MovieDetailsScreen extends Component {
     const params = navigation.state.params || {};
 
     return {
-      title: "Movie details",
+      title: null,
       headerStyle: {
         backgroundColor: primaryTint,
         borderBottomColor: primaryTint
       },
       headerTitleStyle: { color: white },
       headerRight: (
-        <View style={{ flexDirection: "row" }}>
-          <TouchableOpacity onPress={params.actionSave}>
-            <Feather name="bookmark" size={25} color={darkBlue} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.buttonShare}
-            onPress={params.actionShare}
-          >
-            <EvilIcons name="share-apple" size={33} color={darkBlue} />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={styles.buttonShare}
+          onPress={params.actionShare}
+        >
+          <EvilIcons name="share-apple" size={33} color={darkBlue} />
+        </TouchableOpacity>
       ),
       headerLeft: (
         <TouchableOpacity
@@ -79,16 +82,16 @@ export default class MovieDetailsScreen extends Component {
     isVisible: false,
     showImage: false,
     creditId: null,
-    saved: false
+    results: [],
+    isRefresh: false
   };
 
   componentDidMount() {
     this.props.navigation.setParams({
-      actionShare: this.actionShare,
-      actionSave: this.actionSave,
-      renderBookmark: this.renderBookmark
+      actionShare: this.actionShare
     });
     this.requestMoviesInfo();
+    this.requestMoviesList();
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -103,17 +106,24 @@ export default class MovieDetailsScreen extends Component {
     return false;
   }
 
-  actionSave = () => {
-    this.setState({ saved: true });
+  requestMoviesList = async () => {
+    // try {
+    //   this.setState({ isLoading: true });
+    //   const data = await request("movie/16/similar");
+    //   console.log(data);
+    //   this.setState(({ isRefresh, results }) => ({
+    //     isLoading: false,
+    //     isRefresh: false,
+    //     totalPages: data.total_pages,
+    //     results: isRefresh ? data.results : [...results, ...data.results]
+    //   }));
+    // } catch (err) {
+    //   this.setState({
+    //     isLoading: false,
+    //     isError: true
+    //   });
+    // }
   };
-
-  renderBookmark() {
-    if (this.state.saved) {
-      <Ionicons name="md-bookmark" size={20} color={darkBlue} />;
-    } else {
-      <Feather name="bookmark" size={25} color={darkBlue} />;
-    }
-  }
 
   requestMoviesInfo = async () => {
     try {
@@ -129,7 +139,7 @@ export default class MovieDetailsScreen extends Component {
       this.setState({
         isLoading: false,
         isError: false,
-        id,
+        id: this.props.navigation.state.params,
         backdropPath: data.backdrop_path || "",
         posterPath: data.poster_path || "",
         title: data.title || "",
@@ -234,6 +244,16 @@ export default class MovieDetailsScreen extends Component {
     });
   };
 
+  actionSave = () => {
+    Toast.show({
+      text: "Added to watchlist",
+      buttonText: "undo",
+      duration: 5000,
+      style: { backgroundColor: secondaryTint, borderRadius: 10 },
+      buttonTextStyle: { color: primary, fontSize: 18, fontWeight: "600" }
+    });
+    this.setState({ saved: true });
+  };
   actionShare = () => {
     const { isError, title, id } = this.state;
 
@@ -279,7 +299,8 @@ export default class MovieDetailsScreen extends Component {
       images,
       creditId,
       isVisible,
-      showImage
+      showImage,
+      id
     } = this.state;
 
     const { navigate } = this.props.navigation;
@@ -290,8 +311,9 @@ export default class MovieDetailsScreen extends Component {
           <Loader />
         ) : isError ? (
           <NotificationCard
-            icon="alert-octagon"
+            icon={require("../../../assets/images/no-signal.png")}
             action={this.requestMoviesInfo}
+            textError="Check your network and try again"
           />
         ) : (
           <ScrollView>
@@ -349,6 +371,7 @@ export default class MovieDetailsScreen extends Component {
                 />
               </SectionRow>
             </View>
+            <SimilarMovieRow id={id} />
           </ScrollView>
         )}
         <PersonModal

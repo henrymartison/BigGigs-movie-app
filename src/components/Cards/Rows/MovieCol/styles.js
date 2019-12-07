@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions } from "react-native";
 
 import {
   darkBlue,
@@ -6,58 +6,60 @@ import {
   white,
   lightRed,
   lightYellow,
-  lightGreen
-} from '../../../../styles/Colors';
-import { fsr } from '../../../../components/commons/metrics';
+  lightGreen,
+  secondaryTint
+} from "../../../../styles/Colors";
+import { fsr } from "../../../../components/commons/metrics";
 const styles = StyleSheet.create({
   containerItem: {
     paddingRight: 20,
     paddingLeft: 20,
     paddingTop: 10,
     marginBottom: 20,
-    flexDirection: 'row'
+    flexDirection: "row"
   },
   containerTwoItem: {
     // marginTop: 10,
     marginHorizontal: 10,
     // margin: 20,
     // flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
     // justifyContent: 'center',
-    width: Dimensions.get('window').width / 3
+    width: Dimensions.get("window").width / 4
   },
   photo: {
-    borderRadius: 8
+    borderRadius: 8,
+    backgroundColor: secondaryTint
   },
   item: {
     marginLeft: 20,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
+    flexDirection: "column",
+    justifyContent: "space-between",
     flex: 1
   },
   textTitle: {
     fontSize: fsr(2.6),
     color: white,
-    fontWeight: 'bold'
+    fontWeight: "bold"
   },
   textTwoTitle: {
-    textAlign: 'center',
+    // textAlign: "center",
     fontSize: fsr(2),
     color: white,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     // paddingRight: 20,
     // paddingLeft: 20,
-    paddingTop: 7
+    paddingTop: 4
   },
   textRow: {
-    flexDirection: 'row'
+    flexDirection: "row"
   },
   containerSubTitle: {
     marginTop: 3,
     marginBottom: 3
   },
   containerReview: {
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     marginRight: 20
   },
   textSmall: {
@@ -71,19 +73,19 @@ const styles = StyleSheet.create({
     color: blue
   },
   score: {
-    minWidth: '25%',
+    minWidth: "25%",
     paddingVertical: 2,
     paddingHorizontal: 4,
     borderRadius: 100
   },
   ratingContainer: {
-    minWidth: '25%',
+    minWidth: "25%",
     // width: 50,
     borderRadius: 8,
     // justifyContent: 'center',
     // alignItems: 'center',
     // backgroundColor: 'rgba(0,0,0,.4)',
-    position: 'absolute',
+    position: "absolute",
     top: 5,
     left: 5
   },
@@ -97,24 +99,24 @@ const styles = StyleSheet.create({
     backgroundColor: lightGreen
   },
   textPercent: {
-    fontSize: fsr(2.1),
-    fontWeight: '500',
+    fontSize: 13,
+    fontWeight: "500",
     color: white,
-    textAlign: 'center',
+    textAlign: "center",
     paddingLeft: 10
   },
   containerModal: {
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center"
   },
   bottomModal: {
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
     margin: 0
   },
   containerError: {
     backgroundColor: white,
-    alignItems: 'center',
-    justifyContent: 'center'
+    alignItems: "center",
+    justifyContent: "center"
   },
   loadingMore: {
     marginTop: 20,

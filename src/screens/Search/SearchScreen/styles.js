@@ -27,6 +27,10 @@ const styles = StyleSheet.create({
     fontSize: fsr(3.3),
     marginBottom: 30,
     paddingLeft: 30
+  },
+  searchContainer: {
+    flexDirection: "row",
+    alignItems: "center"
   }
 });
 

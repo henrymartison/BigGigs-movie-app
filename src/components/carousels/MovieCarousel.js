@@ -1,45 +1,37 @@
-import React, { Component } from "react";
-import { StyleSheet, View, Text } from "react-native";
-import Carousel, { Pagination } from "react-native-snap-carousel";
+import React from "react";
+import Carousel from "react-native-snap-carousel";
+import { width } from "../../utils/device";
+import ImageSlide from "../commons/ImageSlide";
 
-export default class MovieCarousel extends Component {
-  state = {
-    data: [
-      { title: "Food", uri: require("../../../assets/icon.png") },
-      { title: "Bag", uri: require("../../../assets/icon.png") },
-      { title: "Country", uri: require("../../../assets/icon.png") },
-      { title: "Null", uri: require("../../../assets/icon.png") }
-    ]
-  };
+// data
+const slidesData = [
+  { image: "https://image.tmdb.org/t/p/w500/30YacPAcxpNemhhwX0PVUl9pVA3.jpg" },
+  { image: "https://image.tmdb.org/t/p/w500/db32LaOibwEliAmSL2jjDF6oDdj.jpg" },
+  { image: "https://image.tmdb.org/t/p/w500/eZ9wYTk9Gy2zYEv8rhRG3IoPuXG.jpg" },
+  { image: "https://image.tmdb.org/t/p/w500/kqjL17yufvn9OVLyXYpvtyrFfak.jpg" }
+];
 
-  _renderItem({ item, index }) {
-    return (
-      <View style={styles.slide}>
-        <Text style={styles.title}>{item.title}</Text>
-      </View>
-    );
-  }
-
+class SlideShow extends React.Component {
   render() {
+    const itemWidth = width - 52;
+
     return (
       <Carousel
         ref={c => {
-          this._carousel = c;
+          this.carousel = c;
         }}
-        data={this.state.data}
-        renderItem={this._renderItem}
-        sliderWidth={100}
-        itemWidth={100}
+        autoplay
+        autoplayInterval={5000}
+        data={slidesData}
+        loop
+        renderItem={({ item }) => (
+          <ImageSlide source={{ uri: item.image }} width={itemWidth} />
+        )}
+        sliderWidth={width}
+        itemWidth={itemWidth}
       />
     );
   }
 }
 
-const styles = StyleSheet.create({
-  slide: {
-    flex: 1
-  },
-  title: {
-    color: "white"
-  }
-});
+export default SlideShow;

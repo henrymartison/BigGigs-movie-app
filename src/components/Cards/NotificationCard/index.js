@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, Image } from "react-native";
 
 import { Feather } from "@expo/vector-icons";
 
@@ -12,13 +12,13 @@ import styles from "./styles";
 
 const NotificationCard = ({
   style = styles.containerError,
-  icon = "alert-octagon",
-  textError = "Something wrong has happened, please try again later.",
-  textButton = "Load",
+  icon = require("../../../assets/images/sad-rounded-square-emoticon.png"),
+  textError = "Oops! Something seems broken. Please try again later.",
+  textButton = "Try again",
   action = null
 }) => (
   <View style={style}>
-    <Feather name={icon} size={width * 0.2} color={white} />
+    <Image source={icon} style={styles.image} />
     <Text style={styles.errorInfo}>{textError}</Text>
     {action && (
       <TouchableOpacity style={styles.loadingButton} onPress={action}>

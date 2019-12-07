@@ -1,34 +1,34 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React from "react";
+import { View, Text } from "react-native";
 
-import Image from 'react-native-scalable-image';
+import Image from "react-native-scalable-image";
 
-import language from '../../../../assets/language/iso.json';
-import genre from '../../../../assets/genre/ids.json';
+import language from "../../../../assets/language/iso.json";
+import genre from "../../../../assets/genre/ids.json";
 // import genre from '../../../../assets/genre/tvids.json';
 
-import { TouchableOpacity } from '../../../commons/TouchableOpacity';
+import { TouchableOpacity } from "../../../commons/TouchableOpacity";
 
-import { width } from '../../../commons/metrics';
-import { notFound } from '../../../../utils/StaticImages';
+import { width } from "../../../commons/metrics";
+import { notFound } from "../../../../utils/StaticImages";
 
-import styles from './styles';
-import { primary } from '../../../../styles/Colors.js';
+import styles from "./styles";
+import { primary } from "../../../../styles/Colors.js";
 
 const getImageApi = image =>
   image ? { uri: `https://image.tmdb.org/t/p/w500/${image}` } : notFound;
 
-const convertToDate = date => new Date(date).getFullYear() || '';
+const convertToDate = date => new Date(date).getFullYear() || "";
 
 const convertToUpperCaseFirstLetter = value => {
-  const str = language[value] || '';
-  return str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
+  const str = language[value] || "";
+  return str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
 };
 
 const convertGenre = (arr, type, isSearch) => {
-  if (type === 'normal' || isSearch) {
+  if (type === "normal" || isSearch) {
     if (arr.length > 1) return `${genre[arr[0]].name}, ${genre[arr[1]].name}`;
-    return arr.length !== 0 ? `${genre[arr[0]].name}` : '';
+    return arr.length !== 0 ? `${genre[arr[0]].name}` : "";
   }
   return arr.length !== 0 && type !== genre[arr[0]].name
     ? `${type}, ${genre[arr[0]].name}`
@@ -36,17 +36,17 @@ const convertGenre = (arr, type, isSearch) => {
 };
 
 const renderDivider = (releaseDate, originalLanguage) =>
-  releaseDate && originalLanguage !== 'xx' ? (
+  releaseDate && originalLanguage !== "xx" ? (
     <Text style={styles.trace}>|</Text>
   ) : null;
 
 const renderScoreColumn = voteAverage => {
   const color =
     voteAverage < 5
-      ? 'low'
+      ? "low"
       : voteAverage >= 5 && voteAverage < 7
-      ? 'mid'
-      : 'high';
+      ? "mid"
+      : "high";
 
   return (
     <View style={[styles.score, styles[color]]}>
@@ -56,18 +56,7 @@ const renderScoreColumn = voteAverage => {
 };
 
 const renderScoreRow = voteAverage => {
-  const color =
-    voteAverage < 5
-      ? 'low'
-      : voteAverage >= 5 && voteAverage < 7
-      ? 'mid'
-      : 'high';
-
-  return (
-    // <View style={[styles.ratingContainer]}>
-    <Text style={styles.textPercent}>{voteAverage}</Text>
-    // </View>
-  );
+  return <Text style={styles.textPercent}>{voteAverage}</Text>;
 };
 
 export default class MovieRow extends React.PureComponent {
@@ -114,13 +103,14 @@ export default class MovieRow extends React.PureComponent {
     return (
       <TouchableOpacity
         style={styles.containerTwoItem}
-        onPress={() => navigate('MovieDetails', { id: item.id })}
+        onPress={() => navigate("MovieDetails", { id: item.id })}
       >
         <View>
           <Image
             source={getImageApi(item.poster_path)}
             style={styles.photo}
-            width={width * 0.33}
+            width={width * 0.25}
+            height={width * 0.35}
           />
           <View>
             <Text
@@ -128,14 +118,15 @@ export default class MovieRow extends React.PureComponent {
                 color: primary,
                 paddingTop: 5,
                 paddingLeft: 3,
-                fontWeight: '700'
+                fontWeight: "600",
+                fontSize: 13
               }}
             >
               TMDB: {renderScoreRow(item.vote_average)}
             </Text>
           </View>
         </View>
-        <Text numberOfLines={1} style={styles.textTwoTitle}>
+        <Text numberOfLines={2} style={styles.textTwoTitle}>
           {item.title}
         </Text>
       </TouchableOpacity>

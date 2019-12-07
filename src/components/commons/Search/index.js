@@ -1,17 +1,20 @@
 import React, { Component } from "react";
-import { View, TextInput } from "react-native";
+import { View, TextInput, Keyboard, Text } from "react-native";
 
-import { Feather } from "@expo/vector-icons";
+import * as Animatable from "react-native-animatable";
+
+import { Feather, Ionicons } from "@expo/vector-icons";
 
 import { TouchableOpacity } from "../TouchableOpacity";
 
-import { darkGray } from "../../../styles/Colors";
+import { darkGray, primary } from "../../../styles/Colors";
 
 import styles from "./styles";
 
 export default class Search extends Component {
   state = {
-    value: ""
+    value: "",
+    searchBarFocused: false
   };
 
   actionClearSearch = () => {
@@ -29,6 +32,27 @@ export default class Search extends Component {
         id: null
       });
     }
+    // this.setState({ value: "" });
+  };
+
+  componentDidMount() {
+    this._keyboardWillShow = Keyboard.addListener(
+      "keyboardWillShow",
+      this._keyboardWillShow
+    );
+
+    this._keyboardWillHide = Keyboard.addListener(
+      "keyboardWillHide",
+      this._keyboardWillHide
+    );
+  }
+
+  _keyboardWillShow = () => {
+    this.setState({ searchBarFocused: true });
+  };
+
+  _keyboardWillHide = () => {
+    this.setState({ searchBarFocused: false });
   };
 
   render() {
@@ -36,11 +60,11 @@ export default class Search extends Component {
 
     return (
       <View style={styles.container}>
-        <View style={styles.containerInput}>
+        <Animatable.View animation="slideInLeft" style={styles.containerInput}>
           <View style={styles.inputDirection}>
             <Feather
               style={styles.icon}
-              name='search'
+              name="search"
               size={20}
               color={darkGray}
             />
@@ -49,27 +73,50 @@ export default class Search extends Component {
               onSubmitEditing={this.actionSubmit}
               onChangeText={search => this.setState({ value: search })}
               value={value}
-              returnKeyType='search'
-              keyboardType='default'
+              returnKeyType="search"
+              keyboardType="default"
+              keyboardAppearance="dark"
               blurOnSubmit
               multiline={false}
               autoCorrect={false}
-              underlineColorAndroid='transparent'
+              underlineColorAndroid="transparent"
               placeholderTextColor={darkGray}
-              placeholder='Search'
+              placeholder="Search"
+              autoFocus
+              enablesReturnKeyAutomatically
             />
             {value.length > 0 && (
               <TouchableOpacity onPress={this.actionClearSearch}>
-                <Feather
+                <Ionicons
                   style={styles.icon}
-                  name='x'
-                  size={20}
-                  color={darkGray}
+                  name="ios-close-circle"
+                  size={22}
+                  color={primary}
                 />
               </TouchableOpacity>
             )}
           </View>
-        </View>
+        </Animatable.View>
+        {this.state.searchBarFocused ? (
+          <TouchableOpacity
+            onPress={Keyboard.dismiss}
+            style={styles.cancelContainer}
+          >
+            <Animatable.Text
+              animation="fadeInUp"
+              duration={1200}
+              style={styles.cancelText}
+            >
+              Cancel
+            </Animatable.Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.filter}>
+            <Animatable.View animation="slideInRight" duration={800}>
+              <Feather name="settings" color={primary} size={22} />
+            </Animatable.View>
+          </TouchableOpacity>
+        )}
       </View>
     );
   }

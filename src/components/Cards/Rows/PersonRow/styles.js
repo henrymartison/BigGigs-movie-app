@@ -1,20 +1,21 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
-import { blue, white } from '../../../../styles/Colors';
+import { blue, white } from "../../../../styles/Colors";
 
 const styles = StyleSheet.create({
   containerCast: {
     marginRight: 10,
-    alignItems: 'center',
+    alignItems: "center",
     width: 80
+    // justifyContent: "center"
   },
   titleCast: {
     marginTop: 10,
     color: white,
-    textAlign: 'center'
+    textAlign: "center"
   },
   titleCharacter: {
-    fontWeight: 'bold'
+    fontWeight: "bold"
   },
   castPhoto: {
     width: 60,
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
     marginTop: 13
   },
   productionCompaniesPhoto: {
-    width: '100%',
+    width: "100%",
     height: 60,
     borderRadius: 4,
     marginTop: 13

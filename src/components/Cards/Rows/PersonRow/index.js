@@ -1,13 +1,13 @@
-import React from 'react';
-import { View, Text, Image } from 'react-native';
+import React from "react";
+import { View, Text, Image } from "react-native";
 
-import { TouchableOpacity } from '../../../commons/TouchableOpacity';
+import { TouchableOpacity } from "../../../commons/TouchableOpacity";
 
-import { notFound } from '../../../../utils/StaticImages';
+import { notFound } from "../../../../utils/StaticImages";
 
-import styles from './styles';
+import styles from "./styles";
 
-const uninformed = 'Uninformed';
+const uninformed = "Uninformed";
 
 const getImageApi = image => {
   return image ? { uri: `https://image.tmdb.org/t/p/w500/${image}` } : notFound;
@@ -17,13 +17,13 @@ export default class PersonRow extends React.PureComponent {
   render() {
     const { type, item, actionTeamDetail } = this.props;
 
-    if (type === 'character' || type === 'job') {
+    if (type === "character" || type === "job") {
       return (
         <TouchableOpacity
           style={styles.containerCast}
           onPress={() => actionTeamDetail(item.id)}
         >
-          {type === 'character' && (
+          {type === "character" && (
             <Text
               numberOfLines={1}
               style={[styles.titleCast, styles.titleCharacter]}
@@ -31,7 +31,7 @@ export default class PersonRow extends React.PureComponent {
               {item.character || uninformed}
             </Text>
           )}
-          {type === 'job' && (
+          {type === "job" && (
             <Text
               numberOfLines={1}
               style={[styles.titleCast, styles.titleCharacter]}
@@ -43,7 +43,7 @@ export default class PersonRow extends React.PureComponent {
             source={getImageApi(item.profile_path)}
             style={styles.castPhoto}
           />
-          <Text numberOfLines={1} style={styles.titleCast}>
+          <Text numberOfLines={2} style={styles.titleCast}>
             {item.name || uninformed}
           </Text>
         </TouchableOpacity>

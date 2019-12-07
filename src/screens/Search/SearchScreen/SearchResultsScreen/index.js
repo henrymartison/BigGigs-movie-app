@@ -1,27 +1,27 @@
-import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import React, { Component } from "react";
+import { View, Text } from "react-native";
 
-import { Feather, Ionicons } from '@expo/vector-icons';
+import { Feather, Ionicons } from "@expo/vector-icons";
 
-import NotificationCard from '../../../../components/Cards/NotificationCard';
-import MovieListRow from '../../../../components/Cards/Rows/MovieListRow';
-import MovieRow from '../../../../components/Cards/Rows/MovieRow';
-import { TouchableOpacity } from '../../../../components/commons/TouchableOpacity';
+import NotificationCard from "../../../../components/Cards/NotificationCard";
+import MovieListRow from "../../../../components/Cards/Rows/MovieListRow";
+import MovieRow from "../../../../components/Cards/Rows/MovieRow";
+import { TouchableOpacity } from "../../../../components/commons/TouchableOpacity";
 
-import request from '../../../../services/api';
+import request from "../../../../services/api";
 
-import { getItem } from '../../../../utils/AsyncStorage';
-import { darkBlue, primaryTint, white } from '../../../../styles/Colors';
+import { getItem } from "../../../../utils/AsyncStorage";
+import { darkBlue, primaryTint, white } from "../../../../styles/Colors";
 
-import styles from './styles';
-import Loader from '../../../../components/commons/Loader';
+import styles from "./styles";
+import Loader from "../../../../components/commons/Loader";
 
 export default class SearchResultsScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     const params = navigation.state.params || {};
 
     return {
-      title: 'Search Results',
+      title: `"${params.name}"`,
       headerStyle: {
         backgroundColor: primaryTint,
         borderBottomColor: primaryTint
@@ -40,7 +40,7 @@ export default class SearchResultsScreen extends Component {
           style={styles.buttonShare}
           onPress={() => navigation.goBack()}
         >
-          <Ionicons name='ios-arrow-back' size={27} color={darkBlue} />
+          <Ionicons name="ios-arrow-back" size={27} color={darkBlue} />
         </TouchableOpacity>
       )
     };
@@ -62,7 +62,7 @@ export default class SearchResultsScreen extends Component {
 
   async componentDidMount() {
     try {
-      const hasAdultContent = await getItem('@ConfigKey', 'hasAdultContent');
+      const hasAdultContent = await getItem("@ConfigKey", "hasAdultContent");
 
       this.setState({ hasAdultContent }, () => {
         this.requestMoviesList();
@@ -94,14 +94,14 @@ export default class SearchResultsScreen extends Component {
       const { page, name, id, typeRequest, hasAdultContent } = this.state;
       const dateRelease = new Date().toISOString().slice(0, 10);
       const query =
-        typeRequest === 'search'
+        typeRequest === "search"
           ? { query: `${name.trim()}` }
           : { with_genres: `${id}` };
 
       const data = await request(`${typeRequest}/movie`, {
         page,
-        'release_date.lte': dateRelease,
-        with_release_type: '1|2|3|4|5|6|7',
+        "release_date.lte": dateRelease,
+        with_release_type: "1|2|3|4|5|6|7",
         include_adult: hasAdultContent,
         ...{ ...query }
       });
@@ -192,21 +192,22 @@ export default class SearchResultsScreen extends Component {
           <Loader />
         ) : isError ? (
           <NotificationCard
-            icon='alert-circle'
+            icon={require("../../../../assets/images/no-signal.png")}
+            textError="Please check your network and try again"
             action={this.requestMoviesList}
           />
         ) : results.length === 0 ? (
           <NotificationCard
-            icon='alert-circle'
-            textError='Sorry, search not found.'
+            icon={require("../../../../assets/images/spy.png")}
+            textError={`We couldn't find anything for "${name}". Try something else.`}
           />
         ) : (
           <View style={styles.containerList}>
             {results.length > 0 && (
               <View style={styles.containerMainText}>
-                <Text style={styles.textMain} numberOfLines={1}>
-                  {name}
-                </Text>
+                {/* <Text style={styles.textMain} numberOfLines={1}>
+                  "{name}"
+                </Text> */}
                 <TouchableOpacity
                   style={[
                     styles.buttonGrid,
@@ -215,9 +216,9 @@ export default class SearchResultsScreen extends Component {
                   onPress={this.actionGrid}
                 >
                   {numColumns === 2 ? (
-                    <Feather name='list' size={22} color={darkBlue} />
+                    <Feather name="list" size={22} color={darkBlue} />
                   ) : (
-                    <Feather name='grid' size={22} color={darkBlue} />
+                    <Feather name="grid" size={22} color={darkBlue} />
                   )}
                 </TouchableOpacity>
               </View>
@@ -225,7 +226,7 @@ export default class SearchResultsScreen extends Component {
             <MovieListRow
               data={results}
               type={name}
-              isSearch={typeRequest === 'search'}
+              isSearch={typeRequest === "search"}
               keyGrid={keyGrid}
               numColumns={numColumns}
               refreshing={null}

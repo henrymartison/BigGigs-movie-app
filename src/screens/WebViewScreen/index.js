@@ -9,7 +9,7 @@ import Loader from "../../components/commons/Loader";
 
 export default class WebViewScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
-    title: "Movie Tailer",
+    title: navigation.getParam("title"),
     headerTitleStyle: { color: white },
     headerStyle: {
       backgroundColor: primaryTint,

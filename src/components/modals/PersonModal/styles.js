@@ -1,14 +1,14 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
-import { white, darkBlue, blue } from '../../../styles/Colors';
-import { fsr, height } from '../../commons/metrics';
+import { white, darkBlue, blue } from "../../../styles/Colors";
+import { fsr, height } from "../../commons/metrics";
 
 const styles = StyleSheet.create({
   containerModal: {
-    backgroundColor: '#15161b',
+    backgroundColor: "#15161b",
     borderTopLeftRadius: 14,
     borderTopRightRadius: 14,
-    height: height * 0.55
+    height: height * 0.58
   },
   containerScroll: {
     padding: 22,
@@ -16,42 +16,42 @@ const styles = StyleSheet.create({
     marginTop: 22
   },
   containerCenter: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100%'
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100%"
   },
   photo: {
     borderRadius: 8
   },
   containerMainText: {
     marginBottom: 30,
-    flexDirection: 'row',
-    alignItems: 'flex-start'
+    flexDirection: "row",
+    alignItems: "flex-start"
   },
   titleInfo: {
     fontSize: fsr(2.4),
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: darkBlue,
     marginBottom: 7
   },
   titleName: {
     fontSize: fsr(2.6),
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: darkBlue,
     marginBottom: 10
   },
   textItems: {
     marginLeft: 20,
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between'
+    flexDirection: "column",
+    justifyContent: "space-between"
   },
   textSmall: {
     fontSize: fsr(2.1),
     color: white
   },
   textJustify: {
-    textAlign: 'justify'
+    textAlign: "justify"
   },
   textLineHeight: {
     lineHeight: 20
@@ -60,19 +60,19 @@ const styles = StyleSheet.create({
     marginBottom: 7
   },
   containerRow: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     padding: 22
   },
   button: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     backgroundColor: white,
     borderWidth: 1,
     borderColor: darkBlue,
     paddingVertical: 9.1,
     borderRadius: 100,
-    width: '60%'
+    width: "60%"
   },
   icon: {
     fontSize: fsr(2.8)

@@ -20,7 +20,7 @@ import { darkBlue, primaryTint, white } from "../../../styles/Colors";
 import styles from "./styles";
 import CustomMenuIcon from "../../../components/commons/MenuIcon";
 import Loader from "../../../components/commons/Loader";
-import MovieCarousel from "../../../components/carousels/MovieCarousel";
+import SlideShow from "../../../components/carousels/MovieCarousel";
 
 export default class MovieListScreen extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -151,13 +151,15 @@ export default class MovieListScreen extends Component {
       //   });
       // }
 
-      const data = await request(`movie/${filterTitles[1]}`, {
+      const data = await request(`movie/${filterTitles[3]}`, {
         page,
         "release_date.lte": dateRelease,
         sort_by: filterType,
         with_release_type: "1|2|3|4|5|6|7",
         include_adult: hasAdultContent
       });
+
+      // console.log(data);
 
       this.setState(({ isRefresh, results }) => ({
         isLoading: false,
@@ -270,9 +272,7 @@ export default class MovieListScreen extends Component {
       results,
       filterName,
       isVisible,
-      filterType,
-      numColumns,
-      keyGrid
+      filterType
     } = this.state;
 
     return (
@@ -281,14 +281,11 @@ export default class MovieListScreen extends Component {
           <Loader />
         ) : isError ? (
           <NotificationCard
-            icon="alert-circle"
+            icon={require("../../../assets/images/no-signal.png")}
             action={this.requestMoviesList}
           />
         ) : results.length === 0 ? (
-          <NotificationCard
-            icon="thumbs-down"
-            textError="No results available."
-          />
+          <NotificationCard textError="No results available." />
         ) : (
           <View style={styles.containerList}>
             {/* {results.length > 0 && (
@@ -299,19 +296,16 @@ export default class MovieListScreen extends Component {
               </View>
             )} */}
             <ScrollView>
-              {/* <MovieCarousel /> */}
+              <SlideShow />
               <MovieListCol
                 data={results}
                 type="normal"
                 isSearch={false}
-                keyGrid={keyGrid}
-                numColumns={numColumns}
                 refreshing={isRefresh}
                 onRefresh={this.actionRefresh}
-                ListFooterComponent={this.renderFooter}
                 navigate={navigate}
                 renderItem={this.renderItem}
-                filterName="️📺 Latest"
+                filterName="️⭐ Top Rated"
               />
             </ScrollView>
           </View>

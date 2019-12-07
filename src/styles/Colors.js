@@ -13,6 +13,6 @@ export const lightGreen = "#82c596";
 export const primaryTint = "#15161B";
 export const secondaryTint = "#27282C";
 export const inactiveTint = "#5A5A5A";
-export const primary = "#4682b4";
+export const primary = "#1da1f2";
 // export const primary = "#907afc";
 export const darkish = "#15161b";

@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
 import {
   BallIndicator,
   BarIndicator,
@@ -10,10 +10,12 @@ import {
   SkypeIndicator,
   UIActivityIndicator,
   WaveIndicator
-} from 'react-native-indicators';
-import { white, darkBlue } from '../../styles/Colors';
+} from "react-native-indicators";
+import { white, darkBlue } from "../../styles/Colors";
 
-const Loader = props => <PacmanIndicator color={white} size={40} />;
+const Loader = () => (
+  <UIActivityIndicator color={white} size={24} color={darkBlue} />
+);
 export default Loader;
 
 const styles = StyleSheet.create({});

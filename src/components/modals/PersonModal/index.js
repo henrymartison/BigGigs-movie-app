@@ -1,21 +1,17 @@
 import React, { Component } from "react";
 import { ScrollView, View, Text, ActivityIndicator } from "react-native";
 
-import { Feather } from "@expo/vector-icons";
 import Image from "react-native-scalable-image";
 
 import NotificationCard from "../../Cards/NotificationCard";
 import { Modal } from "../Modal";
-import { TouchableOpacity } from "../../commons/TouchableOpacity";
 
 import request from "../../../services/api";
 
 import { width } from "../../commons/metrics";
 import { notFound } from "../../../utils/StaticImages";
-import { darkBlue } from "../../../styles/Colors";
 
 import styles from "./styles";
-import Loader from "../../commons/Loader";
 
 const uninformed = "Uninformed";
 
@@ -55,6 +51,7 @@ export default class PersonModal extends Component {
       const { creditId } = this.props;
 
       const data = await request(`person/${parseInt(creditId)}`);
+      // const filmData = await request(`person/2/movie_credits`);
 
       this.setState({
         isLoading: false,
@@ -120,7 +117,7 @@ export default class PersonModal extends Component {
             <View style={styles.containerModal}>
               <ScrollView style={styles.containerScroll}>
                 <NotificationCard
-                  icon="alert-octagon"
+                  icon={require("../../../assets/images/no-signal.png")}
                   action={this.requestTeamInfo}
                 />
               </ScrollView>
@@ -133,7 +130,8 @@ export default class PersonModal extends Component {
                   <Image
                     source={this.getImageApi()}
                     style={styles.photo}
-                    width={width * 0.33}
+                    width={width * 0.25}
+                    height={width * 0.35}
                   />
                   <View style={styles.textItems}>
                     <Text style={styles.titleName}>{name}</Text>
@@ -161,7 +159,7 @@ export default class PersonModal extends Component {
                         {placeOfBirth}
                       </Text>
                     </View>
-                    <View style={styles.containerTitleMargin}>
+                    {/* <View style={styles.containerTitleMargin}>
                       <Text
                         numberOfLines={2}
                         style={[styles.textSmall, styles.textJustify]}
@@ -176,7 +174,7 @@ export default class PersonModal extends Component {
                       >
                         Amount Paid: $...
                       </Text>
-                    </View>
+                    </View> */}
                   </View>
                 </View>
                 <Text style={styles.titleInfo}>Biography</Text>

@@ -5,21 +5,26 @@ import {
   freeze,
   white,
   darkish,
-  secondaryTint
+  secondaryTint,
+  primary
 } from "../../../styles/Colors";
 import { fsr } from "../metrics";
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    paddingHorizontal: 20,
-    paddingTop: 25,
-    paddingBottom: 5
+    flex: 1,
+    paddingLeft: 20,
+    paddingTop: 18,
+    paddingBottom: 5,
+    flexDirection: "row",
+    alignItems: "center"
   },
   containerInput: {
-    height: 40,
+    height: 37,
     backgroundColor: secondaryTint,
-    borderRadius: 6
+    borderRadius: 8,
+    alignItems: "center",
+    flex: 1
   },
   inputDirection: {
     flex: 1,
@@ -36,6 +41,16 @@ const styles = StyleSheet.create({
     fontSize: fsr(2.2),
     color: white,
     width: "100%"
+  },
+  cancelText: {
+    color: primary,
+    fontSize: fsr(2.6)
+  },
+  cancelContainer: {
+    paddingHorizontal: 10
+  },
+  filter: {
+    paddingHorizontal: 15
   }
 });
 

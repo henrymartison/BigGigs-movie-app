@@ -44,14 +44,18 @@ export default class CustomMenuIcon extends Component {
           ref={this.setMenuRef}
           button={
             <TouchableOpacity onPress={this.showMenu}>
-              <Feather name='more-horizontal' size={26} color={darkBlue} />
+              <Feather name="more-horizontal" size={30} color={darkBlue} />
             </TouchableOpacity>
           }
         >
           <MenuItem textStyle={{ color: "white" }} onPress={this.option1Click}>
             Go Premium Version
           </MenuItem>
-          <MenuItem textStyle={{ color: "white" }} onPress={this.option2Click}>
+          <MenuItem
+            underlayColor={darkBlue}
+            textStyle={{ color: "white" }}
+            onPress={this.option2Click}
+          >
             Watchlist
           </MenuItem>
           <MenuItem onPress={this.option3Click} disabled>
