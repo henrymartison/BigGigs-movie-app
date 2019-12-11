@@ -1,9 +1,9 @@
-import React from 'react';
-import { ScrollView, Text } from 'react-native';
+import React from "react";
+import { ScrollView, Text } from "react-native";
 
-import SectionRow from '../SectionRow';
+import SectionRow from "../SectionRow";
 
-import styles from './styles';
+import styles from "./styles";
 
 const MainInfoRow = ({ data = {} }) => (
   <ScrollView

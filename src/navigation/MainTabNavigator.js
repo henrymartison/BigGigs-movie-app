@@ -16,6 +16,9 @@ import Discover from "../screens/Discover/DiscoverScreen";
 import MovieDetailsScreen from "../screens/Trending/MovieDetailsScreen";
 import WebViewScreen from "../screens/WebViewScreen";
 import Watchlist from "../screens/Watchlist";
+import main from "../screens/main";
+import TVList from "../screens/TVSeries/TVList";
+import TVDetails from "../screens/TVSeries/TVDetails";
 
 const config = Platform.select({
   web: { headerMode: "screen" },
@@ -24,10 +27,13 @@ const config = Platform.select({
 
 const MovieListStack = createStackNavigator(
   {
+    main: main,
     MList: MovieListScreen,
     MovieDetails: MovieDetails,
     WebView: WebViewScreen,
-    Watchlist: Watchlist
+    Watchlist: Watchlist,
+    TVList: TVList,
+    TVDetails: TVDetails
   },
   config
 );

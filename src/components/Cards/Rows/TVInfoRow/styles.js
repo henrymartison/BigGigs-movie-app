@@ -1,23 +1,21 @@
 import { StyleSheet } from "react-native";
 
-import { darkBlue } from "../../../../styles/Colors";
+import { blue, white, darkBlue } from "../../../../styles/Colors";
 import { fsr } from "../../../commons/metrics";
 
 const styles = StyleSheet.create({
   container: {
     marginTop: 20
   },
-  containerLast: {
-    marginBottom: 15
-  },
-  containerSubTitle: {
-    marginRight: 25
-  },
   title: {
-    fontSize: fsr(2.6),
+    fontSize: fsr(2.2),
     fontWeight: "bold",
-    color: darkBlue,
-    marginBottom: 7
+    color: darkBlue
+  },
+  description: {
+    fontSize: fsr(2.2),
+    color: white,
+    fontWeight: "500"
   }
 });
 

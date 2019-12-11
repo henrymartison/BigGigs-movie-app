@@ -24,14 +24,6 @@ getPosterImageApi = posterPath => {
     : notFound;
 };
 
-getTitle = title => {
-  if (title === "name") {
-    return name;
-  } else {
-    return title;
-  }
-};
-
 convertRatingToStars = voteAverage => {
   const average = voteAverage > 5 ? Math.round(voteAverage) : voteAverage;
   const length =
@@ -58,13 +50,49 @@ renderRating = voteAverage => {
   );
 };
 
+getStatus = status => {
+  const color =
+    status === "Returning Series"
+      ? "running"
+      : status === "Ended"
+      ? "ended"
+      : "";
+  if (status === "Returning Series") {
+    return (
+      <View style={styles.currentStatus}>
+        <View style={styles.statusIndicator} />
+        <Text style={styles.statusText}>Status:</Text>
+        <Text style={[styles.currentStatusText, styles[color]]}>Running</Text>
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.currentStatus}>
+      <View style={styles.statusIndicator} />
+      <Text style={styles.statusText}>Status:</Text>
+      <Text style={[styles.currentStatusText, styles[color]]}>{status}</Text>
+    </View>
+  );
+};
+
+// getStatus = status => {
+//   const colors = ['mediumseagreen', 'red', 'orange']
+//   if(status === 'Returning Series'){
+//     return 'Running', color=colors[0]
+//   } else if(status === 'Ended'){
+//     return 'Ended', color=colors[1]
+// } else{
+//   return 'Running', color=colors[0]
+// }}
+
 actionPlayVideo = (video, navigate, title) => {
   const { key } = video;
 
   navigate("WebView", { key, title: title });
 };
 
-const PosterRow = ({
+const TVPosterRow = ({
   title,
   backdropPath,
   posterPath,
@@ -73,7 +101,8 @@ const PosterRow = ({
   video,
   showImage,
   onPress,
-  navigate
+  navigate,
+  status
 }) => {
   const [saved, setSaved] = useState(false);
 
@@ -121,29 +150,19 @@ const PosterRow = ({
             {renderRating(voteAverage)}
           </View>
         </View>
-        {video && video.site === "YouTube" && (
-          <View style={{ alignItems: "center" }}>
-            <TouchableOpacity
-              style={styles.playButtonContainer}
-              onPress={() => actionPlayVideo(video, navigate, title)}
-            >
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Ionicons name="ios-play" size={20} color={secondaryTint} />
-                <Text style={styles.playButtonText}>Watch Trailer</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => actionSave()}
-              style={styles.saveButtonContainer}
-            >
-              <Ionicons
-                name={saved ? "md-checkmark" : "md-add"}
-                size={saved ? 30 : 35}
-                color={saved ? primary : white}
-              />
-            </TouchableOpacity>
-          </View>
-        )}
+        <View style={{}}>
+          {getStatus(status)}
+          <TouchableOpacity
+            onPress={() => actionSave()}
+            style={styles.saveButtonContainer}
+          >
+            <Ionicons
+              name={saved ? "md-checkmark" : "md-add"}
+              size={saved ? 25 : 30}
+              color={saved ? primary : white}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
       <View
         style={{
@@ -174,4 +193,4 @@ const PosterRow = ({
   );
 };
 
-export default PosterRow;
+export default TVPosterRow;

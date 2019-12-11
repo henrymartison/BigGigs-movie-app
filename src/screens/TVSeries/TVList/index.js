@@ -1,17 +1,14 @@
 import React, { Component } from "react";
-import { Asset } from "expo";
 import { View, Text } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { DotIndicator } from "react-native-indicators";
-// import { Assets as StackAssets } from 'react-navigation-stack';
 import { withNavigation } from "react-navigation";
 
 import * as Animatable from "react-native-animatable";
 
 import NotificationCard from "../../../components/Cards/NotificationCard";
 import FilterModal from "../../../components/modals/FilterModal";
-import MovieListRow from "../../../components/Cards/Rows/MovieListRow";
-import MovieRow from "../../../components/Cards/Rows/MovieRow";
+import TVListRow from "../../../components/Cards/Rows/TVListRow";
+import TVRow from "../../../components/Cards/Rows/TVRow";
 import { TouchableOpacity } from "../../../components/commons/TouchableOpacity";
 
 import request from "../../../services/api";
@@ -23,54 +20,7 @@ import styles from "./styles";
 import CustomMenuIcon from "../../../components/commons/MenuIcon";
 import Loader from "../../../components/commons/Loader";
 
-class MovieListScreen extends Component {
-  static navigationOptions = ({ navigation }) => {
-    const params = navigation.state.params || {};
-
-    return {
-      title: "Hooli",
-      headerTitleStyle: {
-        color: white,
-        fontFamily: "balooBhaina-regular",
-        fontSize: 21
-      },
-      headerStyle: {
-        backgroundColor: primaryTint,
-        borderBottomColor: primaryTint
-      },
-      headerRight: (
-        <TouchableOpacity
-          style={{ paddingRight: 10 }}
-          onPress={params.actionFilter}
-        >
-          <Feather name="sliders" size={23} color={darkBlue} />
-        </TouchableOpacity>
-      ),
-      headerLeft: (
-        <CustomMenuIcon
-          menutext="Menu"
-          menustyle={{
-            marginRight: 16,
-            flexDirection: "row",
-            justifyContent: "flex-end",
-            paddingLeft: 10
-          }}
-          textStyle={{
-            color: "white"
-          }}
-          option1Click={() => {
-            navigation.navigate("Search");
-          }}
-          option2Click={() => {
-            navigation.navigate("Watchlist");
-          }}
-          option3Click={() => null}
-          option4Click={() => null}
-        />
-      )
-    };
-  };
-
+class TVList extends Component {
   state = {
     isVisible: false,
     isLoading: false,
@@ -79,7 +29,7 @@ class MovieListScreen extends Component {
     isError: false,
     hasAdultContent: false,
     filterType: "popularity.desc",
-    filterName: "Trending now🔥",
+    filterName: "Most Popular",
     results: [],
     page: 1,
     numColumns: 1,
@@ -134,7 +84,7 @@ class MovieListScreen extends Component {
       const { page, filterType, hasAdultContent } = this.state;
       const dateRelease = new Date().toISOString().slice(0, 10);
 
-      const data = await request("trending/movie/week", {
+      const data = await request("tv/on_the_air", {
         page,
         "release_date.lte": dateRelease,
         sort_by: filterType,
@@ -162,7 +112,7 @@ class MovieListScreen extends Component {
 
   renderItem = (item, type, isSearch, numColumns, navigate) => (
     <Animatable.View animation="fadeInRight">
-      <MovieRow
+      <TVRow
         item={item}
         type={type}
         isSearch={isSearch}
@@ -174,8 +124,6 @@ class MovieListScreen extends Component {
 
   renderFooter = () => {
     const { isLoadingMore, totalPages, page, results } = this.state;
-
-    // if (isLoadingMore) return <Loader />;
 
     if (totalPages !== page && results.length > 0) {
       return (
@@ -273,10 +221,7 @@ class MovieListScreen extends Component {
             action={this.requestMoviesList}
           />
         ) : results.length === 0 ? (
-          <NotificationCard
-            // icon="thumbs-down"
-            textError="No results available."
-          />
+          <NotificationCard textError="No results available." />
         ) : (
           <View style={styles.containerList}>
             {results.length > 0 && (
@@ -299,7 +244,7 @@ class MovieListScreen extends Component {
                 </TouchableOpacity>
               </View>
             )}
-            <MovieListRow
+            <TVListRow
               data={results}
               type="normal"
               isSearch={false}
@@ -326,4 +271,4 @@ class MovieListScreen extends Component {
   }
 }
 
-export default withNavigation(MovieListScreen);
+export default withNavigation(TVList);
