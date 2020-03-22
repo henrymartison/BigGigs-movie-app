@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { withNavigation } from "react-navigation";
 
 import { Feather, Ionicons } from "@expo/vector-icons";
 
@@ -12,25 +13,30 @@ import {
 import { fsr } from "../../../commons/metrics";
 import { TouchableOpacity } from "../../../commons/TouchableOpacity";
 
-const TVSeasons = ({ data = {}, numberOfSeasons }) => (
+const TVSeasons = ({ data = {}, numberOfSeasons, onPress }) => (
   <View style={styles.container}>
     <View style={styles.separator} />
     <Text style={styles.header}>Seasons ({numberOfSeasons})</Text>
     {data.map(item => (
       <View key={item.name}>
-        <TouchableOpacity style={styles.rowContainer}>
-          <View style={styles.checkRow}>
-            <Feather name="check-circle" size={18} color={primary} />
-            <Text style={styles.rowText}>{item.name}</Text>
-          </View>
-          <Ionicons name="ios-arrow-forward" color={darkBlue} size={18} />
-        </TouchableOpacity>
+        {item.season_number === 0 ? null : (
+          <TouchableOpacity onPress={onPress} style={styles.rowContainer}>
+            <View style={styles.checkRow}>
+              <Feather name="check-circle" size={18} color={primary} />
+              <View>
+                <Text style={styles.rowText}>Season {item.season_number}</Text>
+                <Text style={styles.subText}>{item.episode_count} Eps</Text>
+              </View>
+            </View>
+            <Ionicons name="ios-arrow-forward" color={darkBlue} size={18} />
+          </TouchableOpacity>
+        )}
         <View style={styles.separator} />
       </View>
     ))}
   </View>
 );
-export default TVSeasons;
+export default withNavigation(TVSeasons);
 
 const styles = StyleSheet.create({
   container: {
@@ -53,6 +59,12 @@ const styles = StyleSheet.create({
     fontSize: fsr(2.4),
     color: white,
     paddingHorizontal: 10
+  },
+  subText: {
+    fontSize: fsr(1.8),
+    color: white,
+    paddingHorizontal: 10,
+    alignSelf: "center"
   },
   separator: {
     height: StyleSheet.hairlineWidth,

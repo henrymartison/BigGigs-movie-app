@@ -19,6 +19,8 @@ import Watchlist from "../screens/Watchlist";
 import main from "../screens/main";
 import TVList from "../screens/TVSeries/TVList";
 import TVDetails from "../screens/TVSeries/TVDetails";
+import SeasonDetails from "../screens/TVSeries/Seasons/Details";
+import SearchFilter from "../screens/Search/SearchFilter";
 
 const config = Platform.select({
   web: { headerMode: "screen" },
@@ -33,7 +35,8 @@ const MovieListStack = createStackNavigator(
     WebView: WebViewScreen,
     Watchlist: Watchlist,
     TVList: TVList,
-    TVDetails: TVDetails
+    TVDetails: TVDetails,
+    SeasonDetails: SeasonDetails
   },
   config
 );
@@ -57,7 +60,8 @@ const SearchStack = createStackNavigator(
     Search: SearchScreen,
     SearchResults: SearchResultsScreen,
     MovieDetails: MovieDetailsScreen,
-    WebView: WebViewScreen
+    WebView: WebViewScreen,
+    SearchFilter: SearchFilter
   },
   config
 );
@@ -101,9 +105,9 @@ ConfigStack.navigationOptions = {
 
 const tabNavigator = createBottomTabNavigator(
   {
+    DiscoverStack,
     MovieListStack,
     SearchStack,
-    DiscoverStack,
     ConfigStack
   },
   {

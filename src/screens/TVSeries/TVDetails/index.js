@@ -32,6 +32,7 @@ import Loader from "../../../components/commons/Loader";
 import SimilarMovieRow from "../../../components/Cards/Rows/SimilarMovieRow";
 import TVSeasons from "../../../components/Cards/Rows/TVSeasons";
 import NextEpisode from "../../../components/Cards/Rows/TVNextEp";
+import SeasonDetails from "../Seasons/Details";
 
 const uninformed = "Uninformed";
 
@@ -141,6 +142,10 @@ export default class TVDetails extends Component {
       // console.log(data.seasons[0].name);
       const nextEpToAir =
         data.next_episode_to_air === null ? "null" : data.next_episode_to_air;
+      const epData = await request(
+        `tv/${id}/season/${data.seasons.season_number}`
+      );
+      // console.log(epData.episodes[0].name);
 
       this.setState({
         isLoading: false,
@@ -161,6 +166,7 @@ export default class TVDetails extends Component {
         images: this.formatImageUrl(data.images.backdrops),
         infosDetail: this.getInfosDetail(data),
         seasonData: data.seasons,
+        epData: epData.episodes,
         numberOfSeasons: data.number_of_seasons || "",
         status: data.status || "",
         season_number: nextEpToAir.season_number,
@@ -181,11 +187,11 @@ export default class TVDetails extends Component {
     episode_run_time,
     genres,
     original_language,
-    last_air_date,
+    first_air_date,
     networks
   }) => {
     return {
-      YEAR: this.convertToDate(last_air_date || ""),
+      YEAR: this.convertToDate(first_air_date || ""),
       NETWORK: this.convertToNetwork(this.sliceArrayLength(networks, 2) || ""),
       GENRE: this.convertToGenre(this.sliceArrayLength(genres, 1) || ""),
       LANGUAGE: this.convertToUpperCaseFirstLetter(
@@ -309,6 +315,7 @@ export default class TVDetails extends Component {
       title,
       infosDetail,
       seasonData,
+      epData,
       numberOfSeasons,
       overview,
       cast,
@@ -370,7 +377,16 @@ export default class TVDetails extends Component {
                   <Text style={styles.subTitleInfo}>{overview}</Text>
                 </ReadMore>
               </SectionRow>
-              <TVSeasons data={seasonData} numberOfSeasons={numberOfSeasons} />
+              <TVSeasons
+                data={seasonData}
+                numberOfSeasons={numberOfSeasons}
+                onPress={() =>
+                  navigate("SeasonDetails", {
+                    title: "Season_Title"
+                  })
+                }
+              />
+              {/* <SeasonDetails data={epData} /> */}
               <SectionRow title="Main cast">
                 <PersonListRow
                   data={cast}

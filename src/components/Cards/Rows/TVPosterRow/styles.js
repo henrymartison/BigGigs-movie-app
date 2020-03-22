@@ -85,8 +85,13 @@ const styles = StyleSheet.create({
 
   textPercent: {
     color: white,
-    fontSize: fsr(2.3),
-    fontWeight: "500"
+    fontSize: fsr(2.6),
+    fontWeight: "900"
+  },
+  textPercent2: {
+    color: "#a8a8a8",
+    fontSize: fsr(2),
+    fontWeight: "600"
   },
   currentStatus: {
     width: Platform.OS === "ios" ? "40%" : "35%",

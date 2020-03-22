@@ -41,6 +41,7 @@ class ImageSlide extends React.PureComponent {
           borderRadius: 8,
           backgroundColor: secondaryTint
         }}
+        resizeMode="cover"
       />
     );
   }

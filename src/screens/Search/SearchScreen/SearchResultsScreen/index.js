@@ -21,20 +21,12 @@ export default class SearchResultsScreen extends Component {
     const params = navigation.state.params || {};
 
     return {
-      title: `"${params.name}"`,
+      title: `Results for "${params.name}"`,
       headerStyle: {
         backgroundColor: primaryTint,
         borderBottomColor: primaryTint
       },
-      headerTitleStyle: { color: white },
-      // headerRight: (
-      //   <TouchableOpacity
-      //     style={styles.buttonShare}
-      //     onPress={params.actionShare}
-      //   >
-      //     <Feather name='share' size={23} color={darkBlue} />
-      //   </TouchableOpacity>
-      // ),
+      headerTitleStyle: { color: white, fontSize: 14, fontWeight: "400" },
       headerLeft: (
         <TouchableOpacity
           style={styles.buttonShare}

@@ -84,7 +84,7 @@ class TVList extends Component {
       const { page, filterType, hasAdultContent } = this.state;
       const dateRelease = new Date().toISOString().slice(0, 10);
 
-      const data = await request("tv/on_the_air", {
+      const data = await request("tv/popular", {
         page,
         "release_date.lte": dateRelease,
         sort_by: filterType,

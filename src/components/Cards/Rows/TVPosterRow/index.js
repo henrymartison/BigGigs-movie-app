@@ -45,7 +45,14 @@ renderRating = voteAverage => {
   return (
     <View style={{ alignItems: "center", marginLeft: 10 }}>
       <Text style={{ fontSize: 13, color: "grey" }}>themoviedb.org</Text>
-      <Text style={styles.textPercent}>{voteAverage}/10</Text>
+      <Text style={styles.textPercent}>
+        {voteAverage}
+        <Text style={{ fontWeight: "700", color: "white", fontSize: 13 }}>
+          {" "}
+          /{" "}
+        </Text>
+        <Text style={styles.textPercent2}>10</Text>
+      </Text>
     </View>
   );
 };

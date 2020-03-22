@@ -27,20 +27,24 @@ export default class MovieListScreen extends Component {
     const params = navigation.state.params || {};
 
     return {
-      title: "CinemaHD",
-      headerTitleStyle: { color: white },
+      title: "Hooli",
+      headerTitleStyle: {
+        color: white,
+        fontFamily: "balooBhaina-regular",
+        fontSize: 21
+      },
       headerStyle: {
         backgroundColor: primaryTint,
         borderBottomColor: primaryTint
       },
-      headerRight: (
-        <TouchableOpacity
-          style={{ paddingRight: 10 }}
-          //   onPress={params.actionFilter}
-        >
-          <Feather name="plus" size={23} color={darkBlue} />
-        </TouchableOpacity>
-      ),
+      // headerRight: (
+      //   <TouchableOpacity
+      //     style={{ paddingRight: 10 }}
+      //     //   onPress={params.actionFilter}
+      //   >
+      //     <Feather name="sliders" size={23} color={darkBlue} />
+      //   </TouchableOpacity>
+      // ),
       headerLeft: (
         <CustomMenuIcon
           menutext="Menu"
@@ -56,11 +60,11 @@ export default class MovieListScreen extends Component {
           option1Click={() => {
             navigation.navigate("Search");
           }}
-          option2Click={() => {}}
-          option3Click={() => {}}
-          option4Click={() => {
-            alert("Option 4");
+          option2Click={() => {
+            navigation.navigate("Watchlist");
           }}
+          option3Click={() => null}
+          option4Click={() => null}
         />
       )
     };
@@ -129,27 +133,16 @@ export default class MovieListScreen extends Component {
       const { page, filterType, hasAdultContent, filterName } = this.state;
       const dateRelease = new Date().toISOString().slice(0, 10);
       const filterTitles = [
-        // { name: 'upcoming', id: '1' },
-        // { name: 'latest', id: '2' },
-        // { name: 'now_playing', id: '3' },
-        // { name: 'popular', id: '4' }
         "latest",
         "now_playing",
         "popular",
         "top_rated",
         "upcoming"
       ];
-      // function renderFilterTitles() {
-      //   return filterTitles.map(item => {
-      //     if (item.name == 'upcoming') {
-      //       return item.name;
-      //       console.log(item.name);
-      //     } else {
-      //       console.log('error');
-      //     }
-      //     return;
-      //   });
-      // }
+
+      const filter = filterTitles.forEach(title => {
+        console.log(title);
+      });
 
       const data = await request(`movie/${filterTitles[3]}`, {
         page,

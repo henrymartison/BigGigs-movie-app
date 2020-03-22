@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { View, TextInput, Keyboard, Text } from "react-native";
+import { withNavigation } from "react-navigation";
 
 import * as Animatable from "react-native-animatable";
 
@@ -11,7 +12,7 @@ import { darkGray, primary } from "../../../styles/Colors";
 
 import styles from "./styles";
 
-export default class Search extends Component {
+class Search extends Component {
   state = {
     value: "",
     searchBarFocused: false
@@ -55,12 +56,16 @@ export default class Search extends Component {
     this.setState({ searchBarFocused: false });
   };
 
+  actionFilter = () => {
+    this.props.navigation.navigate("SearchFilter");
+  };
+
   render() {
     const { value } = this.state;
 
     return (
       <View style={styles.container}>
-        <Animatable.View animation="slideInLeft" style={styles.containerInput}>
+        <View style={styles.containerInput}>
           <View style={styles.inputDirection}>
             <Feather
               style={styles.icon}
@@ -96,7 +101,7 @@ export default class Search extends Component {
               </TouchableOpacity>
             )}
           </View>
-        </Animatable.View>
+        </View>
         {this.state.searchBarFocused ? (
           <TouchableOpacity
             onPress={Keyboard.dismiss}
@@ -111,8 +116,8 @@ export default class Search extends Component {
             </Animatable.Text>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity style={styles.filter}>
-            <Animatable.View animation="slideInRight" duration={800}>
+          <TouchableOpacity onPress={this.actionFilter} style={styles.filter}>
+            <Animatable.View animation="slideInRight" duration={600}>
               <Feather name="settings" color={primary} size={22} />
             </Animatable.View>
           </TouchableOpacity>
@@ -121,3 +126,5 @@ export default class Search extends Component {
     );
   }
 }
+
+export default withNavigation(Search);
