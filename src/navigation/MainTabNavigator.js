@@ -112,10 +112,15 @@ const tabNavigator = createBottomTabNavigator(
   },
   {
     tabBarOptions: {
+      // safeAreaInset: { bottom: 0, top: "never" },
       activeTintColor: white,
       inactiveTintColor: inactiveTint,
       tabStyle: { backgroundColor: primaryTint },
-      style: { borderTopColor: "#181819", borderTopWidth: 1.5 },
+      style: {
+        borderTopColor: "#181819",
+        borderTopWidth: 1.5,
+        backgroundColor: primaryTint,
+      },
     },
   }
 );

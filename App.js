@@ -1,10 +1,9 @@
 import React from "react";
 import { StatusBar, View } from "react-native";
 import AppNavigator from "./src/navigation/AppNavigator";
-import { primaryTint } from "./src/styles/Colors";
 
 import * as Font from "expo-font";
-import { Root } from "native-base";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default class App extends React.Component {
   state = {
@@ -22,10 +21,10 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: primaryTint }}>
+      <SafeAreaProvider>
         <StatusBar barStyle="light-content" />
         {this.state.fontLoading ? <AppNavigator /> : null}
-      </View>
+      </SafeAreaProvider>
     );
   }
 }
