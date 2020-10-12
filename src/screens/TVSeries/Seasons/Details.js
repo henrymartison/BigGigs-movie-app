@@ -62,22 +62,35 @@ class SeasonDetails extends Component {
 
   state = {
     isLoading: false,
-    data: []
+    data: [],
+    title: null
   };
 
   async componentDidMount() {
+    this.props.navigation.setParams({
+      title: this.state.title
+    });
+
     this.requestEpisodeDetails();
   }
 
   requestEpisodeDetails = async () => {
     try {
       this.setState({ isLoading: true });
-      const { id } = this.props.navigation.state.params;
+      const { id, season_number } = this.props.navigation.state.params;
 
-      const epData = await request(`tv/60625/season/1`);
-      // console.log(epData);
-      const season_number = epData.season_number;
-      console.log(season_number);
+      const data = await request(`tv/${id}`, {
+        include_image_language: "en,null",
+        append_to_response: "credits,videos,images"
+      });
+      console.log(data.seasons);
+      this.setState({ title: data.seasons });
+      // console.log(title);
+
+      const epData = await request(`tv/${id}/season/${season_number}`);
+      console.log(epData.episodes);
+      // const season_number = epData.season_number;
+      // console.log("<><><><><><><>" + epData);
 
       this.setState({ isLoading: false, data: epData.episodes });
     } catch (error) {

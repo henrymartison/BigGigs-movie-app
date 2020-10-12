@@ -2,7 +2,7 @@ import React from "react";
 import { Platform } from "react-native";
 import {
   createBottomTabNavigator,
-  createStackNavigator
+  createStackNavigator,
 } from "react-navigation";
 import { Feather, Ionicons } from "@expo/vector-icons";
 
@@ -24,7 +24,7 @@ import SearchFilter from "../screens/Search/SearchFilter";
 
 const config = Platform.select({
   web: { headerMode: "screen" },
-  default: {}
+  default: {},
 });
 
 const MovieListStack = createStackNavigator(
@@ -36,7 +36,7 @@ const MovieListStack = createStackNavigator(
     Watchlist: Watchlist,
     TVList: TVList,
     TVDetails: TVDetails,
-    SeasonDetails: SeasonDetails
+    SeasonDetails: SeasonDetails,
   },
   config
 );
@@ -50,8 +50,8 @@ MovieListStack.navigationOptions = ({ navigation }) => {
     tabBarVisible,
     tabBarLabel: "Trends",
     tabBarIcon: ({ tintColor }) => (
-      <Feather name="tv" color={tintColor} size={20} />
-    )
+      <Ionicons name="ios-compass" color={tintColor} size={24} />
+    ),
   };
 };
 
@@ -61,7 +61,7 @@ const SearchStack = createStackNavigator(
     SearchResults: SearchResultsScreen,
     MovieDetails: MovieDetailsScreen,
     WebView: WebViewScreen,
-    SearchFilter: SearchFilter
+    SearchFilter: SearchFilter,
   },
   config
 );
@@ -69,15 +69,15 @@ const SearchStack = createStackNavigator(
 SearchStack.navigationOptions = {
   tabBarLabel: "Search",
   tabBarIcon: ({ tintColor }) => (
-    <Feather name="search" color={tintColor} size={20} />
-  )
+    <Feather name="search" color={tintColor} size={24} />
+  ),
 };
 
 const DiscoverStack = createStackNavigator(
   {
     Discover: Discover,
     MovieDetails: MovieDetailsScreen,
-    WebView: WebViewScreen
+    WebView: WebViewScreen,
   },
   config
 );
@@ -85,13 +85,13 @@ const DiscoverStack = createStackNavigator(
 DiscoverStack.navigationOptions = {
   tabBarLabel: "Discover",
   tabBarIcon: ({ tintColor }) => (
-    <Ionicons name="ios-star" color={tintColor} size={20} />
-  )
+    <Ionicons name="ios-star" color={tintColor} size={24} />
+  ),
 };
 
 const ConfigStack = createStackNavigator(
   {
-    Config: Config
+    Config: Config,
   },
   config
 );
@@ -99,24 +99,24 @@ const ConfigStack = createStackNavigator(
 ConfigStack.navigationOptions = {
   tabBarLabel: "Statistics",
   tabBarIcon: ({ tintColor }) => (
-    <Feather name="aperture" color={tintColor} size={20} />
-  )
+    <Feather name="aperture" color={tintColor} size={24} />
+  ),
 };
 
 const tabNavigator = createBottomTabNavigator(
   {
-    DiscoverStack,
     MovieListStack,
     SearchStack,
-    ConfigStack
+    DiscoverStack,
+    ConfigStack,
   },
   {
     tabBarOptions: {
       activeTintColor: white,
       inactiveTintColor: inactiveTint,
       tabStyle: { backgroundColor: primaryTint },
-      style: { borderTopColor: "#181819", borderTopWidth: 1.5 }
-    }
+      style: { borderTopColor: "#181819", borderTopWidth: 1.5 },
+    },
   }
 );
 

@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { View, Text, Image } from "react-native";
 
-import { FontAwesome, Feather, Ionicons } from "@expo/vector-icons";
+import {
+  FontAwesome,
+  MaterialCommunityIcons,
+  AntDesign
+} from "@expo/vector-icons";
 
 import ImagesModal from "../../../modals/ImageModal";
 import { TouchableOpacity } from "../../../commons/TouchableOpacity";
@@ -115,9 +119,9 @@ const PosterRow = ({
           resizeMode="cover"
         />
       </TouchableOpacity>
-      <View style={styles.containerMainPhotoInfo}>
+      <View style={{}}>
         <View style={styles.containerBackgroundPhotoInfo}>
-          <Text numberOfLines={1} style={styles.photoInfo}>
+          <Text numberOfLines={2} style={styles.photoInfo}>
             {title}
           </Text>
           <View style={styles.photoStar}>
@@ -125,7 +129,47 @@ const PosterRow = ({
             {renderRating(voteAverage)}
           </View>
         </View>
-        {video && video.site === "YouTube" && (
+
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            position: "absolute",
+            top: 104,
+            zIndex: 1000,
+            paddingHorizontal: 20,
+            justifyContent: "space-between",
+            //   // backgroundColor: "red",
+            width: "100%"
+          }}
+        >
+          {video && video.site === "YouTube" && (
+            <TouchableOpacity
+              style={styles.playButtonContainer}
+              onPress={() => actionPlayVideo(video, navigate, title)}
+            >
+              <AntDesign name="playcircleo" size={17} color={"#82c596"} />
+              <Text style={[styles.playButtonText, { color: "#82c596" }]}>
+                Trailer
+              </Text>
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity
+            onPress={() => actionSave()}
+            style={styles.saveButtonContainer}
+          >
+            <MaterialCommunityIcons
+              name={saved ? "bookmark-check" : "bookmark-plus"}
+              size={17}
+              color={primary}
+            />
+            <Text style={styles.playButtonText}>
+              {saved ? `Saved` : `Save`}
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* {video && video.site === "YouTube" && (
           <View style={{ alignItems: "center" }}>
             <TouchableOpacity
               style={styles.playButtonContainer}
@@ -147,7 +191,7 @@ const PosterRow = ({
               />
             </TouchableOpacity>
           </View>
-        )}
+        )} */}
       </View>
       <View
         style={{
@@ -156,7 +200,7 @@ const PosterRow = ({
           borderRadius: 8,
           backgroundColor: secondaryTint,
           position: "absolute",
-          bottom: -40,
+          bottom: 46,
           left: 40
         }}
       >

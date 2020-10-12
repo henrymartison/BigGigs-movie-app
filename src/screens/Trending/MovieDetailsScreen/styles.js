@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
   containerMovieInfo: {
     margin: 20,
     marginTop: 35
+    // backgroundColor: "orange"
   },
   subTitleInfo: {
     fontSize: fsr(2.1),

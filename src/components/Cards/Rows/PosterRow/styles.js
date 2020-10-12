@@ -12,11 +12,12 @@ import { fsr, width } from "../../../commons/metrics";
 const styles = StyleSheet.create({
   containerMainPhoto: {
     width,
-    height: width * 0.58
+    height: width * 0.8
+    // backgroundColor: "red"
   },
   mainPhoto: {
     width: "90%",
-    height: "80%",
+    height: 150,
     marginHorizontal: 20,
     borderRadius: 8,
     marginTop: 15,
@@ -35,28 +36,43 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   playButtonContainer: {
-    width: Platform.OS === "ios" ? "40%" : "35%",
-    height: 30,
-    backgroundColor: primary,
-    position: "absolute",
-    top: 41,
-    right: 80,
+    width: Dimensions.get("window").width / 2 - 25,
+    // width: Platform.OS === "ios" ? "40%" : "35%",
+    height: 33,
+    // backgroundColor: primary,
+    // position: "absolute",
+    // top: 76,
+    zIndex: 1000,
+    // right: 80,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 4
+    borderRadius: 4,
+    borderColor: "#82c596",
+    borderWidth: 1,
+    flexDirection: "row",
+    alignItems: "center"
   },
   playButtonText: {
     fontWeight: "600",
-    fontSize: 17,
-    color: secondaryTint,
+    fontSize: 15,
+    color: primary,
     paddingLeft: 10
   },
   saveButtonContainer: {
+    width: Dimensions.get("window").width / 2 - 25,
+    // width: Platform.OS === "ios" ? "40%" : "35%",
+    height: 33,
     // backgroundColor: primary,
-    position: "absolute",
-    top: 38,
-    right: 30,
-    paddingHorizontal: 10
+    // position: "absolute",
+    // top: 41,
+    // right: 80,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 4,
+    borderColor: primary,
+    borderWidth: 1,
+    flexDirection: "row",
+    alignItems: "center"
   },
   containerMainPhotoInfo: {
     // position: "absolute",
@@ -67,7 +83,7 @@ const styles = StyleSheet.create({
   },
   containerBackgroundPhotoInfo: {
     position: "absolute",
-    top: -18,
+    top: 5,
     // right: 100,
     right: 40,
     // backgroundColor: "red",

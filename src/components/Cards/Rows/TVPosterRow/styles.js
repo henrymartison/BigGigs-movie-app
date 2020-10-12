@@ -12,39 +12,55 @@ import { fsr, width } from "../../../commons/metrics";
 const styles = StyleSheet.create({
   containerMainPhoto: {
     width,
-    height: width * 0.58
+    height: width * 0.8
+    // backgroundColor: "red"
   },
   mainPhoto: {
     width: "90%",
-    height: "80%",
+    height: 150,
     marginHorizontal: 20,
     borderRadius: 8,
     marginTop: 15,
     backgroundColor: secondaryTint
   },
   playButtonContainer: {
-    width: Platform.OS === "ios" ? "40%" : "35%",
-    height: 30,
-    backgroundColor: primary,
-    position: "absolute",
-    top: 41,
-    right: 80,
+    width: Dimensions.get("window").width / 2 - 25,
+    // width: Platform.OS === "ios" ? "40%" : "35%",
+    height: 33,
+    // backgroundColor: primary,
+    // position: "absolute",
+    // top: 76,
+    zIndex: 1000,
+    // right: 80,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 4
+    borderRadius: 4,
+    borderColor: "#82c596",
+    borderWidth: 1,
+    flexDirection: "row",
+    alignItems: "center"
   },
   playButtonText: {
     fontWeight: "600",
-    fontSize: 17,
-    color: secondaryTint,
+    fontSize: 15,
+    color: primary,
     paddingLeft: 10
   },
   saveButtonContainer: {
+    width: Dimensions.get("window").width / 2 - 25,
+    // width: Platform.OS === "ios" ? "40%" : "35%",
+    height: 33,
     // backgroundColor: primary,
-    position: "absolute",
-    top: 38,
-    right: 30,
-    paddingHorizontal: 10
+    // position: "absolute",
+    // top: 41,
+    // right: 80,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 4,
+    borderColor: primary,
+    borderWidth: 1,
+    flexDirection: "row",
+    alignItems: "center"
   },
   containerMainPhotoInfo: {
     // position: "absolute",
@@ -54,11 +70,12 @@ const styles = StyleSheet.create({
     // marginHorizontal: 20
   },
   containerBackgroundPhotoInfo: {
-    position: "absolute",
-    top: -18,
+    alignSelf: "flex-end",
+    // position: "absolute",
+    top: 5,
     // right: 100,
     right: 40,
-    // backgroundColor: "red",
+    // backgroundColor: "green",
     // paddingLeft: 180
     // marginLeft: 180,
     alignItems: "flex-start",
@@ -73,7 +90,7 @@ const styles = StyleSheet.create({
   },
   photoStar: {
     flexDirection: "row",
-    marginTop: 5,
+    // marginTop: 5,
     alignItems: "center"
   },
   buttonPlay: {
@@ -94,12 +111,12 @@ const styles = StyleSheet.create({
     fontWeight: "600"
   },
   currentStatus: {
-    width: Platform.OS === "ios" ? "40%" : "35%",
-    height: 30,
+    width: "100%",
+    // height: 30,
     backgroundColor: "transparent",
-    position: "absolute",
-    top: 41,
-    right: 80,
+    // position: "absolute",
+    // top: 41,
+    // right: 80,
     alignItems: "center",
     justifyContent: "flex-start",
     borderRadius: 4,

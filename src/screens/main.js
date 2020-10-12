@@ -19,11 +19,11 @@ class Main extends Component {
       headerTitleStyle: {
         color: white,
         fontFamily: "balooBhaina-regular",
-        fontSize: 21
+        fontSize: 21,
       },
       headerStyle: {
         backgroundColor: primaryTint,
-        borderBottomColor: primaryTint
+        borderBottomColor: primaryTint,
       },
       headerRight: (
         <TouchableOpacity
@@ -40,10 +40,10 @@ class Main extends Component {
             marginRight: 16,
             flexDirection: "row",
             justifyContent: "flex-end",
-            paddingLeft: 10
+            paddingLeft: 10,
           }}
           textStyle={{
-            color: "white"
+            color: "white",
           }}
           option1Click={() => {
             navigation.navigate("Search");
@@ -54,27 +54,32 @@ class Main extends Component {
           option3Click={() => null}
           option4Click={() => null}
         />
-      )
+      ),
     };
   };
   constructor() {
     super();
     this.state = {
-      selectedIndex: 0
+      selectedIndex: 0,
     };
   }
 
   handleSingleIndexSelect = (index = number) => {
-    this.setState(prevState => ({ ...prevState, selectedIndex: index }));
+    this.setState((prevState) => ({ ...prevState, selectedIndex: index }));
   };
 
   render() {
     const { selectedIndex } = this.state;
     return (
       <View style={styles.container}>
-        <View style={{ marginHorizontal: "20%" }}>
+        <View
+          style={{
+            marginHorizontal: "20%",
+            paddingBottom: 13,
+          }}
+        >
           <SegmentedControlTab
-            values={["Movies", "TV Series"]}
+            values={["TV Series", "Movies"]}
             selectedIndex={selectedIndex}
             onTabPress={this.handleSingleIndexSelect}
             tabStyle={styles.tabStyle}
@@ -95,31 +100,31 @@ export default withNavigation(Main);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: primaryTint
+    backgroundColor: primaryTint,
   },
   headerText: {
     padding: 8,
     fontSize: 14,
     color: "#444444",
-    textAlign: "center"
+    textAlign: "center",
   },
   tabContent: {
     color: "#444444",
     fontSize: 18,
-    margin: 24
+    margin: 24,
   },
   Seperator: {
     marginHorizontal: -10,
     alignSelf: "stretch",
     borderTopWidth: 1,
     borderTopColor: "#888888",
-    marginTop: 24
+    marginTop: 24,
   },
   tabStyle: {
     borderColor: primary,
-    backgroundColor: primaryTint
+    backgroundColor: primaryTint,
   },
   activeTabStyle: {
-    backgroundColor: primary
-  }
+    backgroundColor: primary,
+  },
 });

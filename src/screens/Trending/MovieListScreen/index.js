@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Asset } from "expo";
-import { View, Text } from "react-native";
+import { View, Text, ActivityIndicator } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { DotIndicator } from "react-native-indicators";
 // import { Assets as StackAssets } from 'react-navigation-stack';
@@ -82,7 +82,7 @@ class MovieListScreen extends Component {
     filterName: "Trending now🔥",
     results: [],
     page: 1,
-    numColumns: 1,
+    numColumns: 3,
     keyGrid: 1,
     gridActive: false
   };
@@ -172,6 +172,32 @@ class MovieListScreen extends Component {
     </Animatable.View>
   );
 
+  renderMovieListHeader = () => {
+    const { results, filterName, numColumns } = this.state;
+    if (results.length > 0) {
+      return (
+        <View style={styles.containerMainText}>
+          <Text style={styles.textMain} numberOfLines={1}>
+            {filterName}
+          </Text>
+          <TouchableOpacity
+            style={[
+              styles.buttonGrid,
+              numColumns === 3 && styles.buttonGridActive
+            ]}
+            onPress={this.actionGrid}
+          >
+            {numColumns === 3 ? (
+              <Feather name="list" size={22} color={darkBlue} />
+            ) : (
+              <Feather name="grid" size={22} color={darkBlue} />
+            )}
+          </TouchableOpacity>
+        </View>
+      );
+    }
+  };
+
   renderFooter = () => {
     const { isLoadingMore, totalPages, page, results } = this.state;
 
@@ -185,7 +211,7 @@ class MovieListScreen extends Component {
             onPress={this.actionLoadMore}
           >
             {isLoadingMore ? (
-              <Loader />
+              <ActivityIndicator />
             ) : (
               <Text style={styles.loadingText}>Load more</Text>
             )}
@@ -225,7 +251,7 @@ class MovieListScreen extends Component {
 
   actionGrid = () => {
     this.setState(({ numColumns, keyGrid }) => {
-      return { numColumns: numColumns === 1 ? 2 : 1, keyGrid: keyGrid + 1 };
+      return { numColumns: numColumns === 1 ? 3 : 1, keyGrid: keyGrid + 1 };
     });
   };
 
@@ -279,7 +305,8 @@ class MovieListScreen extends Component {
           />
         ) : (
           <View style={styles.containerList}>
-            {results.length > 0 && (
+            {this.renderMovieListHeader}
+            {/* {results.length > 0 && (
               <View style={styles.containerMainText}>
                 <Text style={styles.textMain} numberOfLines={1}>
                   {filterName}
@@ -287,18 +314,18 @@ class MovieListScreen extends Component {
                 <TouchableOpacity
                   style={[
                     styles.buttonGrid,
-                    numColumns === 2 && styles.buttonGridActive
+                    numColumns === 3 && styles.buttonGridActive
                   ]}
                   onPress={this.actionGrid}
                 >
-                  {numColumns === 2 ? (
+                  {numColumns === 3 ? (
                     <Feather name="list" size={22} color={darkBlue} />
                   ) : (
                     <Feather name="grid" size={22} color={darkBlue} />
                   )}
                 </TouchableOpacity>
               </View>
-            )}
+            )} */}
             <MovieListRow
               data={results}
               type="normal"
@@ -310,6 +337,7 @@ class MovieListScreen extends Component {
               ListFooterComponent={this.renderFooter}
               navigate={navigate}
               renderItem={this.renderItem}
+              listHeader={this.renderMovieListHeader}
             />
           </View>
         )}

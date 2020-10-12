@@ -139,13 +139,13 @@ export default class TVDetails extends Component {
         include_image_language: "en,null",
         append_to_response: "credits,videos,images"
       });
-      // console.log(data.seasons[0].name);
+      console.log(data.seasons);
       const nextEpToAir =
         data.next_episode_to_air === null ? "null" : data.next_episode_to_air;
       const epData = await request(
         `tv/${id}/season/${data.seasons.season_number}`
       );
-      // console.log(epData.episodes[0].name);
+      // console.log(epData);
 
       this.setState({
         isLoading: false,
@@ -382,7 +382,9 @@ export default class TVDetails extends Component {
                 numberOfSeasons={numberOfSeasons}
                 onPress={() =>
                   navigate("SeasonDetails", {
-                    title: "Season_Title"
+                    // title: seasonData.name || "Hello",
+                    id: "60625",
+                    season_number: "1"
                   })
                 }
               />

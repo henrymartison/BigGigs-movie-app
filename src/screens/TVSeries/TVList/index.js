@@ -32,7 +32,7 @@ class TVList extends Component {
     filterName: "Most Popular",
     results: [],
     page: 1,
-    numColumns: 1,
+    numColumns: 3,
     keyGrid: 1,
     gridActive: false
   };
@@ -173,7 +173,7 @@ class TVList extends Component {
 
   actionGrid = () => {
     this.setState(({ numColumns, keyGrid }) => {
-      return { numColumns: numColumns === 1 ? 2 : 1, keyGrid: keyGrid + 1 };
+      return { numColumns: numColumns === 1 ? 3 : 1, keyGrid: keyGrid + 1 };
     });
   };
 
@@ -232,11 +232,11 @@ class TVList extends Component {
                 <TouchableOpacity
                   style={[
                     styles.buttonGrid,
-                    numColumns === 2 && styles.buttonGridActive
+                    numColumns === 3 && styles.buttonGridActive
                   ]}
                   onPress={this.actionGrid}
                 >
-                  {numColumns === 2 ? (
+                  {numColumns === 3 ? (
                     <Feather name="list" size={22} color={darkBlue} />
                   ) : (
                     <Feather name="grid" size={22} color={darkBlue} />

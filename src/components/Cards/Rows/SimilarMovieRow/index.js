@@ -4,12 +4,13 @@ import {
   Text,
   StyleSheet,
   FlatList,
-  ActivityIndicator
+  ActivityIndicator,
+  Image
 } from "react-native";
 
 import { withNavigation } from "react-navigation";
 
-import Image from "react-native-scalable-image";
+// import Image from "react-native-scalable-image";
 
 import { width, fsr } from "../../../commons/metrics";
 import { TouchableOpacity } from "../../../commons/TouchableOpacity";

@@ -8,10 +8,11 @@ import { Modal } from "../Modal";
 
 import request from "../../../services/api";
 
-import { width } from "../../commons/metrics";
+import { width, fsr } from "../../commons/metrics";
 import { notFound } from "../../../utils/StaticImages";
 
 import styles from "./styles";
+import { darkBlue, blue } from "../../../styles/Colors";
 
 const uninformed = "Uninformed";
 
@@ -135,6 +136,26 @@ export default class PersonModal extends Component {
                   />
                   <View style={styles.textItems}>
                     <Text style={styles.titleName}>{name}</Text>
+                    {/* <Text
+                      style={{
+                        fontSize: fsr(2.6),
+                        fontWeight: "400",
+                        color: blue
+                        // marginBottom: 7
+                      }}
+                    >
+                      acting as
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: fsr(2.4),
+                        fontWeight: "bold",
+                        color: darkBlue,
+                        marginBottom: 7
+                      }}
+                    >
+                      {name}
+                    </Text> */}
                     <View style={styles.containerTitleMargin}>
                       <Text
                         numberOfLines={2}

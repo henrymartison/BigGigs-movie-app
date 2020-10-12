@@ -1,9 +1,10 @@
-import React from 'react';
-import { FlatList } from 'react-native';
+import React from "react";
+import { FlatList, Text } from "react-native";
 
 const MovieListRow = ({
   data,
   type,
+  listHeader,
   isSearch,
   keyGrid,
   numColumns,
@@ -17,6 +18,7 @@ const MovieListRow = ({
   <FlatList
     data={data}
     key={keyGrid}
+    ListHeaderComponent={listHeader}
     numColumns={numColumns}
     removeClippedSubviews
     keyExtractor={item => item.id.toString()}

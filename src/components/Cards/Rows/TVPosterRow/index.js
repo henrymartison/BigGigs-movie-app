@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { View, Text, Image } from "react-native";
 
-import { FontAwesome, Feather, Ionicons } from "@expo/vector-icons";
+import {
+  FontAwesome,
+  AntDesign,
+  MaterialCommunityIcons
+} from "@expo/vector-icons";
 
 import ImagesModal from "../../../modals/ImageModal";
 import { TouchableOpacity } from "../../../commons/TouchableOpacity";
@@ -34,7 +38,7 @@ convertRatingToStars = voteAverage => {
         <FontAwesome
           key={i}
           name="star"
-          size={width * 0.05}
+          size={width * 0.04}
           color="orange"
           style={styles.star}
         />
@@ -43,7 +47,7 @@ convertRatingToStars = voteAverage => {
 
 renderRating = voteAverage => {
   return (
-    <View style={{ alignItems: "center", marginLeft: 10 }}>
+    <View style={{ alignItems: "center", marginLeft: 5 }}>
       <Text style={{ fontSize: 13, color: "grey" }}>themoviedb.org</Text>
       <Text style={styles.textPercent}>
         {voteAverage}
@@ -147,7 +151,7 @@ const TVPosterRow = ({
           resizeMode="cover"
         />
       </TouchableOpacity>
-      <View style={styles.containerMainPhotoInfo}>
+      <View style={{}}>
         <View style={styles.containerBackgroundPhotoInfo}>
           <Text numberOfLines={1} style={styles.photoInfo}>
             {title}
@@ -156,18 +160,45 @@ const TVPosterRow = ({
             {convertRatingToStars(voteAverage)}
             {renderRating(voteAverage)}
           </View>
+          <View style={{}}>{getStatus(status)}</View>
         </View>
-        <View style={{}}>
-          {getStatus(status)}
+
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            position: "absolute",
+            top: 102,
+            zIndex: 1000,
+            paddingHorizontal: 20,
+            justifyContent: "space-between",
+            //   // backgroundColor: "red",
+            width: "100%"
+          }}
+        >
+          {video && video.site === "YouTube" && (
+            <TouchableOpacity
+              style={styles.playButtonContainer}
+              onPress={() => actionPlayVideo(video, navigate, title)}
+            >
+              <AntDesign name="playcircleo" size={17} color={"#82c596"} />
+              <Text style={[styles.playButtonText, { color: "#82c596" }]}>
+                Trailer
+              </Text>
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             onPress={() => actionSave()}
             style={styles.saveButtonContainer}
           >
-            <Ionicons
-              name={saved ? "md-checkmark" : "md-add"}
-              size={saved ? 25 : 30}
-              color={saved ? primary : white}
+            <MaterialCommunityIcons
+              name={saved ? "bookmark-check" : "bookmark-plus"}
+              size={17}
+              color={primary}
             />
+            <Text style={styles.playButtonText}>
+              {saved ? `Saved` : `Save`}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -178,7 +209,7 @@ const TVPosterRow = ({
           borderRadius: 8,
           backgroundColor: secondaryTint,
           position: "absolute",
-          bottom: -40,
+          bottom: 46,
           left: 40
         }}
       >
