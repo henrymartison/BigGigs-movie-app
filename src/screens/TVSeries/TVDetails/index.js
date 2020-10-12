@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import { ScrollView, View, Text } from "react-native";
 
 import { Toast } from "native-base";
-import { Feather, Ionicons, EvilIcons } from "@expo/vector-icons";
+import { Ionicons, EvilIcons } from "@expo/vector-icons";
 import ReadMore from "react-native-read-more-text";
 
 import { Alert } from "../../../components/commons/Alert";
 import { Share } from "../../../components/commons/Share";
 import NotificationCard from "../../../components/Cards/NotificationCard";
-import TVPosterRow from "../../../components/Cards/Rows/TVPosterRow";
+import PosterRow from "../../../components/Cards/Rows/PosterRow";
 import PersonModal from "../../../components/modals/PersonModal";
 import PersonListRow from "../../../components/Cards/Rows/PersonListRow";
 import PersonRow from "../../../components/Cards/Rows/PersonRow";
@@ -24,7 +24,7 @@ import {
   primaryTint,
   white,
   secondaryTint,
-  primary
+  primary,
 } from "../../../styles/Colors";
 
 import styles from "./styles";
@@ -36,13 +36,13 @@ import SeasonDetails from "../Seasons/Details";
 
 const uninformed = "Uninformed";
 
-const renderTruncatedFooter = handlePress => (
+const renderTruncatedFooter = (handlePress) => (
   <TouchableOpacity onPress={handlePress}>
     <Text style={styles.readMore}>Read more</Text>
   </TouchableOpacity>
 );
 
-const renderRevealedFooter = handlePress => (
+const renderRevealedFooter = (handlePress) => (
   <TouchableOpacity onPress={handlePress}>
     <Text style={styles.readMore}>Read less</Text>
   </TouchableOpacity>
@@ -58,7 +58,7 @@ export default class TVDetails extends Component {
       title: null,
       headerStyle: {
         backgroundColor: primaryTint,
-        borderBottomColor: primaryTint
+        borderBottomColor: primaryTint,
       },
       headerTitleStyle: { color: white },
       headerRight: (
@@ -76,7 +76,7 @@ export default class TVDetails extends Component {
         >
           <Ionicons name="ios-arrow-back" size={27} color={darkBlue} />
         </TouchableOpacity>
-      )
+      ),
     };
   };
 
@@ -87,12 +87,12 @@ export default class TVDetails extends Component {
     showImage: false,
     creditId: null,
     results: [],
-    isRefresh: false
+    isRefresh: false,
   };
 
   componentDidMount() {
     this.props.navigation.setParams({
-      actionShare: this.actionShare
+      actionShare: this.actionShare,
     });
     this.requestMoviesInfo();
     this.requestMoviesList();
@@ -137,7 +137,7 @@ export default class TVDetails extends Component {
 
       const data = await request(`tv/${id}`, {
         include_image_language: "en,null",
-        append_to_response: "credits,videos,images"
+        append_to_response: "credits,videos,images",
       });
       console.log(data.seasons);
       const nextEpToAir =
@@ -172,12 +172,12 @@ export default class TVDetails extends Component {
         season_number: nextEpToAir.season_number,
         episode_number: nextEpToAir.episode_number,
         air_date: nextEpToAir.air_date,
-        nextEpToAir: nextEpToAir
+        nextEpToAir: nextEpToAir,
       });
     } catch (err) {
       this.setState({
         isLoading: false,
-        isError: true
+        isError: true,
       });
       console.log(err);
     }
@@ -188,7 +188,7 @@ export default class TVDetails extends Component {
     genres,
     original_language,
     first_air_date,
-    networks
+    networks,
   }) => {
     return {
       YEAR: this.convertToDate(first_air_date || ""),
@@ -199,25 +199,25 @@ export default class TVDetails extends Component {
       ),
       RUNTIME: this.convertMinsToHrsMins(
         this.sliceArrayLength(episode_run_time, 1) || 0
-      )
+      ),
     };
   };
 
   getSeasonData = ({ numberOfSeasons }) => {
     return {
-      Season: this.getSeasonNumber(numberOfSeasons)
+      Season: this.getSeasonNumber(numberOfSeasons),
     };
   };
 
-  getSeasonNumber = numberOfSeasons => {
+  getSeasonNumber = (numberOfSeasons) => {
     for (let i = 1; i <= numberOfSeasons; i++) {
       return i;
     }
     return;
   };
 
-  formatImageUrl = images => {
-    return this.sliceArrayLength(images, 15).map(item => {
+  formatImageUrl = (images) => {
+    return this.sliceArrayLength(images, 15).map((item) => {
       return { url: `https://image.tmdb.org/t/p/original/${item.file_path}` };
     });
   };
@@ -226,13 +226,13 @@ export default class TVDetails extends Component {
     return arr.length > num ? arr.slice(0, num) : arr;
   };
 
-  convertMinsToHrsMins = episode_run_time => {
+  convertMinsToHrsMins = (episode_run_time) => {
     let m = episode_run_time;
     m = m < 10 ? `0${m}` : m;
     return `${m} min` || uninformed;
   };
 
-  convertToGenre = genre => {
+  convertToGenre = (genre) => {
     return genre.length > 0
       ? genre.length > 1
         ? `${genre[0].name}, ${genre[1].name}`
@@ -240,7 +240,7 @@ export default class TVDetails extends Component {
       : uninformed;
   };
 
-  convertToNetwork = network => {
+  convertToNetwork = (network) => {
     return network.length > 0
       ? network.length > 1
         ? `${network[0].name}, ${network[1].name}`
@@ -248,11 +248,11 @@ export default class TVDetails extends Component {
       : uninformed;
   };
 
-  convertToUpperCaseFirstLetter = originalLanguage => {
+  convertToUpperCaseFirstLetter = (originalLanguage) => {
     return originalLanguage.charAt(0).toUpperCase() + originalLanguage.slice(1);
   };
 
-  convertToDate = date => new Date(date).getFullYear() || "";
+  convertToDate = (date) => new Date(date).getFullYear() || "";
 
   actionPerson = (creditId = "") => {
     this.setState(({ isVisible }) => {
@@ -272,7 +272,7 @@ export default class TVDetails extends Component {
       buttonText: "undo",
       duration: 5000,
       style: { backgroundColor: secondaryTint, borderRadius: 10 },
-      buttonTextStyle: { color: primary, fontSize: 18, fontWeight: "600" }
+      buttonTextStyle: { color: primary, fontSize: 18, fontWeight: "600" },
     });
     this.setState({ saved: true });
   };
@@ -282,14 +282,14 @@ export default class TVDetails extends Component {
     if (isError) {
       Alert({
         title: "Attention",
-        description: "Something wrong has happened, please try again later."
+        description: "Something wrong has happened, please try again later.",
       });
     } else {
       Share({
         message: `${title}, know everything about this movie 🎥`,
         url: `https://www.themoviedb.org/movie/${id}`,
         title: "AmoCinema",
-        dialogTitle: `${title}, know everything about this movie 🎥`
+        dialogTitle: `${title}, know everything about this movie 🎥`,
       });
     }
   };
@@ -330,7 +330,7 @@ export default class TVDetails extends Component {
       season_number,
       air_date,
       episode_number,
-      nextEpToAir
+      nextEpToAir,
     } = this.state;
 
     const { navigate } = this.props.navigation;
@@ -347,7 +347,7 @@ export default class TVDetails extends Component {
           />
         ) : (
           <ScrollView>
-            <TVPosterRow
+            <PosterRow
               title={title}
               backdropPath={backdropPath}
               posterPath={posterPath}
@@ -358,6 +358,7 @@ export default class TVDetails extends Component {
               showImage={showImage}
               onPress={this.actionImage}
               status={status}
+              type="tv"
             />
             <View style={styles.containerMovieInfo}>
               {nextEpToAir !== "null" ? (
@@ -384,7 +385,7 @@ export default class TVDetails extends Component {
                   navigate("SeasonDetails", {
                     // title: seasonData.name || "Hello",
                     id: "60625",
-                    season_number: "1"
+                    season_number: "1",
                   })
                 }
               />

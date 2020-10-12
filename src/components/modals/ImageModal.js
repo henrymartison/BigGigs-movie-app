@@ -1,14 +1,14 @@
-import React from 'react';
-import { Modal } from 'react-native';
-import ImageViewer from 'react-native-image-zoom-viewer';
+import React from "react";
+import { Modal } from "react-native";
+import ImageViewer from "react-native-image-zoom-viewer";
 
-import { white } from '../../styles/Colors';
-import Loader from '../commons/Loader';
+import { white } from "../../styles/Colors";
+import Loader from "../commons/Loader";
 
 const ImagesModal = ({
   showImage = false,
   images = [],
-  actionClose = null
+  actionClose = null,
 }) => (
   <Modal visible={showImage} transparent onRequestClose={actionClose}>
     <ImageViewer
@@ -23,6 +23,7 @@ const ImagesModal = ({
       swipeDownThreshold={25}
       loadingRender={() => <Loader />}
       onCancel={actionClose}
+      useNativeDriver={true}
     />
   </Modal>
 );

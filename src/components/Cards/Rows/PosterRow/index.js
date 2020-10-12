@@ -3,8 +3,8 @@ import { View, Text, Image } from "react-native";
 
 import {
   FontAwesome,
+  AntDesign,
   MaterialCommunityIcons,
-  AntDesign
 } from "@expo/vector-icons";
 
 import ImagesModal from "../../../modals/ImageModal";
@@ -17,26 +17,18 @@ import { secondaryTint, white, primary } from "../../../../styles/Colors";
 import styles from "./styles";
 import { Toast } from "native-base";
 
-getImageApi = backdropPath => {
+getImageApi = (backdropPath) => {
   return backdropPath
     ? { uri: `https://image.tmdb.org/t/p/w500/${backdropPath}` }
     : notFound;
 };
-getPosterImageApi = posterPath => {
+getPosterImageApi = (posterPath) => {
   return posterPath
     ? { uri: `https://image.tmdb.org/t/p/w500/${posterPath}` }
     : notFound;
 };
 
-getTitle = title => {
-  if (title === "name") {
-    return name;
-  } else {
-    return title;
-  }
-};
-
-convertRatingToStars = voteAverage => {
+convertRatingToStars = (voteAverage) => {
   const average = voteAverage > 5 ? Math.round(voteAverage) : voteAverage;
   const length =
     average !== 10 ? parseInt(`${average}`.charAt(0)) - 5 : average - 5;
@@ -46,25 +38,64 @@ convertRatingToStars = voteAverage => {
         <FontAwesome
           key={i}
           name="star"
-          size={width * 0.05}
+          size={width * 0.04}
           color="orange"
           style={styles.star}
         />
       ));
 };
 
-renderRating = voteAverage => {
+renderRating = (voteAverage) => {
   return (
-    <Text style={styles.textPercent}>
-      {voteAverage}
-      <Text style={{ fontWeight: "700", color: "white", fontSize: 13 }}>
-        {" "}
-        /{" "}
+    <View style={{ alignItems: "center", marginLeft: 5 }}>
+      <Text style={{ fontSize: 13, color: "grey" }}>themoviedb.org</Text>
+      <Text style={styles.textPercent}>
+        {voteAverage}
+        <Text style={{ fontWeight: "700", color: "white", fontSize: 13 }}>
+          {" "}
+          /{" "}
+        </Text>
+        <Text style={styles.textPercent2}>10</Text>
       </Text>
-      <Text style={styles.textPercent2}>10</Text>
-    </Text>
+    </View>
   );
 };
+
+getStatus = (status) => {
+  const color =
+    status === "Returning Series"
+      ? "running"
+      : status === "Ended"
+      ? "ended"
+      : "";
+  if (status === "Returning Series") {
+    return (
+      <View style={styles.currentStatus}>
+        <View style={styles.statusIndicator} />
+        <Text style={styles.statusText}>Status:</Text>
+        <Text style={[styles.currentStatusText, styles[color]]}>Running</Text>
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.currentStatus}>
+      <View style={styles.statusIndicator} />
+      <Text style={styles.statusText}>Status:</Text>
+      <Text style={[styles.currentStatusText, styles[color]]}>{status}</Text>
+    </View>
+  );
+};
+
+// getStatus = status => {
+//   const colors = ['mediumseagreen', 'red', 'orange']
+//   if(status === 'Returning Series'){
+//     return 'Running', color=colors[0]
+//   } else if(status === 'Ended'){
+//     return 'Ended', color=colors[1]
+// } else{
+//   return 'Running', color=colors[0]
+// }}
 
 actionPlayVideo = (video, navigate, title) => {
   const { key } = video;
@@ -81,7 +112,9 @@ const PosterRow = ({
   video,
   showImage,
   onPress,
-  navigate
+  navigate,
+  status,
+  type,
 }) => {
   const [saved, setSaved] = useState(false);
 
@@ -93,7 +126,7 @@ const PosterRow = ({
         buttonText: "okay",
         duration: 3000,
         style: { backgroundColor: secondaryTint, borderRadius: 10 },
-        buttonTextStyle: { color: primary, fontSize: 18, fontWeight: "600" }
+        buttonTextStyle: { color: primary, fontSize: 18, fontWeight: "600" },
       });
     } else {
       setSaved({ saved: true });
@@ -102,7 +135,7 @@ const PosterRow = ({
         buttonText: "okay",
         duration: 3000,
         style: { backgroundColor: secondaryTint, borderRadius: 10 },
-        buttonTextStyle: { color: primary, fontSize: 18, fontWeight: "600" }
+        buttonTextStyle: { color: primary, fontSize: 18, fontWeight: "600" },
       });
     }
   };
@@ -112,37 +145,27 @@ const PosterRow = ({
       <TouchableOpacity
         activeOpacity={images.length ? 0.5 : 1}
         onPress={images.length ? onPress : null}
+        style={styles.mainPhoto}
       >
         <Image
           source={getPosterImageApi(backdropPath)}
-          style={styles.mainPhoto}
+          style={{ flex: 1, height: null, width: null, borderRadius: 8 }}
           resizeMode="cover"
         />
       </TouchableOpacity>
       <View style={{}}>
         <View style={styles.containerBackgroundPhotoInfo}>
-          <Text numberOfLines={2} style={styles.photoInfo}>
+          <Text numberOfLines={1} style={styles.photoInfo}>
             {title}
           </Text>
           <View style={styles.photoStar}>
             {convertRatingToStars(voteAverage)}
             {renderRating(voteAverage)}
           </View>
+          {type === "tv" && <View style={{}}>{getStatus(status)}</View>}
         </View>
 
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            position: "absolute",
-            top: 104,
-            zIndex: 1000,
-            paddingHorizontal: 20,
-            justifyContent: "space-between",
-            //   // backgroundColor: "red",
-            width: "100%"
-          }}
-        >
+        <View style={[styles.optionsRow, { marginTop: !type && 20 }]}>
           {video && video.site === "YouTube" && (
             <TouchableOpacity
               style={styles.playButtonContainer}
@@ -156,7 +179,7 @@ const PosterRow = ({
           )}
           <TouchableOpacity
             onPress={() => actionSave()}
-            style={styles.saveButtonContainer}
+            style={[styles.playButtonContainer, { borderColor: primary }]}
           >
             <MaterialCommunityIcons
               name={saved ? "bookmark-check" : "bookmark-plus"}
@@ -168,46 +191,11 @@ const PosterRow = ({
             </Text>
           </TouchableOpacity>
         </View>
-
-        {/* {video && video.site === "YouTube" && (
-          <View style={{ alignItems: "center" }}>
-            <TouchableOpacity
-              style={styles.playButtonContainer}
-              onPress={() => actionPlayVideo(video, navigate, title)}
-            >
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Ionicons name="ios-play" size={20} color={secondaryTint} />
-                <Text style={styles.playButtonText}>Watch Trailer</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => actionSave()}
-              style={styles.saveButtonContainer}
-            >
-              <Ionicons
-                name={saved ? "md-checkmark" : "md-add"}
-                size={saved ? 30 : 35}
-                color={saved ? primary : white}
-              />
-            </TouchableOpacity>
-          </View>
-        )} */}
       </View>
-      <View
-        style={{
-          height: width * 0.35,
-          width: width * 0.25,
-          borderRadius: 8,
-          backgroundColor: secondaryTint,
-          position: "absolute",
-          bottom: 46,
-          left: 40
-        }}
-      >
+      <View style={styles.posterPhoto}>
         <Image
           source={getImageApi(posterPath)}
           style={{ flex: 1, borderRadius: 8 }}
-          // width={width * 0.33}
         />
       </View>
 

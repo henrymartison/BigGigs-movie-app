@@ -1,19 +1,13 @@
-import { StyleSheet, Dimensions, Platform } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
-import {
-  white,
-  pink,
-  primaryTint,
-  secondaryTint,
-  primary
-} from "../../../../styles/Colors";
+import { white, secondaryTint, primary } from "../../../../styles/Colors";
 import { fsr, width } from "../../../commons/metrics";
 
 const styles = StyleSheet.create({
   containerMainPhoto: {
     width,
-    height: width * 0.8
-    // backgroundColor: "red"
+    position: "relative",
+    // backgroundColor: "red",
   },
   mainPhoto: {
     width: "90%",
@@ -21,106 +15,105 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     borderRadius: 8,
     marginTop: 15,
-    backgroundColor: secondaryTint
-  },
-  play: {
-    position: "absolute",
-    zIndex: 1000,
-    bottom: -30,
-    right: 20,
-    borderRadius: width * 0.32,
     backgroundColor: secondaryTint,
-    width: width * 0.16,
-    height: width * 0.16,
-    justifyContent: "center",
-    alignItems: "center"
+  },
+  posterPhoto: {
+    height: width * 0.35,
+    width: width * 0.25,
+    borderRadius: 8,
+    backgroundColor: secondaryTint,
+    position: "absolute",
+    top: (width * 0.8) / 3 + 14,
+    left: 40,
+  },
+  containerBackgroundPhotoInfo: {
+    width: "60%",
+    alignSelf: "flex-end",
+    marginVertical: 15,
+  },
+  optionsRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    width: "100%",
   },
   playButtonContainer: {
     width: Dimensions.get("window").width / 2 - 25,
-    // width: Platform.OS === "ios" ? "40%" : "35%",
     height: 33,
-    // backgroundColor: primary,
-    // position: "absolute",
-    // top: 76,
     zIndex: 1000,
-    // right: 80,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 4,
     borderColor: "#82c596",
     borderWidth: 1,
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
   },
   playButtonText: {
     fontWeight: "600",
     fontSize: 15,
     color: primary,
-    paddingLeft: 10
-  },
-  saveButtonContainer: {
-    width: Dimensions.get("window").width / 2 - 25,
-    // width: Platform.OS === "ios" ? "40%" : "35%",
-    height: 33,
-    // backgroundColor: primary,
-    // position: "absolute",
-    // top: 41,
-    // right: 80,
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 4,
-    borderColor: primary,
-    borderWidth: 1,
-    flexDirection: "row",
-    alignItems: "center"
-  },
-  containerMainPhotoInfo: {
-    // position: "absolute",
-    width: "100%",
-    height: "100%"
-    // backgroundColor: "red"
-    // marginHorizontal: 20
-  },
-  containerBackgroundPhotoInfo: {
-    position: "absolute",
-    top: 5,
-    // right: 100,
-    right: 40,
-    // backgroundColor: "red",
-    // paddingLeft: 180
-    // marginLeft: 180,
-    alignItems: "flex-start",
-    justifyContent: "center",
-    // flex: 1,
-    width: Platform.OS === "ios" ? "50%" : "45%"
+    paddingLeft: 10,
   },
   photoInfo: {
     fontSize: fsr(2.5),
     color: white,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   photoStar: {
     flexDirection: "row",
-    marginTop: 5,
-    alignItems: "center"
-  },
-  buttonPlay: {
-    marginLeft: 5
+    alignItems: "center",
   },
   star: {
-    marginRight: 5
+    marginRight: 5,
   },
 
   textPercent: {
     color: white,
     fontSize: fsr(2.6),
-    fontWeight: "900"
+    fontWeight: "900",
   },
   textPercent2: {
     color: "#a8a8a8",
-    fontSize: fsr(2),
-    fontWeight: "600"
-  }
+    fontSize: fsr(1.8),
+    fontWeight: "600",
+  },
+  currentStatus: {
+    width: "100%",
+    backgroundColor: "transparent",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    borderRadius: 4,
+    flexDirection: "row",
+  },
+  statusText: {
+    fontWeight: "600",
+    fontSize: 19,
+    color: white,
+    marginLeft: 4,
+  },
+  currentStatusText: {
+    fontSize: 18,
+    fontWeight: "500",
+    color: "mediumseagreen",
+    marginLeft: 4,
+  },
+  statusIndicator: {
+    height: 8,
+    width: 8,
+    borderRadius: 8 / 2,
+    backgroundColor: "grey",
+  },
+  running: {
+    color: "mediumseagreen",
+  },
+  ended: {
+    color: "tomato",
+  },
+  pending: {
+    color: "orange",
+  },
 });
 
 export default styles;

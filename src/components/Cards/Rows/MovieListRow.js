@@ -4,28 +4,30 @@ import { FlatList, Text } from "react-native";
 const MovieListRow = ({
   data,
   type,
-  listHeader,
   isSearch,
   keyGrid,
   numColumns,
   refreshing,
   onRefresh,
+  ListHeaderComponent,
   ListFooterComponent,
   ListEmptyComponent,
   navigate,
-  renderItem
+  renderItem,
 }) => (
   <FlatList
-    data={data}
+    {...{
+      ListHeaderComponent,
+      ListFooterComponent,
+      ListEmptyComponent,
+      numColumns,
+      data,
+      refreshing,
+      onRefresh,
+    }}
     key={keyGrid}
-    ListHeaderComponent={listHeader}
-    numColumns={numColumns}
     removeClippedSubviews
-    keyExtractor={item => item.id.toString()}
-    refreshing={refreshing}
-    onRefresh={onRefresh}
-    ListFooterComponent={ListFooterComponent}
-    ListEmptyComponent={ListEmptyComponent}
+    keyExtractor={(item) => item.id.toString()}
     renderItem={({ item }) =>
       renderItem(item, type, isSearch, numColumns, navigate)
     }

@@ -34,7 +34,7 @@ class TVList extends Component {
     page: 1,
     numColumns: 3,
     keyGrid: 1,
-    gridActive: false
+    gridActive: false,
   };
 
   async componentDidMount() {
@@ -60,7 +60,7 @@ class TVList extends Component {
       isRefresh,
       isLoadingMore,
       isError,
-      keyGrid
+      keyGrid,
     } = this.state;
 
     if (
@@ -89,7 +89,7 @@ class TVList extends Component {
         "release_date.lte": dateRelease,
         sort_by: filterType,
         with_release_type: "1|2|3|4|5|6|7",
-        include_adult: hasAdultContent
+        include_adult: hasAdultContent,
       });
 
       this.setState(({ isRefresh, results }) => ({
@@ -98,14 +98,14 @@ class TVList extends Component {
         isLoadingMore: false,
         isError: false,
         totalPages: data.total_pages,
-        results: isRefresh ? data.results : [...results, ...data.results]
+        results: isRefresh ? data.results : [...results, ...data.results],
       }));
     } catch (err) {
       this.setState({
         isLoading: false,
         isRefresh: false,
         isLoadingMore: false,
-        isError: true
+        isError: true,
       });
     }
   };
@@ -121,6 +121,32 @@ class TVList extends Component {
       />
     </Animatable.View>
   );
+
+  renderHeader = () => {
+    const { results, filterName, numColumns } = this.state;
+    if (results.length > 0) {
+      return (
+        <View style={styles.containerMainText}>
+          <Text style={styles.textMain} numberOfLines={1}>
+            {filterName}
+          </Text>
+          <TouchableOpacity
+            style={[
+              styles.buttonGrid,
+              numColumns === 3 && styles.buttonGridActive,
+            ]}
+            onPress={this.actionGrid}
+          >
+            {numColumns === 3 ? (
+              <Feather name="list" size={22} color={darkBlue} />
+            ) : (
+              <Feather name="grid" size={22} color={darkBlue} />
+            )}
+          </TouchableOpacity>
+        </View>
+      );
+    }
+  };
 
   renderFooter = () => {
     const { isLoadingMore, totalPages, page, results } = this.state;
@@ -151,7 +177,7 @@ class TVList extends Component {
     this.setState(
       {
         isRefresh: true,
-        page: 1
+        page: 1,
       },
       () => {
         this.requestMoviesList();
@@ -163,7 +189,7 @@ class TVList extends Component {
     this.setState(
       ({ page }) => ({
         isLoadingMore: true,
-        page: page + 1
+        page: page + 1,
       }),
       () => {
         this.requestMoviesList();
@@ -208,7 +234,7 @@ class TVList extends Component {
       isVisible,
       filterType,
       numColumns,
-      keyGrid
+      keyGrid,
     } = this.state;
 
     return (
@@ -224,26 +250,6 @@ class TVList extends Component {
           <NotificationCard textError="No results available." />
         ) : (
           <View style={styles.containerList}>
-            {results.length > 0 && (
-              <View style={styles.containerMainText}>
-                <Text style={styles.textMain} numberOfLines={1}>
-                  {filterName}
-                </Text>
-                <TouchableOpacity
-                  style={[
-                    styles.buttonGrid,
-                    numColumns === 3 && styles.buttonGridActive
-                  ]}
-                  onPress={this.actionGrid}
-                >
-                  {numColumns === 3 ? (
-                    <Feather name="list" size={22} color={darkBlue} />
-                  ) : (
-                    <Feather name="grid" size={22} color={darkBlue} />
-                  )}
-                </TouchableOpacity>
-              </View>
-            )}
             <TVListRow
               data={results}
               type="normal"
@@ -253,6 +259,7 @@ class TVList extends Component {
               refreshing={isRefresh}
               onRefresh={this.actionRefresh}
               ListFooterComponent={this.renderFooter}
+              ListHeaderComponent={this.renderHeader}
               navigate={navigate}
               renderItem={this.renderItem}
             />

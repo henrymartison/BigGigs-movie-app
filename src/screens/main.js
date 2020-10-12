@@ -3,6 +3,8 @@ import { View, Text, StyleSheet } from "react-native";
 import { withNavigation } from "react-navigation";
 
 import SegmentedControlTab from "react-native-segmented-control-tab";
+import SegmentedControl from "@react-native-community/segmented-control";
+
 import MovieListScreen from "./Trending/MovieListScreen";
 import { white, primaryTint, darkBlue, primary } from "../styles/Colors";
 import { TouchableOpacity } from "../components/commons/TouchableOpacity";
@@ -78,14 +80,19 @@ class Main extends Component {
             paddingBottom: 13,
           }}
         >
-          <SegmentedControlTab
+          <SegmentedControl
             values={["TV Series", "Movies"]}
             selectedIndex={selectedIndex}
             onTabPress={this.handleSingleIndexSelect}
-            tabStyle={styles.tabStyle}
-            activeTabStyle={styles.activeTabStyle}
-            activeTabTextStyle={{ color: primaryTint }}
-            tabTextStyle={{ color: primary }}
+            onChange={(event) => {
+              this.setState({
+                selectedIndex: event.nativeEvent.selectedSegmentIndex,
+              });
+            }}
+            tintColor={primary}
+            backgroundColor={primaryTint}
+            fontStyle={{ fontSize: 14, color: primary }}
+            appearance="dark"
           />
         </View>
 
@@ -101,30 +108,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: primaryTint,
-  },
-  headerText: {
-    padding: 8,
-    fontSize: 14,
-    color: "#444444",
-    textAlign: "center",
-  },
-  tabContent: {
-    color: "#444444",
-    fontSize: 18,
-    margin: 24,
-  },
-  Seperator: {
-    marginHorizontal: -10,
-    alignSelf: "stretch",
-    borderTopWidth: 1,
-    borderTopColor: "#888888",
-    marginTop: 24,
-  },
-  tabStyle: {
-    borderColor: primary,
-    backgroundColor: primaryTint,
-  },
-  activeTabStyle: {
-    backgroundColor: primary,
   },
 });
