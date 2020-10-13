@@ -4,7 +4,7 @@ import {
   Text,
   StyleSheet,
   ActivityIndicator,
-  FlatList
+  FlatList,
 } from "react-native";
 import { Ionicons, Feather } from "@expo/vector-icons";
 
@@ -12,13 +12,15 @@ import {
   white,
   primaryTint,
   darkBlue,
-  secondaryTint
+  secondaryTint,
 } from "../../../styles/Colors";
 import { TouchableOpacity } from "../../../components/commons/TouchableOpacity";
 import { fsr } from "../../../components/commons/metrics";
 import request from "../../../services/api";
+import { RectButton } from "react-native-gesture-handler";
+import EpisodeModal from "../../../components/modals/EpisodeModal";
 
-const getEpNumber = epNumber => {
+const getEpNumber = (epNumber) => {
   epNumber = epNumber < 10 ? `0${epNumber}` : epNumber;
   return `${epNumber}` || "N/A";
 };
@@ -35,12 +37,18 @@ var months = [
   "Sep",
   "Oct",
   "Nov",
-  "Dec"
+  "Dec",
 ];
 
-const convertToYear = date => new Date(date).getFullYear() || "";
-const convertToMonth = date => months[new Date(date).getMonth()] || "";
-const convertToDay = date => new Date(date).getDate() || "";
+const convertToYear = (date) => new Date(date).getFullYear() || "";
+const convertToMonth = (date) => months[new Date(date).getMonth()] || "";
+const convertToDay = (date) => new Date(date).getDate() || "";
+
+const getHeader = (season, episode) => {
+  season = season < 10 ? `0${season}` : season;
+  episode = episode < 10 ? `0${episode}` : episode;
+  return `S${season}E${episode}` || "...";
+};
 
 class SeasonDetails extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -48,7 +56,7 @@ class SeasonDetails extends Component {
     headerTitleStyle: { color: white },
     headerStyle: {
       backgroundColor: primaryTint,
-      borderBottomColor: primaryTint
+      borderBottomColor: primaryTint,
     },
     headerLeft: (
       <TouchableOpacity
@@ -57,51 +65,56 @@ class SeasonDetails extends Component {
       >
         <Ionicons name="ios-arrow-back" size={27} color={darkBlue} />
       </TouchableOpacity>
-    )
+    ),
   });
 
   state = {
     isLoading: false,
     data: [],
-    title: null
+    isVisible: false,
   };
 
   async componentDidMount() {
-    this.props.navigation.setParams({
-      title: this.state.title
-    });
-
-    this.requestEpisodeDetails();
+    this.requestSeasonInfo();
   }
 
-  requestEpisodeDetails = async () => {
+  requestSeasonInfo = async () => {
     try {
       this.setState({ isLoading: true });
       const { id, season_number } = this.props.navigation.state.params;
 
-      const data = await request(`tv/${id}`, {
-        include_image_language: "en,null",
-        append_to_response: "credits,videos,images"
-      });
-      console.log(data.seasons);
-      this.setState({ title: data.seasons });
-      // console.log(title);
+      const seasonDetails = await request(`tv/${id}/season/${season_number}`);
 
-      const epData = await request(`tv/${id}/season/${season_number}`);
-      console.log(epData.episodes);
-      // const season_number = epData.season_number;
-      // console.log("<><><><><><><>" + epData);
-
-      this.setState({ isLoading: false, data: epData.episodes });
+      this.setState({ isLoading: false, data: seasonDetails.episodes });
     } catch (error) {
       console.log(error);
     }
   };
 
-  renderEpisodes = ({ item }) => {
+  actionModal = (episodeInfo = {}) => {
+    this.setState(({ isVisible }) => {
+      return { isVisible: !isVisible };
+    });
+  };
+
+  navigate = (item) => {
+    if (item.overview === "") {
+      alert("Episode info not available");
+    } else {
+      this.props.navigation.navigate("EpisodeDetails", {
+        episodeInfo: item,
+        title: getHeader(item.season_number, item.episode_number),
+      });
+    }
+  };
+
+  renderEpisode = ({ item }) => {
     return (
       <View>
-        <TouchableOpacity onPress={null} style={styles.rowContainer}>
+        <RectButton
+          onPress={() => this.navigate(item)}
+          style={styles.rowContainer}
+        >
           <View style={styles.checkRow}>
             <Text style={styles.epNumber}>
               {getEpNumber(item.episode_number)}
@@ -109,20 +122,22 @@ class SeasonDetails extends Component {
             <View
               style={{
                 marginLeft: 20,
-                justifyContent: "center"
+                justifyContent: "center",
               }}
             >
               <Text numberOfLines={1} style={styles.rowText}>
                 {item.name}
               </Text>
-              <Text style={styles.dateText}>
-                Aired on {convertToMonth(item.air_date)}{" "}
-                {convertToDay(item.air_date)}, {convertToYear(item.air_date)}
-              </Text>
+              {item.air_date && (
+                <Text style={styles.dateText}>
+                  Aired on {convertToMonth(item.air_date)}{" "}
+                  {convertToDay(item.air_date)}, {convertToYear(item.air_date)}
+                </Text>
+              )}
             </View>
           </View>
           <Feather name="eye" color={darkBlue} size={18} />
-        </TouchableOpacity>
+        </RectButton>
       </View>
     );
   };
@@ -132,7 +147,7 @@ class SeasonDetails extends Component {
   };
 
   render() {
-    const { data, isLoading } = this.state;
+    const { data, isLoading, isVisible } = this.state;
     return (
       <View style={styles.container}>
         {isLoading ? (
@@ -142,7 +157,7 @@ class SeasonDetails extends Component {
         ) : (
           <FlatList
             data={data}
-            renderItem={this.renderEpisodes}
+            renderItem={this.renderEpisode}
             keyExtractor={(item, index) => index.toString()}
             ItemSeparatorComponent={this.itemSeparator}
           />
@@ -156,7 +171,7 @@ export default SeasonDetails;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: primaryTint
+    backgroundColor: primaryTint,
   },
   rowContainer: {
     height: 80,
@@ -164,29 +179,29 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 17
+    paddingHorizontal: 17,
   },
   rowText: {
     fontSize: fsr(2.9),
     color: white,
     fontWeight: "700",
-    paddingBottom: 5
+    paddingBottom: 5,
   },
   dateText: {
     fontSize: fsr(2),
-    color: white
+    color: white,
   },
   epNumber: {
     fontSize: fsr(4.5),
-    color: darkBlue
+    color: darkBlue,
   },
   separator: {
     height: StyleSheet.hairlineWidth,
-    backgroundColor: secondaryTint
+    backgroundColor: secondaryTint,
   },
   checkRow: {
     flexDirection: "row",
     alignItems: "center",
-    width: "80%"
-  }
+    width: "80%",
+  },
 });

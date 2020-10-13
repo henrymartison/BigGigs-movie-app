@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text } from "react-native";
 
 import Image from "react-native-scalable-image";
+import { FontAwesome } from "@expo/vector-icons";
 
 import language from "../../../../assets/language/iso.json";
 import genre from "../../../../assets/genre/tvids.json";
@@ -14,12 +15,12 @@ import { notFound } from "../../../../utils/StaticImages";
 import styles from "./styles";
 import { secondaryTint } from "../../../../styles/Colors.js";
 
-const getImageApi = image =>
+const getImageApi = (image) =>
   image ? { uri: `https://image.tmdb.org/t/p/w500/${image}` } : notFound;
 
-const convertToDate = date => new Date(date).getFullYear() || "";
+const convertToDate = (date) => new Date(date).getFullYear() || "";
 
-const convertToUpperCaseFirstLetter = value => {
+const convertToUpperCaseFirstLetter = (value) => {
   const str = language[value] || "";
   return str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
 };
@@ -34,14 +35,6 @@ const convertGenre = (arr, type, isSearch) => {
     : type;
 };
 
-const convertToGenre = arr => {
-  return genre.length > 0
-    ? genre.length > 1
-      ? `${genre[0].name}, ${genre[1].name}`
-      : genre[0].name
-    : uninformed;
-};
-
 sliceArrayLength = (arr, num) => {
   return arr.length > num ? arr.slice(0, num) : arr;
 };
@@ -51,7 +44,7 @@ const renderDivider = (releaseDate, originalLanguage) =>
     <Text style={styles.trace}>|</Text>
   ) : null;
 
-const renderScoreColumn = voteAverage => {
+const renderScoreColumn = (voteAverage) => {
   const color =
     voteAverage < 5
       ? "low"
@@ -60,13 +53,19 @@ const renderScoreColumn = voteAverage => {
       : "high";
 
   return (
-    <View style={[styles.score, styles[color]]}>
-      <Text style={styles.textPercent}>{voteAverage}</Text>
+    <View style={styles.score}>
+      <FontAwesome
+        name="star"
+        size={width * 0.04}
+        color="orange"
+        style={{ marginRight: 10 }}
+      />
+      <Text style={[styles.textPercent, styles[color]]}>{voteAverage}</Text>
     </View>
   );
 };
 
-const renderScoreRow = voteAverage => {
+const renderScoreRow = (voteAverage) => {
   return (
     <View style={styles.ratingContainer}>
       <Text style={styles.textPercent}>{voteAverage}</Text>
@@ -105,7 +104,7 @@ export default class TVRow extends React.PureComponent {
                   </Text>
                 </View>
                 <Text numberOfLines={1} style={styles.textSmall}>
-                  {/* {convertGenre(item.genre_ids, type, isSearch)} */}
+                  {convertGenre(item.genre_ids, type, isSearch)}
                 </Text>
               </View>
               <View style={[styles.textRow, styles.containerReview]}>
@@ -129,8 +128,6 @@ export default class TVRow extends React.PureComponent {
           />
           {renderScoreRow(item.vote_average)}
         </View>
-        {/* <View style={styles.ratingContainer}> */}
-        {/* </View> */}
         <Text numberOfLines={2} style={styles.textTwoTitle}>
           {item.name}
         </Text>

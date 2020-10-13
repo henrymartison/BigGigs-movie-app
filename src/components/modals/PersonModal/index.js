@@ -20,7 +20,7 @@ export default class PersonModal extends Component {
   state = {
     isLoading: false,
     isError: false,
-    id: this.props.creditId
+    id: this.props.creditId,
   };
 
   getImageApi = () => {
@@ -65,12 +65,12 @@ export default class PersonModal extends Component {
         birthday: data.birthday || "",
         placeOfBirth: data.place_of_birth || `${uninformed} place of birth`,
         movieRole: data.place_of_birth || `${uninformed} place of birth`,
-        biography: data.biography || uninformed
+        biography: data.biography || uninformed,
       });
     } catch (err) {
       this.setState({
         isLoading: false,
-        isError: true
+        isError: true,
       });
     }
   };
@@ -99,7 +99,7 @@ export default class PersonModal extends Component {
       name,
       knownForDepartment,
       placeOfBirth,
-      biography
+      biography,
     } = this.state;
 
     const { isVisible, actionClose, style, creditId } = this.props;
@@ -203,7 +203,7 @@ export default class PersonModal extends Component {
                   style={[
                     styles.textSmall,
                     styles.textLineHeight,
-                    styles.textJustify
+                    styles.textJustify,
                   ]}
                 >
                   {biography}

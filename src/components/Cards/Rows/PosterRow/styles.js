@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   playButtonContainer: {
-    width: Dimensions.get("window").width / 2 - 25,
+    flex: 1,
     height: 33,
     zIndex: 1000,
     alignItems: "center",
@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flexDirection: "row",
     alignItems: "center",
+    alignSelf: "center",
   },
   playButtonText: {
     fontWeight: "600",

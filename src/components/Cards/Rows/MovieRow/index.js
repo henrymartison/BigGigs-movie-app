@@ -13,12 +13,12 @@ import { notFound } from "../../../../utils/StaticImages";
 import styles from "./styles";
 import { secondaryTint } from "../../../../styles/Colors.js";
 
-const getImageApi = image =>
+const getImageApi = (image) =>
   image ? { uri: `https://image.tmdb.org/t/p/w500/${image}` } : notFound;
 
-const convertToDate = date => new Date(date).getFullYear() || "";
+const convertToDate = (date) => new Date(date).getFullYear() || "";
 
-const convertToUpperCaseFirstLetter = value => {
+const convertToUpperCaseFirstLetter = (value) => {
   const str = language[value] || "";
   return str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
 };
@@ -38,7 +38,7 @@ const renderDivider = (releaseDate, originalLanguage) =>
     <Text style={styles.trace}>|</Text>
   ) : null;
 
-const renderScoreColumn = voteAverage => {
+const renderScoreColumn = (voteAverage) => {
   const color =
     voteAverage < 5
       ? "low"
@@ -53,7 +53,7 @@ const renderScoreColumn = voteAverage => {
   );
 };
 
-const renderScoreRow = voteAverage => {
+const renderScoreRow = (voteAverage) => {
   return (
     <View style={styles.ratingContainer}>
       <Text style={styles.textPercent}>{voteAverage}</Text>

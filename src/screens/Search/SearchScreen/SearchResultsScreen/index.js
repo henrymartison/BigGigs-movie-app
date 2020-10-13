@@ -24,7 +24,7 @@ export default class SearchResultsScreen extends Component {
       title: `Results for "${params.name}"`,
       headerStyle: {
         backgroundColor: primaryTint,
-        borderBottomColor: primaryTint
+        borderBottomColor: primaryTint,
       },
       headerTitleStyle: { color: white, fontSize: 14, fontWeight: "400" },
       headerLeft: (
@@ -34,7 +34,7 @@ export default class SearchResultsScreen extends Component {
         >
           <Ionicons name="ios-arrow-back" size={27} color={darkBlue} />
         </TouchableOpacity>
-      )
+      ),
     };
   };
 
@@ -49,7 +49,7 @@ export default class SearchResultsScreen extends Component {
     keyGrid: 1,
     id: this.props.navigation.state.params.id,
     name: this.props.navigation.state.params.name,
-    typeRequest: this.props.navigation.state.params.typeRequest
+    typeRequest: this.props.navigation.state.params.typeRequest,
   };
 
   async componentDidMount() {
@@ -95,7 +95,7 @@ export default class SearchResultsScreen extends Component {
         "release_date.lte": dateRelease,
         with_release_type: "1|2|3|4|5|6|7",
         include_adult: hasAdultContent,
-        ...{ ...query }
+        ...{ ...query },
       });
 
       this.setState(({ results }) => ({
@@ -103,13 +103,13 @@ export default class SearchResultsScreen extends Component {
         isLoadingMore: false,
         isError: false,
         totalPages: data.total_pages,
-        results: [...results, ...data.results]
+        results: [...results, ...data.results],
       }));
     } catch (err) {
       this.setState({
         isLoading: false,
         isLoadingMore: false,
-        isError: true
+        isError: true,
       });
     }
   };
@@ -151,7 +151,7 @@ export default class SearchResultsScreen extends Component {
     this.setState(
       ({ page }) => ({
         isLoadingMore: true,
-        page: page + 1
+        page: page + 1,
       }),
       () => {
         this.requestMoviesList();
@@ -175,7 +175,7 @@ export default class SearchResultsScreen extends Component {
       isError,
       results,
       numColumns,
-      keyGrid
+      keyGrid,
     } = this.state;
 
     return (
@@ -203,7 +203,7 @@ export default class SearchResultsScreen extends Component {
                 <TouchableOpacity
                   style={[
                     styles.buttonGrid,
-                    numColumns === 2 && styles.buttonGridActive
+                    numColumns === 2 && styles.buttonGridActive,
                   ]}
                   onPress={this.actionGrid}
                 >

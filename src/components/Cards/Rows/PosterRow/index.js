@@ -12,19 +12,19 @@ import { TouchableOpacity } from "../../../commons/TouchableOpacity";
 
 import { width } from "../../../commons/metrics";
 import { notFound } from "../../../../utils/StaticImages";
-import { secondaryTint, white, primary } from "../../../../styles/Colors";
+import { secondaryTint, primary } from "../../../../styles/Colors";
 
 import styles from "./styles";
 import { Toast } from "native-base";
 
 getImageApi = (backdropPath) => {
   return backdropPath
-    ? { uri: `https://image.tmdb.org/t/p/w500/${backdropPath}` }
+    ? { uri: `https://image.tmdb.org/t/p/original/${backdropPath}` }
     : notFound;
 };
 getPosterImageApi = (posterPath) => {
   return posterPath
-    ? { uri: `https://image.tmdb.org/t/p/w500/${posterPath}` }
+    ? { uri: `https://image.tmdb.org/t/p/original/${posterPath}` }
     : notFound;
 };
 
@@ -168,7 +168,7 @@ const PosterRow = ({
         <View style={[styles.optionsRow, { marginTop: !type && 20 }]}>
           {video && video.site === "YouTube" && (
             <TouchableOpacity
-              style={styles.playButtonContainer}
+              style={[styles.playButtonContainer, { marginRight: 5 }]}
               onPress={() => actionPlayVideo(video, navigate, title)}
             >
               <AntDesign name="playcircleo" size={17} color={"#82c596"} />
@@ -179,7 +179,10 @@ const PosterRow = ({
           )}
           <TouchableOpacity
             onPress={() => actionSave()}
-            style={[styles.playButtonContainer, { borderColor: primary }]}
+            style={[
+              styles.playButtonContainer,
+              { borderColor: primary, marginLeft: 5 },
+            ]}
           >
             <MaterialCommunityIcons
               name={saved ? "bookmark-check" : "bookmark-plus"}

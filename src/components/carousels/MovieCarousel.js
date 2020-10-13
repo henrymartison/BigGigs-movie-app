@@ -5,10 +5,22 @@ import ImageSlide from "../commons/ImageSlide";
 
 // data
 const slidesData = [
-  { image: "https://image.tmdb.org/t/p/w300/7xizDTz4Yj4IYm2ud4f6EfEXe5H.jpg" },
-  { image: "https://image.tmdb.org/t/p/w500/db32LaOibwEliAmSL2jjDF6oDdj.jpg" },
-  { image: "https://image.tmdb.org/t/p/w500/eZ9wYTk9Gy2zYEv8rhRG3IoPuXG.jpg" },
-  { image: "https://image.tmdb.org/t/p/w500/kqjL17yufvn9OVLyXYpvtyrFfak.jpg" }
+  {
+    image:
+      "https://image.tmdb.org/t/p/original/7xizDTz4Yj4IYm2ud4f6EfEXe5H.jpg",
+  },
+  {
+    image:
+      "https://image.tmdb.org/t/p/original/db32LaOibwEliAmSL2jjDF6oDdj.jpg",
+  },
+  {
+    image:
+      "https://image.tmdb.org/t/p/original/eZ9wYTk9Gy2zYEv8rhRG3IoPuXG.jpg",
+  },
+  {
+    image:
+      "https://image.tmdb.org/t/p/original/kqjL17yufvn9OVLyXYpvtyrFfak.jpg",
+  },
 ];
 
 class SlideShow extends React.Component {
@@ -17,7 +29,7 @@ class SlideShow extends React.Component {
 
     return (
       <Carousel
-        ref={c => {
+        ref={(c) => {
           this.carousel = c;
         }}
         autoplay

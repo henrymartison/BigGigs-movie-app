@@ -95,7 +95,6 @@ export default class TVDetails extends Component {
       actionShare: this.actionShare,
     });
     this.requestMoviesInfo();
-    this.requestMoviesList();
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -110,36 +109,19 @@ export default class TVDetails extends Component {
     return false;
   }
 
-  requestMoviesList = async () => {
-    // try {
-    //   this.setState({ isLoading: true });
-    //   const data = await request("movie/16/similar");
-    //   console.log(data);
-    //   this.setState(({ isRefresh, results }) => ({
-    //     isLoading: false,
-    //     isRefresh: false,
-    //     totalPages: data.total_pages,
-    //     results: isRefresh ? data.results : [...results, ...data.results]
-    //   }));
-    // } catch (err) {
-    //   this.setState({
-    //     isLoading: false,
-    //     isError: true
-    //   });
-    // }
-  };
-
   requestMoviesInfo = async () => {
     try {
       this.setState({ isLoading: true });
 
       const { id } = this.props.navigation.state.params;
+      // console.log(".........", id);
 
       const data = await request(`tv/${id}`, {
         include_image_language: "en,null",
         append_to_response: "credits,videos,images",
       });
-      console.log(data.seasons);
+      // console.log(data);
+
       const nextEpToAir =
         data.next_episode_to_air === null ? "null" : data.next_episode_to_air;
       const epData = await request(
@@ -166,7 +148,6 @@ export default class TVDetails extends Component {
         images: this.formatImageUrl(data.images.backdrops),
         infosDetail: this.getInfosDetail(data),
         seasonData: data.seasons,
-        epData: epData.episodes,
         numberOfSeasons: data.number_of_seasons || "",
         status: data.status || "",
         season_number: nextEpToAir.season_number,
@@ -197,9 +178,12 @@ export default class TVDetails extends Component {
       LANGUAGE: this.convertToUpperCaseFirstLetter(
         language[original_language] || ""
       ),
-      RUNTIME: this.convertMinsToHrsMins(
-        this.sliceArrayLength(episode_run_time, 1) || 0
-      ),
+      RUNTIME:
+        episode_run_time.length > 0
+          ? this.convertMinsToHrsMins(
+              this.sliceArrayLength(episode_run_time, 1) || 0
+            )
+          : "...",
     };
   };
 
@@ -315,7 +299,6 @@ export default class TVDetails extends Component {
       title,
       infosDetail,
       seasonData,
-      epData,
       numberOfSeasons,
       overview,
       cast,
@@ -381,15 +364,8 @@ export default class TVDetails extends Component {
               <TVSeasons
                 data={seasonData}
                 numberOfSeasons={numberOfSeasons}
-                onPress={() =>
-                  navigate("SeasonDetails", {
-                    // title: seasonData.name || "Hello",
-                    id: "60625",
-                    season_number: "1",
-                  })
-                }
+                id={id}
               />
-              {/* <SeasonDetails data={epData} /> */}
               <SectionRow title="Main cast">
                 <PersonListRow
                   data={cast}

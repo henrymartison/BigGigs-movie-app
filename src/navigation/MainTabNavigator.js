@@ -21,6 +21,7 @@ import TVList from "../screens/TVSeries/TVList";
 import TVDetails from "../screens/TVSeries/TVDetails";
 import SeasonDetails from "../screens/TVSeries/Seasons/Details";
 import SearchFilter from "../screens/Search/SearchFilter";
+import { EpisodeDetails } from "../screens/Details";
 
 const config = Platform.select({
   web: { headerMode: "screen" },
@@ -37,6 +38,7 @@ const MovieListStack = createStackNavigator(
     TVList: TVList,
     TVDetails: TVDetails,
     SeasonDetails: SeasonDetails,
+    EpisodeDetails: EpisodeDetails,
   },
   config
 );

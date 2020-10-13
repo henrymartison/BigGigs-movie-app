@@ -6,7 +6,13 @@ import SegmentedControlTab from "react-native-segmented-control-tab";
 import SegmentedControl from "@react-native-community/segmented-control";
 
 import MovieListScreen from "./Trending/MovieListScreen";
-import { white, primaryTint, darkBlue, primary } from "../styles/Colors";
+import {
+  white,
+  primaryTint,
+  darkBlue,
+  primary,
+  inactiveTint,
+} from "../styles/Colors";
 import { TouchableOpacity } from "../components/commons/TouchableOpacity";
 import { Feather } from "@expo/vector-icons";
 import CustomMenuIcon from "../components/commons/MenuIcon";
@@ -89,9 +95,9 @@ class Main extends Component {
                 selectedIndex: event.nativeEvent.selectedSegmentIndex,
               });
             }}
-            tintColor={primary}
-            backgroundColor={primaryTint}
-            fontStyle={{ fontSize: 14, color: primary }}
+            tintColor="#69696f"
+            // backgroundColor=""
+            fontStyle={{ fontSize: 14, color: white }}
             appearance="dark"
           />
         </View>

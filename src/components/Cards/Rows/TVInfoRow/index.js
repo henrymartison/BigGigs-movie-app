@@ -5,14 +5,16 @@ import styles from "./styles";
 
 const TVInfoRow = ({ data = {} }) => (
   <View style={styles.container}>
-    {Object.keys(data).map(key => (
+    {Object.keys(data).map((key) => (
       <View key={key} style={{ flexDirection: "row" }}>
         <View style={{ width: "40%", paddingBottom: 10 }}>
           <Text style={styles.title}>{key}</Text>
         </View>
-        <Text numberOfLines={1} style={styles.description}>
-          {data[key]}
-        </Text>
+        <View style={{ flex: 1 }}>
+          <Text numberOfLines={1} style={styles.description}>
+            {data[key]}
+          </Text>
+        </View>
       </View>
     ))}
   </View>
