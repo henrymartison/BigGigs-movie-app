@@ -1,20 +1,23 @@
-import { StyleSheet } from 'react-native';
-import { fsr } from '../metrics';
-import { white, primaryTint } from '../../../styles/Colors';
+import { StyleSheet } from "react-native";
+import { fsr } from "../metrics";
+import { white } from "../../../styles/Colors";
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-    // backgroundColor: primaryTint
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   attributeText: {
-    paddingLeft: 10,
-    fontSize: fsr(2.4),
-    color: white
-  }
+    // paddingLeft: 10,
+    fontSize: fsr(2),
+    color: white,
+  },
+  iconLeft: {
+    marginRight: 10,
+  },
 });
 
 export default styles;

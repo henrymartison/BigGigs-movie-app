@@ -5,7 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   FlatList,
-  SafeAreaView
+  SafeAreaView,
 } from "react-native";
 import { fsr } from "../../../components/commons/metrics";
 import { TouchableOpacity } from "../../../components/commons/TouchableOpacity";
@@ -20,65 +20,81 @@ class Configuration extends Component {
     headerTitleStyle: { color: white },
     headerStyle: {
       backgroundColor: primaryTint,
-      borderBottomColor: primaryTint
-    }
+      borderBottomColor: primaryTint,
+    },
   };
 
   render() {
     return (
-      <ScrollView
-        style={{ flex: 1, backgroundColor: primaryTint }}
-        showsVerticalScrollIndicator={false}
-      >
-        <SafeAreaView />
-        <TouchableOpacity activeOpacity={0.88} style={styles.headerContainer}>
-          <View style={styles.headerRow}>
-            <View style={{}}>
-              <Text style={styles.profilename}>Henry Martison</Text>
-              <Text style={styles.profileOptionText}>
-                View and edit your profile
-              </Text>
-            </View>
-
-            {/* thumbnail */}
-            <View style={styles.thumbnailContainer}>
-              <Text style={styles.thumbnailText}>HM</Text>
+      <View style={styles.container}>
+        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+          <SafeAreaView />
+          <View style={styles.headerContainer}>
+            <View style={styles.row}>
+              <View style={{}}>
+                <Text style={styles.profilename}>Henry Martison</Text>
+                <Text style={styles.profileOptionText}>
+                  henrymartison@example.com
+                </Text>
+              </View>
+              <View style={styles.thumbnailContainer}>
+                <Text style={styles.thumbnailText}>HM</Text>
+              </View>
             </View>
           </View>
-        </TouchableOpacity>
-        <View style={{ marginTop: 20 }}>
-          <ListItem iconLeft="shield" attribute="Verify your identity" />
-          <ListItem iconLeft="lock" attribute="Password and PIN" />
-          <ListItem
-            iconLeft="eye-off"
-            attribute="Show my account balance"
-            // iconRight='ios-switch'
-          />
-          <ListItem iconLeft="help-circle" attribute="Help & Support" />
-          <ListItem iconLeft="mail" attribute="Invite your friends" />
-          <ListItem iconLeft="shield-off" attribute="Privacy" />
-          <ListItem iconLeft="award" attribute="Switch To Premium" />
-          <ListItem iconLeft="info" attribute="Terms and Conditions" />
-          <ListItem
+
+          <View>
+            <Text numberOfLines={1} style={styles.sectionHeading}>
+              General
+            </Text>
+            <View style={styles.section}>
+              <ListItem iconLeft="user" attribute="My account" />
+              <ListItem iconLeft="award" attribute="Switch To Premium" />
+              <ListItem
+                iconLeft="corner-up-left"
+                attribute="Restore purchases"
+              />
+              <ListItem iconLeft="help-circle" attribute="Help & Support" />
+              <ListItem iconLeft="star" attribute="Rate us" />
+              <ListItem iconLeft="mail" attribute="Invite your friends" />
+              <ListItem iconLeft="shield-off" attribute="Privacy" />
+              <ListItem iconLeft="info" attribute="Terms and Conditions" />
+            </View>
+          </View>
+
+          <View>
+            <Text numberOfLines={1} style={styles.sectionHeading}>
+              Notifications and announcements
+            </Text>
+            <View style={styles.section}>
+              <ListItem hasSwitch attribute="New episode" />
+              <ListItem hasSwitch attribute="When to notify" />
+              <ListItem hasSwitch attribute="Season premiere" />
+              <ListItem hasSwitch attribute="New trailer" />
+            </View>
+          </View>
+
+          {/* <ListItem
             iconLeft="log-out"
             attribute="Sign out"
             color="tomato"
             iconRight={null}
-          />
-        </View>
-        <View
-          style={{
-            width: "100%",
-            height: 50,
-            alignItems: "center",
-            justifyContent: "center"
-          }}
-        >
-          <Text style={{ color: "grey", fontSize: 13 }}>
-            © 2019 Marvalinks Media. Hobi 1.0.2 (34)
-          </Text>
-        </View>
-      </ScrollView>
+          /> */}
+
+          <View
+            style={{
+              width: "100%",
+              height: 50,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Text style={{ color: "grey", fontSize: 13 }}>
+              © 2019 Marvalinks Media. Hobi 1.0.2 (34)
+            </Text>
+          </View>
+        </ScrollView>
+      </View>
     );
   }
 }
