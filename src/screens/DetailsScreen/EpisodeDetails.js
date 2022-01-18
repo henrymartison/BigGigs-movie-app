@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { ScrollView, View, Text, StyleSheet, Image } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 
 import { notFound } from "../../utils/StaticImages";
 
@@ -9,6 +9,8 @@ import {
   primaryTint,
   darkBlue,
   white,
+  darkish,
+  primary,
 } from "../../styles/Colors";
 import { TouchableOpacity } from "../../components/commons/TouchableOpacity";
 import { fsr } from "../../components/commons/metrics";
@@ -92,16 +94,13 @@ export default class EpisodeDetails extends Component {
           <Text style={styles.heading}>{name}</Text>
 
           {air_date && (
-            <View style={{ flexDirection: "row" }}>
-              <View style={{ width: "40%", paddingBottom: 10 }}>
-                <Text style={styles.title}>Air Date</Text>
-              </View>
-              <View style={{ flex: 1 }}>
-                <Text numberOfLines={1} style={styles.description}>
-                  {convertToMonth(air_date)} {convertToDay(air_date)},{" "}
-                  {convertToYear(air_date)}
-                </Text>
-              </View>
+            <View style={styles.dateContainer}>
+              <AntDesign name="clockcircleo" color={primaryTint} size={18} />
+              <Text numberOfLines={1} style={styles.date}>
+                <Text>Aired on </Text>
+                {convertToMonth(air_date)} {convertToDay(air_date)},{" "}
+                {convertToYear(air_date)}
+              </Text>
             </View>
           )}
           {/* {crew.map((item) => (
@@ -145,9 +144,19 @@ const styles = StyleSheet.create({
     backgroundColor: secondaryTint,
     alignSelf: "center",
   },
+  dateContainer: {
+    backgroundColor: "slategray",
+    alignSelf: "center",
+    borderRadius: 4,
+    paddingHorizontal: 10,
+    height: 28,
+    alignItems: "center",
+    flexDirection: "row",
+  },
   date: {
-    color: "white",
-    fontSize: 17,
+    color: "#282f33",
+    fontSize: 16,
+    marginLeft: 7,
   },
   heading: {
     color: "white",

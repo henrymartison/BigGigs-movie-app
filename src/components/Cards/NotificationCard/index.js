@@ -1,12 +1,7 @@
 import React from "react";
 import { View, Text, Image } from "react-native";
 
-import { Feather } from "@expo/vector-icons";
-
 import { TouchableOpacity } from "../../commons/TouchableOpacity";
-
-import { width } from "../../../components/commons/metrics";
-import { darkBlue, white } from "../../../styles/Colors";
 
 import styles from "./styles";
 
@@ -15,7 +10,7 @@ const NotificationCard = ({
   icon = require("../../../assets/images/sad-rounded-square-emoticon.png"),
   textError = "Oops! Something seems broken. Please try again later.",
   textButton = "Try again",
-  action = null
+  action = null,
 }) => (
   <View style={style}>
     <Image source={icon} style={styles.image} />

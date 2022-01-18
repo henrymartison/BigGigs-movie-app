@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
 
-import { Feather, Ionicons } from "@expo/vector-icons";
+import {
+  MaterialCommunityIcons,
+  SimpleLineIcons,
+  Ionicons,
+} from "@expo/vector-icons";
 
 import NotificationCard from "../../../../components/Cards/NotificationCard";
 import MovieListRow from "../../../../components/Cards/Rows/MovieListRow";
@@ -45,11 +49,12 @@ export default class SearchResultsScreen extends Component {
     hasAdultContent: false,
     results: [],
     page: 1,
-    numColumns: 1,
+    numColumns: 3,
     keyGrid: 1,
     id: this.props.navigation.state.params.id,
     name: this.props.navigation.state.params.name,
     typeRequest: this.props.navigation.state.params.typeRequest,
+    category: this.props.navigation.state.params.category,
   };
 
   async componentDidMount() {
@@ -90,13 +95,15 @@ export default class SearchResultsScreen extends Component {
           ? { query: `${name.trim()}` }
           : { with_genres: `${id}` };
 
-      const data = await request(`${typeRequest}/movie`, {
+      const data = await request(`${typeRequest}/multi,`, {
         page,
         "release_date.lte": dateRelease,
         with_release_type: "1|2|3|4|5|6|7",
         include_adult: hasAdultContent,
         ...{ ...query },
       });
+
+      console.log("raw data ====>", data);
 
       this.setState(({ results }) => ({
         isLoading: false,
@@ -105,6 +112,8 @@ export default class SearchResultsScreen extends Component {
         totalPages: data.total_pages,
         results: [...results, ...data.results],
       }));
+
+      console.log("results ====>", results);
     } catch (err) {
       this.setState({
         isLoading: false,
@@ -115,14 +124,40 @@ export default class SearchResultsScreen extends Component {
   };
 
   renderItem = (item, type, isSearch, numColumns, navigate) => (
-    <MovieRow
-      item={item}
-      type={type}
-      isSearch={isSearch}
-      numColumns={numColumns}
-      navigate={navigate}
-    />
+    <View>
+      <MovieRow
+        item={item}
+        type={type}
+        isSearch={isSearch}
+        numColumns={numColumns}
+        navigate={navigate}
+      />
+    </View>
   );
+
+  renderHeader = () => {
+    const { results, filterName, numColumns } = this.state;
+    if (results.length > 0) {
+      return (
+        <View style={styles.containerMainText}>
+          <Text numberOfLines={1} style={styles.textMain} numberOfLines={1}>
+            {filterName}
+          </Text>
+          <TouchableOpacity style={styles.buttonGrid} onPress={this.actionGrid}>
+            {numColumns !== 1 ? (
+              <MaterialCommunityIcons
+                name="format-list-checkbox"
+                size={26}
+                color={darkBlue}
+              />
+            ) : (
+              <SimpleLineIcons name="grid" size={20} color={darkBlue} />
+            )}
+          </TouchableOpacity>
+        </View>
+      );
+    }
+  };
 
   renderFooter = () => {
     const { isLoadingMore, totalPages, page, results } = this.state;
@@ -161,7 +196,7 @@ export default class SearchResultsScreen extends Component {
 
   actionGrid = () => {
     this.setState(({ numColumns, keyGrid }) => {
-      return { numColumns: numColumns === 1 ? 2 : 1, keyGrid: keyGrid + 1 };
+      return { numColumns: numColumns === 1 ? 3 : 1, keyGrid: keyGrid + 1 };
     });
   };
 
@@ -195,26 +230,6 @@ export default class SearchResultsScreen extends Component {
           />
         ) : (
           <View style={styles.containerList}>
-            {results.length > 0 && (
-              <View style={styles.containerMainText}>
-                {/* <Text style={styles.textMain} numberOfLines={1}>
-                  "{name}"
-                </Text> */}
-                <TouchableOpacity
-                  style={[
-                    styles.buttonGrid,
-                    numColumns === 2 && styles.buttonGridActive,
-                  ]}
-                  onPress={this.actionGrid}
-                >
-                  {numColumns === 2 ? (
-                    <Feather name="list" size={22} color={darkBlue} />
-                  ) : (
-                    <Feather name="grid" size={22} color={darkBlue} />
-                  )}
-                </TouchableOpacity>
-              </View>
-            )}
             <MovieListRow
               data={results}
               type={name}
@@ -226,6 +241,7 @@ export default class SearchResultsScreen extends Component {
               ListFooterComponent={this.renderFooter}
               navigate={navigate}
               renderItem={this.renderItem}
+              ListHeaderComponent={this.renderHeader}
             />
           </View>
         )}

@@ -1,13 +1,12 @@
 import { StyleSheet, Dimensions } from "react-native";
 
 import {
-  darkBlue,
   blue,
   white,
   lightRed,
   lightYellow,
   lightGreen,
-  secondaryTint
+  secondaryTint,
 } from "../../../../styles/Colors";
 import { fsr } from "../../../../components/commons/metrics";
 
@@ -17,7 +16,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingTop: 10,
     marginBottom: 20,
-    flexDirection: "row"
+    flexDirection: "row",
   },
   containerTwoItem: {
     paddingTop: 10,
@@ -25,22 +24,22 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    width: Dimensions.get("window").width / 3
+    width: Dimensions.get("window").width / 3,
   },
   photo: {
     borderRadius: 8,
-    backgroundColor: secondaryTint
+    backgroundColor: secondaryTint,
   },
   item: {
     marginLeft: 20,
     flexDirection: "column",
     justifyContent: "space-between",
-    flex: 1
+    flex: 1,
   },
   textTitle: {
     fontSize: fsr(2.6),
     color: white,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   textTwoTitle: {
     textAlign: "center",
@@ -49,79 +48,76 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     paddingRight: 20,
     paddingLeft: 20,
-    paddingTop: 20
+    paddingTop: 20,
   },
   textRow: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
   containerSubTitle: {
     marginTop: 3,
-    marginBottom: 3
+    marginBottom: 3,
   },
   containerReview: {
     justifyContent: "space-between",
-    marginRight: 20
+    marginRight: 20,
   },
   textSmall: {
     fontSize: fsr(2.1),
-    color: white
+    color: white,
   },
   trace: {
     marginLeft: 5,
     marginRight: 5,
     fontSize: fsr(2.1),
-    color: blue
+    color: blue,
   },
   score: {
-    minWidth: "25%",
     paddingVertical: 2,
     paddingHorizontal: 4,
-    borderRadius: 100
+    flexDirection: "row",
+    alignItems: "center",
   },
   ratingContainer: {
     minWidth: "25%",
-    // width: 50,
     borderRadius: 8,
-    // justifyContent: 'center',
-    // alignItems: 'center',
     backgroundColor: "rgba(0,0,0,.4)",
     position: "absolute",
     top: 7,
     right: 7,
-    paddingVertical: 2
+    paddingVertical: 2,
   },
   low: {
-    backgroundColor: lightRed
+    color: lightRed,
   },
   mid: {
-    backgroundColor: lightYellow
+    color: lightYellow,
   },
   high: {
-    backgroundColor: lightGreen
+    color: lightGreen,
   },
   textPercent: {
     fontSize: fsr(2.1),
-    fontWeight: "500",
+    fontWeight: "600",
     color: white,
-    textAlign: "center"
+    textAlign: "center",
   },
   containerModal: {
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   bottomModal: {
     justifyContent: "flex-end",
-    margin: 0
+    margin: 0,
   },
   containerError: {
     backgroundColor: white,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   loadingMore: {
     marginTop: 20,
-    marginBottom: 30
-  }
+    marginBottom: 30,
+  },
 });
 
 export default styles;

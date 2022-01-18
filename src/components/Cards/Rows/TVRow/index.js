@@ -5,7 +5,8 @@ import Image from "react-native-scalable-image";
 import { FontAwesome } from "@expo/vector-icons";
 
 import language from "../../../../assets/language/iso.json";
-import genre from "../../../../assets/genre/tvids.json";
+import tvIds from "../../../../assets/genre/tvIds.json";
+import movieIds from "../../../../assets/genre/movieIds.json";
 
 import { TouchableOpacity } from "../../../commons/TouchableOpacity";
 
@@ -27,11 +28,11 @@ const convertToUpperCaseFirstLetter = (value) => {
 
 const convertGenre = (arr, type, isSearch) => {
   if (type === "normal" || isSearch) {
-    if (arr.length > 1) return `${genre[arr[0]].name}`;
-    return arr.length !== 0 ? `${genre[arr[0]].name}` : "";
+    if (arr.length > 1) return `${tvIds[arr[0]].name}`;
+    return arr.length !== 0 ? `${tvIds[arr[0]].name}` : "";
   }
-  return arr.length !== 0 && type !== genre[arr[0]].name
-    ? `${type}, ${genre[arr[0]].name}`
+  return arr.length !== 0 && type !== tvIds[arr[0]].name
+    ? `${type}, ${tvIds[arr[0]].name}`
     : type;
 };
 
@@ -75,13 +76,11 @@ const renderScoreRow = (voteAverage) => {
 
 export default class TVRow extends React.PureComponent {
   render() {
-    const { numColumns, item, type, isSearch, navigate } = this.props;
+    const { numColumns, item, type, isSearch, navigate, route } = this.props;
 
     if (numColumns === 1) {
       return (
-        <TouchableOpacity
-          onPress={() => navigate("TVDetails", { id: item.id })}
-        >
+        <TouchableOpacity onPress={() => navigate(route, { id: item.id })}>
           <View style={styles.containerItem}>
             <Image
               source={getImageApi(item.poster_path)}
@@ -118,7 +117,7 @@ export default class TVRow extends React.PureComponent {
     return (
       <TouchableOpacity
         style={styles.containerTwoItem}
-        onPress={() => navigate("TVDetails", { id: item.id })}
+        onPress={() => navigate("route", { id: item.id })}
       >
         <View style={{ backgroundColor: secondaryTint, borderRadius: 8 }}>
           <Image

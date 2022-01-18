@@ -5,6 +5,7 @@ import {
   FontAwesome,
   AntDesign,
   MaterialCommunityIcons,
+  Feather,
 } from "@expo/vector-icons";
 
 import ImagesModal from "../../../modals/ImageModal";
@@ -12,10 +13,9 @@ import { TouchableOpacity } from "../../../commons/TouchableOpacity";
 
 import { width } from "../../../commons/metrics";
 import { notFound } from "../../../../utils/StaticImages";
-import { secondaryTint, primary } from "../../../../styles/Colors";
+import { secondaryTint, primary, darkBlue } from "../../../../styles/Colors";
 
 import styles from "./styles";
-import { Toast } from "native-base";
 
 getImageApi = (backdropPath) => {
   return backdropPath
@@ -71,9 +71,11 @@ getStatus = (status) => {
   if (status === "Returning Series") {
     return (
       <View style={styles.currentStatus}>
-        <View style={styles.statusIndicator} />
-        <Text style={styles.statusText}>Status:</Text>
-        <Text style={[styles.currentStatusText, styles[color]]}>Running</Text>
+        {/* <View style={styles.statusIndicator} /> */}
+        {/* <Text style={styles.statusText}>Status:</Text> */}
+        <Text style={[styles.currentStatusText, styles[color]]}>
+          Still Airing
+        </Text>
       </View>
     );
   }
@@ -119,25 +121,7 @@ const PosterRow = ({
   const [saved, setSaved] = useState(false);
 
   actionSave = () => {
-    if (saved) {
-      setSaved({ saved: false });
-      Toast.show({
-        text: "Removed from watchlist",
-        buttonText: "okay",
-        duration: 3000,
-        style: { backgroundColor: secondaryTint, borderRadius: 10 },
-        buttonTextStyle: { color: primary, fontSize: 18, fontWeight: "600" },
-      });
-    } else {
-      setSaved({ saved: true });
-      Toast.show({
-        text: "Added to watchlist",
-        buttonText: "okay",
-        duration: 3000,
-        style: { backgroundColor: secondaryTint, borderRadius: 10 },
-        buttonTextStyle: { color: primary, fontSize: 18, fontWeight: "600" },
-      });
-    }
+    setSaved((prev) => !prev);
   };
 
   return (
@@ -165,16 +149,20 @@ const PosterRow = ({
           {type === "tv" && <View style={{}}>{getStatus(status)}</View>}
         </View>
 
-        <View style={[styles.optionsRow, { marginTop: !type && 20 }]}>
+        <View
+          style={[
+            styles.optionsRow,
+            { marginTop: 20 },
+            //  { marginTop: !type && 20 }
+          ]}
+        >
           {video && video.site === "YouTube" && (
             <TouchableOpacity
               style={[styles.playButtonContainer, { marginRight: 5 }]}
               onPress={() => actionPlayVideo(video, navigate, title)}
             >
-              <AntDesign name="playcircleo" size={17} color={"#82c596"} />
-              <Text style={[styles.playButtonText, { color: "#82c596" }]}>
-                Trailer
-              </Text>
+              <Feather name="play" size={17} color={"#fff"} />
+              <Text style={styles.playButtonText}>Trailer</Text>
             </TouchableOpacity>
           )}
           <TouchableOpacity
@@ -185,9 +173,9 @@ const PosterRow = ({
             ]}
           >
             <MaterialCommunityIcons
-              name={saved ? "bookmark-check" : "bookmark-plus"}
+              name={saved ? "heart" : "heart-outline"}
               size={17}
-              color={primary}
+              color={saved ? "#d60b0b" : darkBlue}
             />
             <Text style={styles.playButtonText}>
               {saved ? `Saved` : `Save`}

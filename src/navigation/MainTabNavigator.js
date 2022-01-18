@@ -4,24 +4,23 @@ import {
   createBottomTabNavigator,
   createStackNavigator,
 } from "react-navigation";
-import { Feather, Ionicons } from "@expo/vector-icons";
+import { Feather, FontAwesome5 } from "@expo/vector-icons";
 
-import MovieListScreen from "../screens/Trending/MovieListScreen";
+import { primaryTint, inactiveTint, white, primary } from "../styles/Colors";
+
 import SearchScreen from "../screens/Search/SearchScreen";
-import { primaryTint, inactiveTint, white } from "../styles/Colors";
 import Config from "../screens/config/ConfigurationScreen.js";
-import MovieDetails from "../screens/Trending/MovieDetailsScreen";
 import SearchResultsScreen from "../screens/Search/SearchScreen/SearchResultsScreen";
-import Discover from "../screens/Discover/DiscoverScreen";
-import MovieDetailsScreen from "../screens/Trending/MovieDetailsScreen";
 import WebViewScreen from "../screens/WebViewScreen";
 import Watchlist from "../screens/Watchlist";
 import main from "../screens/main";
-import TVList from "../screens/TVSeries/TVList";
-import TVDetails from "../screens/TVSeries/TVDetails";
-import SeasonDetails from "../screens/TVSeries/Seasons/Details";
 import SearchFilter from "../screens/Search/SearchFilter";
-import { EpisodeDetails } from "../screens/Details";
+import {
+  EpisodeDetails,
+  MovieDetails,
+  SeasonDetails,
+  TVDetails,
+} from "../screens/DetailsScreen";
 
 const config = Platform.select({
   web: { headerMode: "screen" },
@@ -31,14 +30,20 @@ const config = Platform.select({
 const MovieListStack = createStackNavigator(
   {
     main: main,
-    MList: MovieListScreen,
     MovieDetails: MovieDetails,
     WebView: WebViewScreen,
-    Watchlist: Watchlist,
-    TVList: TVList,
-    TVDetails: TVDetails,
     SeasonDetails: SeasonDetails,
+    TVDetails: TVDetails,
     EpisodeDetails: EpisodeDetails,
+  },
+  {
+    defaultNavigationOptions: () => ({
+      headerTintColor: primary,
+      headerStyle: {
+        backgroundColor: primaryTint,
+        borderBottomColor: primaryTint,
+      },
+    }),
   },
   config
 );
@@ -50,9 +55,9 @@ MovieListStack.navigationOptions = ({ navigation }) => {
   }
   return {
     tabBarVisible,
-    tabBarLabel: "Trends",
+    tabBarLabel: "Lobby",
     tabBarIcon: ({ tintColor }) => (
-      <Ionicons name="ios-compass" color={tintColor} size={24} />
+      <FontAwesome5 name="couch" color={tintColor} size={20} />
     ),
   };
 };
@@ -61,7 +66,7 @@ const SearchStack = createStackNavigator(
   {
     Search: SearchScreen,
     SearchResults: SearchResultsScreen,
-    MovieDetails: MovieDetailsScreen,
+    MovieDetails: MovieDetails,
     WebView: WebViewScreen,
     SearchFilter: SearchFilter,
   },
@@ -75,19 +80,30 @@ SearchStack.navigationOptions = {
   ),
 };
 
-const DiscoverStack = createStackNavigator(
+const LibraryStack = createStackNavigator(
   {
-    Discover: Discover,
-    MovieDetails: MovieDetailsScreen,
+    Watchlist: Watchlist,
+    MovieDetails: MovieDetails,
     WebView: WebViewScreen,
+  },
+  {
+    defaultNavigationOptions: () => ({
+      title: "Library",
+      headerTitleStyle: { color: white },
+      headerTintColor: primary,
+      headerStyle: {
+        backgroundColor: primaryTint,
+        borderBottomColor: primaryTint,
+      },
+    }),
   },
   config
 );
 
-DiscoverStack.navigationOptions = {
-  tabBarLabel: "Discover",
+LibraryStack.navigationOptions = {
+  tabBarLabel: "Library",
   tabBarIcon: ({ tintColor }) => (
-    <Ionicons name="ios-star" color={tintColor} size={24} />
+    <FontAwesome5 name="layer-group" color={tintColor} size={19} />
   ),
 };
 
@@ -109,17 +125,17 @@ const tabNavigator = createBottomTabNavigator(
   {
     MovieListStack,
     SearchStack,
-    DiscoverStack,
+    LibraryStack,
     ConfigStack,
   },
   {
     tabBarOptions: {
       // safeAreaInset: { bottom: 0, top: "never" },
-      activeTintColor: white,
+      activeTintColor: primary,
       inactiveTintColor: inactiveTint,
       tabStyle: { backgroundColor: primaryTint },
       style: {
-        borderTopColor: "#181819",
+        borderTopColor: "transparent",
         borderTopWidth: 1.5,
         backgroundColor: primaryTint,
       },

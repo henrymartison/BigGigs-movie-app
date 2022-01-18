@@ -4,7 +4,7 @@ import { View, Text } from "react-native";
 import Image from "react-native-scalable-image";
 
 import language from "../../../../assets/language/iso.json";
-import genre from "../../../../assets/genre/ids.json";
+import genre from "../../../../assets/genre/movieIds.json";
 // import genre from '../../../../assets/genre/tvids.json';
 
 import { TouchableOpacity } from "../../../commons/TouchableOpacity";
@@ -15,12 +15,12 @@ import { notFound } from "../../../../utils/StaticImages";
 import styles from "./styles";
 import { primary } from "../../../../styles/Colors.js";
 
-const getImageApi = image =>
+const getImageApi = (image) =>
   image ? { uri: `https://image.tmdb.org/t/p/w500/${image}` } : notFound;
 
-const convertToDate = date => new Date(date).getFullYear() || "";
+const convertToDate = (date) => new Date(date).getFullYear() || "";
 
-const convertToUpperCaseFirstLetter = value => {
+const convertToUpperCaseFirstLetter = (value) => {
   const str = language[value] || "";
   return str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
 };
@@ -40,7 +40,7 @@ const renderDivider = (releaseDate, originalLanguage) =>
     <Text style={styles.trace}>|</Text>
   ) : null;
 
-const renderScoreColumn = voteAverage => {
+const renderScoreColumn = (voteAverage) => {
   const color =
     voteAverage < 5
       ? "low"
@@ -55,7 +55,7 @@ const renderScoreColumn = voteAverage => {
   );
 };
 
-const renderScoreRow = voteAverage => {
+const renderScoreRow = (voteAverage) => {
   return <Text style={styles.textPercent}>{voteAverage}</Text>;
 };
 
@@ -119,7 +119,7 @@ export default class MovieRow extends React.PureComponent {
                 paddingTop: 5,
                 paddingLeft: 3,
                 fontWeight: "600",
-                fontSize: 13
+                fontSize: 13,
               }}
             >
               TMDB: {renderScoreRow(item.vote_average)}

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { ScrollView, View, Text } from "react-native";
 
 import { Toast } from "native-base";
-import { Feather, Ionicons, EvilIcons } from "@expo/vector-icons";
+import { Ionicons, EvilIcons } from "@expo/vector-icons";
 import ReadMore from "react-native-read-more-text";
 
 import { Alert } from "../../../components/commons/Alert";
@@ -14,7 +14,6 @@ import PersonListRow from "../../../components/Cards/Rows/PersonListRow";
 import PersonRow from "../../../components/Cards/Rows/PersonRow";
 import SectionRow from "../../../components/Cards/Rows/SectionRow";
 import MainInfoRow from "../../../components/Cards/Rows/MainInfoRow";
-import OptionsRow from "../../../components/Cards/Rows/OptionsRow";
 import { TouchableOpacity } from "../../../components/commons/TouchableOpacity";
 
 import request from "../../../services/api";
@@ -25,7 +24,7 @@ import {
   primaryTint,
   white,
   secondaryTint,
-  primary
+  primary,
 } from "../../../styles/Colors";
 
 import styles from "./styles";
@@ -34,19 +33,19 @@ import SimilarMovieRow from "../../../components/Cards/Rows/SimilarMovieRow";
 
 const uninformed = "Uninformed";
 
-const renderTruncatedFooter = handlePress => (
+const renderTruncatedFooter = (handlePress) => (
   <TouchableOpacity onPress={handlePress}>
     <Text style={styles.readMore}>Read more</Text>
   </TouchableOpacity>
 );
 
-const renderRevealedFooter = handlePress => (
+const renderRevealedFooter = (handlePress) => (
   <TouchableOpacity onPress={handlePress}>
     <Text style={styles.readMore}>Read less</Text>
   </TouchableOpacity>
 );
 
-export default class MovieDetailsScreen extends Component {
+export default class MovieDetails extends Component {
   static navigationOptions = ({ navigation }) => {
     const params = navigation.state.params || {};
 
@@ -54,7 +53,7 @@ export default class MovieDetailsScreen extends Component {
       title: null,
       headerStyle: {
         backgroundColor: primaryTint,
-        borderBottomColor: primaryTint
+        borderBottomColor: primaryTint,
       },
       headerTitleStyle: { color: white },
       headerRight: (
@@ -72,7 +71,7 @@ export default class MovieDetailsScreen extends Component {
         >
           <Ionicons name="ios-arrow-back" size={27} color={darkBlue} />
         </TouchableOpacity>
-      )
+      ),
     };
   };
 
@@ -83,15 +82,14 @@ export default class MovieDetailsScreen extends Component {
     showImage: false,
     creditId: null,
     results: [],
-    isRefresh: false
+    isRefresh: false,
   };
 
   componentDidMount() {
     this.props.navigation.setParams({
-      actionShare: this.actionShare
+      actionShare: this.actionShare,
     });
     this.requestMoviesInfo();
-    this.requestMoviesList();
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -106,34 +104,16 @@ export default class MovieDetailsScreen extends Component {
     return false;
   }
 
-  requestMoviesList = async () => {
-    // try {
-    //   this.setState({ isLoading: true });
-    //   const data = await request("movie/16/similar");
-    //   console.log(data);
-    //   this.setState(({ isRefresh, results }) => ({
-    //     isLoading: false,
-    //     isRefresh: false,
-    //     totalPages: data.total_pages,
-    //     results: isRefresh ? data.results : [...results, ...data.results]
-    //   }));
-    // } catch (err) {
-    //   this.setState({
-    //     isLoading: false,
-    //     isError: true
-    //   });
-    // }
-  };
-
   requestMoviesInfo = async () => {
     try {
       this.setState({ isLoading: true });
 
       const { id } = this.props.navigation.state.params;
+      // console.log(">>>>>>>>>", id);
 
       const data = await request(`movie/${id}`, {
         include_image_language: "en,null",
-        append_to_response: "credits,videos,images"
+        append_to_response: "credits,videos,images",
       });
 
       this.setState({
@@ -153,12 +133,12 @@ export default class MovieDetailsScreen extends Component {
           10
         ),
         images: this.formatImageUrl(data.images.backdrops),
-        infosDetail: this.getInfosDetail(data)
+        infosDetail: this.getInfosDetail(data),
       });
     } catch (err) {
       this.setState({
         isLoading: false,
-        isError: true
+        isError: true,
       });
     }
   };
@@ -170,7 +150,7 @@ export default class MovieDetailsScreen extends Component {
     release_date,
     budget,
     revenue,
-    adult
+    adult,
   }) => {
     return {
       Duration: this.convertMinsToHrsMins(runtime || 0),
@@ -181,12 +161,12 @@ export default class MovieDetailsScreen extends Component {
       Release: this.convertToDate(release_date || ""),
       Budget: this.convertToDolar(budget || 0),
       Revenue: this.convertToDolar(revenue || 0),
-      Adult: this.convertAdult(adult || "")
+      Adult: this.convertAdult(adult || ""),
     };
   };
 
-  formatImageUrl = images => {
-    return this.sliceArrayLength(images, 15).map(item => {
+  formatImageUrl = (images) => {
+    return this.sliceArrayLength(images, 15).map((item) => {
       return { url: `https://image.tmdb.org/t/p/original/${item.file_path}` };
     });
   };
@@ -195,16 +175,16 @@ export default class MovieDetailsScreen extends Component {
     return arr.length > num ? arr.slice(0, num) : arr;
   };
 
-  convertToDolar = value => {
+  convertToDolar = (value) => {
     return (
       `$${value.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")}` ||
       uninformed
     );
   };
 
-  convertAdult = adult => (adult === false ? "Yes" : "No" || uninformed);
+  convertAdult = (adult) => (adult === false ? "Yes" : "No" || uninformed);
 
-  convertMinsToHrsMins = runtime => {
+  convertMinsToHrsMins = (runtime) => {
     let h = Math.floor(runtime / 60);
     let m = runtime % 60;
     h = h < 10 ? `0${h}` : h;
@@ -212,7 +192,7 @@ export default class MovieDetailsScreen extends Component {
     return h && m ? `${h}h ${m}m` : uninformed;
   };
 
-  convertToGenre = genre => {
+  convertToGenre = (genre) => {
     return genre.length > 0
       ? genre.length > 1
         ? `${genre[0].name}, ${genre[1].name}`
@@ -220,11 +200,11 @@ export default class MovieDetailsScreen extends Component {
       : uninformed;
   };
 
-  convertToUpperCaseFirstLetter = originalLanguage => {
+  convertToUpperCaseFirstLetter = (originalLanguage) => {
     return originalLanguage.charAt(0).toUpperCase() + originalLanguage.slice(1);
   };
 
-  convertToDate = releaseDate => {
+  convertToDate = (releaseDate) => {
     const date = new Date(releaseDate);
     return (
       `${date.getDate() + 1}/${date.getMonth() + 1}/${date.getFullYear()}` ||
@@ -250,7 +230,7 @@ export default class MovieDetailsScreen extends Component {
       buttonText: "undo",
       duration: 5000,
       style: { backgroundColor: secondaryTint, borderRadius: 10 },
-      buttonTextStyle: { color: primary, fontSize: 18, fontWeight: "600" }
+      buttonTextStyle: { color: primary, fontSize: 18, fontWeight: "600" },
     });
     this.setState({ saved: true });
   };
@@ -260,14 +240,14 @@ export default class MovieDetailsScreen extends Component {
     if (isError) {
       Alert({
         title: "Attention",
-        description: "Something wrong has happened, please try again later."
+        description: "Something wrong has happened, please try again later.",
       });
     } else {
       Share({
         message: `${title}, know everything about this movie 🎥`,
         url: `https://www.themoviedb.org/movie/${id}`,
         title: "AmoCinema",
-        dialogTitle: `${title}, know everything about this movie 🎥`
+        dialogTitle: `${title}, know everything about this movie 🎥`,
       });
     }
   };
@@ -300,7 +280,7 @@ export default class MovieDetailsScreen extends Component {
       creditId,
       isVisible,
       showImage,
-      id
+      id,
     } = this.state;
 
     const { navigate } = this.props.navigation;

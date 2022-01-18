@@ -1,16 +1,11 @@
 import React, { Component } from "react";
 import { ScrollView, View, Text } from "react-native";
-import { Feather } from "@expo/vector-icons";
-
-import * as Animatable from "react-native-animatable";
 
 import Search from "../../../components/commons/Search";
 import { TouchableOpacity } from "../../../components/commons/TouchableOpacity";
-import { width } from "../../../components/commons/metrics";
 
-import Image from "react-native-scalable-image";
-
-import genre from "../../../assets/genre/ids.json";
+import movieIds from "../../../assets/genre/movieIds.json";
+import tvIds from "../../../assets/genre/tvIds.json";
 
 import styles from "./styles";
 import { primaryTint, white, primary } from "../../../styles/Colors";
@@ -25,11 +20,11 @@ export default class SearchScreen extends Component {
       headerTitleStyle: {
         color: white,
         fontFamily: "balooBhaina-regular",
-        fontSize: 21
+        fontSize: 21,
       },
       headerStyle: {
         backgroundColor: primaryTint,
-        borderBottomColor: primaryTint
+        borderBottomColor: primaryTint,
       },
       headerLeft: (
         <CustomMenuIcon
@@ -38,10 +33,10 @@ export default class SearchScreen extends Component {
             marginRight: 16,
             flexDirection: "row",
             justifyContent: "flex-end",
-            paddingLeft: 10
+            paddingLeft: 10,
           }}
           textStyle={{
-            color: "white"
+            color: "white",
           }}
           option1Click={() => {
             navigation.navigate("Search");
@@ -52,7 +47,7 @@ export default class SearchScreen extends Component {
           option3Click={() => null}
           option4Click={() => null}
         />
-      )
+      ),
     };
   };
 
@@ -67,7 +62,7 @@ export default class SearchScreen extends Component {
       creditId: null,
       backdropPath: "",
       likes: "",
-      text: ""
+      text: "",
     };
 
     this.arrayHolder = [];
@@ -77,51 +72,30 @@ export default class SearchScreen extends Component {
     return false;
   }
 
-  requestMoviesInfo = async () => {
-    try {
-      this.setState({ isLoading: true });
-
-      const { id } = genre[id];
-
-      const data = await request(`movie/16`, {
-        include_image_language: "en,null",
-        append_to_response: "credits,videos,images"
-      });
-
-      this.setState({
-        isLoading: false,
-        isError: false,
-        id,
-        likes: data.vote_count || "",
-        backdropPath: data.backdrop_path || "",
-        posterPath: data.poster_path || "",
-        title: data.title || "",
-        images: this.formatImageUrl(data.images.backdrops)
-      });
-    } catch (err) {
-      this.setState({
-        isLoading: false,
-        isError: true
-      });
-    }
-  };
-
   actionCancel = () => {
     Keyboard.dismiss();
   };
 
-  searchFilterFunc = text => {
-    const newData = this.arrayHolder.filter(function(item) {
+  searchFilterFunc = (text) => {
+    const newData = this.arrayHolder.filter(function (item) {
       const itemData = item.title ? item.title.toUpperCase() : "".toUpperCase();
       const textData = text.toUpperCase();
       return itemData.indexOf(textData) > -1;
     });
   };
 
-  getImageApi = backdropPath => {
+  getImageApi = (backdropPath) => {
     return backdropPath
-      ? { uri: `https://image.tmdb.org/t/p/w500/${backdropPath}` }
+      ? { uri: `https://image.tmdb.org/t/p/original/${backdropPath}` }
       : notFound;
+  };
+
+  renderItem = (item) => {
+    return (
+      <TouchableOpacity style={styles.item}>
+        <Text>Action</Text>
+      </TouchableOpacity>
+    );
   };
 
   render() {
@@ -133,22 +107,51 @@ export default class SearchScreen extends Component {
           <Search typeRequest="search" navigate={navigate} />
         </View>
         <ScrollView style={styles.containerList}>
-          <Text style={styles.titleText}>Explore Genres</Text>
-          {Object.keys(genre).map(id => (
-            <TouchableOpacity
-              style={styles.item}
-              key={id}
-              onPress={() =>
-                navigate("SearchResults", {
-                  typeRequest: "discover",
-                  name: genre[id].name,
-                  id
-                })
-              }
-            >
-              <Text style={styles.itemText}>{genre[id].name}</Text>
-            </TouchableOpacity>
-          ))}
+          <View>
+            <Text style={styles.titleText}>Movie Genres</Text>
+            <View style={styles.sectionContainer}>
+              {Object.keys(movieIds).map((id) => (
+                <View key={id}>
+                  <TouchableOpacity
+                    style={styles.item}
+                    onPress={() =>
+                      navigate("SearchResults", {
+                        typeRequest: "discover",
+                        name: movieIds[id].name,
+                        category: "movie",
+                        id,
+                      })
+                    }
+                  >
+                    <Text style={styles.itemText}>{movieIds[id].name}</Text>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </View>
+          </View>
+
+          <View style={{ marginTop: 30 }}>
+            <Text style={styles.titleText}>TV Show Genres</Text>
+            <View style={styles.sectionContainer}>
+              {Object.keys(tvIds).map((id) => (
+                <View key={id}>
+                  <TouchableOpacity
+                    style={styles.item}
+                    onPress={() =>
+                      navigate("SearchResults", {
+                        typeRequest: "discover",
+                        name: tvIds[id].name,
+                        category: "tv",
+                        id,
+                      })
+                    }
+                  >
+                    <Text style={styles.itemText}>{tvIds[id].name}</Text>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </View>
+          </View>
         </ScrollView>
       </View>
     );

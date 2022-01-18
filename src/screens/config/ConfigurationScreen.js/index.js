@@ -1,14 +1,5 @@
 import React, { Component } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  FlatList,
-  SafeAreaView,
-} from "react-native";
-import { fsr } from "../../../components/commons/metrics";
-import { TouchableOpacity } from "../../../components/commons/TouchableOpacity";
+import { View, Text, ScrollView, SafeAreaView } from "react-native";
 import ListItem from "../../../components/commons/ListItem";
 import { primaryTint, white } from "../../../styles/Colors";
 

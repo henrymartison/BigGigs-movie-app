@@ -19,20 +19,13 @@ import { TouchableOpacity } from "../../../components/commons/TouchableOpacity";
 import request from "../../../services/api";
 
 import language from "../../../assets/language/iso.json";
-import {
-  darkBlue,
-  primaryTint,
-  white,
-  secondaryTint,
-  primary,
-} from "../../../styles/Colors";
+import { secondaryTint, primary } from "../../../styles/Colors";
 
 import styles from "./styles";
 import Loader from "../../../components/commons/Loader";
 import SimilarMovieRow from "../../../components/Cards/Rows/SimilarMovieRow";
 import TVSeasons from "../../../components/Cards/Rows/TVSeasons";
 import NextEpisode from "../../../components/Cards/Rows/TVNextEp";
-import SeasonDetails from "../Seasons/Details";
 
 const uninformed = "Uninformed";
 
@@ -48,33 +41,16 @@ const renderRevealedFooter = (handlePress) => (
   </TouchableOpacity>
 );
 
-const nextEpRelease = ({ air_date, episode_number, season_number }) => {};
-
 export default class TVDetails extends Component {
   static navigationOptions = ({ navigation }) => {
     const params = navigation.state.params || {};
-
     return {
-      title: null,
-      headerStyle: {
-        backgroundColor: primaryTint,
-        borderBottomColor: primaryTint,
-      },
-      headerTitleStyle: { color: white },
       headerRight: (
         <TouchableOpacity
           style={styles.buttonShare}
           onPress={params.actionShare}
         >
-          <EvilIcons name="share-apple" size={33} color={darkBlue} />
-        </TouchableOpacity>
-      ),
-      headerLeft: (
-        <TouchableOpacity
-          style={{ paddingLeft: 10 }}
-          onPress={() => navigation.goBack()}
-        >
-          <Ionicons name="ios-arrow-back" size={27} color={darkBlue} />
+          <EvilIcons name="share-apple" size={33} color={primary} />
         </TouchableOpacity>
       ),
     };
@@ -114,7 +90,6 @@ export default class TVDetails extends Component {
       this.setState({ isLoading: true });
 
       const { id } = this.props.navigation.state.params;
-      // console.log(".........", id);
 
       const data = await request(`tv/${id}`, {
         include_image_language: "en,null",
@@ -124,10 +99,6 @@ export default class TVDetails extends Component {
 
       const nextEpToAir =
         data.next_episode_to_air === null ? "null" : data.next_episode_to_air;
-      const epData = await request(
-        `tv/${id}/season/${data.seasons.season_number}`
-      );
-      // console.log(epData);
 
       this.setState({
         isLoading: false,

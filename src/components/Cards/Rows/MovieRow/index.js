@@ -2,9 +2,12 @@ import React from "react";
 import { View, Text } from "react-native";
 
 import Image from "react-native-scalable-image";
+import { FontAwesome } from "@expo/vector-icons";
 
 import language from "../../../../assets/language/iso.json";
-import genre from "../../../../assets/genre/ids.json";
+import movie_genre from "../../../../assets/genre/movieIds.json";
+import tv_genre from "../../../../assets/genre/tvIds.json";
+
 import { TouchableOpacity } from "../../../commons/TouchableOpacity";
 
 import { width } from "../../../commons/metrics";
@@ -16,14 +19,18 @@ import { secondaryTint } from "../../../../styles/Colors.js";
 const getImageApi = (image) =>
   image ? { uri: `https://image.tmdb.org/t/p/w500/${image}` } : notFound;
 
-const convertToDate = (date) => new Date(date).getFullYear() || "";
+const convertToDate = (item, category) => {
+  const date = category === "tv" ? item.first_air_date : item.release_date;
+  return new Date(date).getFullYear() || "";
+};
 
 const convertToUpperCaseFirstLetter = (value) => {
   const str = language[value] || "";
   return str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
 };
 
-const convertGenre = (arr, type, isSearch) => {
+const convertGenre = (arr, type, isSearch, category) => {
+  const genre = category === "tv" ? tv_genre : movie_genre;
   if (type === "normal" || isSearch) {
     if (arr.length > 1) return `${genre[arr[0]].name}, ${genre[arr[1]].name}`;
     return arr.length !== 0 ? `${genre[arr[0]].name}` : "";
@@ -33,10 +40,14 @@ const convertGenre = (arr, type, isSearch) => {
     : type;
 };
 
-const renderDivider = (releaseDate, originalLanguage) =>
-  releaseDate && originalLanguage !== "xx" ? (
+const renderDivider = (item, category) => {
+  const releaseDate =
+    category === "tv" ? item.first_air_date : item.release_date;
+  const originalLanguage = item.original_language;
+  return releaseDate && originalLanguage !== "xx" ? (
     <Text style={styles.trace}>|</Text>
   ) : null;
+};
 
 const renderScoreColumn = (voteAverage) => {
   const color =
@@ -47,8 +58,14 @@ const renderScoreColumn = (voteAverage) => {
       : "high";
 
   return (
-    <View style={[styles.score, styles[color]]}>
-      <Text style={styles.textPercent}>{voteAverage}</Text>
+    <View style={styles.score}>
+      <FontAwesome
+        name="star"
+        size={width * 0.04}
+        color="orange"
+        style={{ marginRight: 4 }}
+      />
+      <Text style={[styles.textPercent, styles[color]]}>{voteAverage}</Text>
     </View>
   );
 };
@@ -63,13 +80,19 @@ const renderScoreRow = (voteAverage) => {
 
 export default class MovieRow extends React.PureComponent {
   render() {
-    const { numColumns, item, type, isSearch, navigate } = this.props;
+    const {
+      numColumns,
+      item,
+      type,
+      isSearch,
+      navigate,
+      route,
+      category,
+    } = this.props;
 
     if (numColumns === 1) {
       return (
-        <TouchableOpacity
-          onPress={() => navigate("MovieDetails", { id: item.id })}
-        >
+        <TouchableOpacity onPress={() => navigate(route, { id: item.id })}>
           <View style={styles.containerItem}>
             <Image
               source={getImageApi(item.poster_path)}
@@ -80,19 +103,19 @@ export default class MovieRow extends React.PureComponent {
             <View style={styles.item}>
               <View>
                 <Text numberOfLines={2} style={styles.textTitle}>
-                  {item.title}
+                  {category === "tv" ? item.name : item.title}
                 </Text>
                 <View style={[styles.textRow, styles.containerSubTitle]}>
                   <Text style={styles.textSmall}>
-                    {convertToDate(item.release_date)}
+                    {convertToDate(item, category)}
                   </Text>
-                  {renderDivider(item.release_date, item.original_language)}
+                  {renderDivider(item, category)}
                   <Text numberOfLines={1} style={styles.textSmall}>
                     {convertToUpperCaseFirstLetter(item.original_language)}
                   </Text>
                 </View>
                 <Text numberOfLines={1} style={styles.textSmall}>
-                  {convertGenre(item.genre_ids, type, isSearch)}
+                  {convertGenre(item.genre_ids, type, isSearch, category)}
                 </Text>
               </View>
               <View style={[styles.textRow, styles.containerReview]}>
@@ -106,7 +129,7 @@ export default class MovieRow extends React.PureComponent {
     return (
       <TouchableOpacity
         style={styles.containerTwoItem}
-        onPress={() => navigate("MovieDetails", { id: item.id })}
+        onPress={() => navigate(route, { id: item.id })}
       >
         <View style={{ backgroundColor: secondaryTint, borderRadius: 8 }}>
           <Image
@@ -116,10 +139,8 @@ export default class MovieRow extends React.PureComponent {
           />
           {renderScoreRow(item.vote_average)}
         </View>
-        {/* <View style={styles.ratingContainer}> */}
-        {/* </View> */}
         <Text numberOfLines={2} style={styles.textTwoTitle}>
-          {item.title}
+          {category === "tv" ? item.name : item.title}
         </Text>
       </TouchableOpacity>
     );

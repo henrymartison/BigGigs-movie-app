@@ -9,7 +9,7 @@ import styles from "./styles";
 
 const uninformed = "Uninformed";
 
-const getImageApi = image => {
+const getImageApi = (image) => {
   return image ? { uri: `https://image.tmdb.org/t/p/w500/${image}` } : notFound;
 };
 

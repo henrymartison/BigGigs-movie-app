@@ -1,11 +1,5 @@
 import { StyleSheet } from "react-native";
-import {
-  blue,
-  darkGray,
-  primaryTint,
-  secondaryTint,
-  white,
-} from "../../../styles/Colors";
+import { darkGray, primaryTint, white } from "../../../styles/Colors";
 import { fsr } from "../../../components/commons/metrics";
 
 const styles = StyleSheet.create({

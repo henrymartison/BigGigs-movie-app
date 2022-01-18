@@ -12,7 +12,8 @@ import { width, fsr } from "../../commons/metrics";
 import { notFound } from "../../../utils/StaticImages";
 
 import styles from "./styles";
-import { darkBlue, blue } from "../../../styles/Colors";
+import { blue } from "../../../styles/Colors";
+import HorizontalRowList from "../../Cards/Rows/HorizontalRowList";
 
 const uninformed = "Uninformed";
 
@@ -52,7 +53,10 @@ export default class PersonModal extends Component {
       const { creditId } = this.props;
 
       const data = await request(`person/${parseInt(creditId)}`);
-      // const filmData = await request(`person/2/movie_credits`);
+      const movie_credits = await request(
+        `person/${parseInt(creditId)}/combined_credits`
+      );
+      // console.log("person data ====>", data);
 
       this.setState({
         isLoading: false,
@@ -64,8 +68,8 @@ export default class PersonModal extends Component {
           data.known_for_department || `${uninformed} department`,
         birthday: data.birthday || "",
         placeOfBirth: data.place_of_birth || `${uninformed} place of birth`,
-        movieRole: data.place_of_birth || `${uninformed} place of birth`,
         biography: data.biography || uninformed,
+        movie_credits: movie_credits.cast.slice(0, 4),
       });
     } catch (err) {
       this.setState({
@@ -76,8 +80,6 @@ export default class PersonModal extends Component {
   };
 
   renderFooter = () => {
-    const { actionClose } = this.props;
-
     return (
       <View style={styles.containerRow}>
         {/* <TouchableOpacity style={styles.button} onPress={actionClose}>
@@ -136,26 +138,16 @@ export default class PersonModal extends Component {
                   />
                   <View style={styles.textItems}>
                     <Text style={styles.titleName}>{name}</Text>
-                    {/* <Text
-                      style={{
-                        fontSize: fsr(2.6),
-                        fontWeight: "400",
-                        color: blue
-                        // marginBottom: 7
-                      }}
-                    >
-                      acting as
-                    </Text>
                     <Text
                       style={{
-                        fontSize: fsr(2.4),
-                        fontWeight: "bold",
-                        color: darkBlue,
-                        marginBottom: 7
+                        fontSize: fsr(2.6),
+                        fontWeight: "500",
+                        color: blue,
+                        marginBottom: 7,
                       }}
                     >
-                      {name}
-                    </Text> */}
+                      as {name}
+                    </Text>
                     <View style={styles.containerTitleMargin}>
                       <Text
                         numberOfLines={2}
@@ -208,6 +200,10 @@ export default class PersonModal extends Component {
                 >
                   {biography}
                 </Text>
+                <HorizontalRowList
+                  title={`Other movies by ${name}`}
+                  data={this.state.movie_credits}
+                />
               </ScrollView>
               {this.renderFooter()}
             </View>

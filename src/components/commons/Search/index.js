@@ -8,14 +8,14 @@ import { Feather, Ionicons } from "@expo/vector-icons";
 
 import { TouchableOpacity } from "../TouchableOpacity";
 
-import { darkGray, primary } from "../../../styles/Colors";
+import { darkGray, primary, primaryTint } from "../../../styles/Colors";
 
 import styles from "./styles";
 
 class Search extends Component {
   state = {
     value: "",
-    searchBarFocused: false
+    searchBarFocused: false,
   };
 
   actionClearSearch = () => {
@@ -30,7 +30,7 @@ class Search extends Component {
       navigate("SearchResults", {
         typeRequest,
         name: value,
-        id: null
+        id: null,
       });
     }
     // this.setState({ value: "" });
@@ -71,12 +71,12 @@ class Search extends Component {
               style={styles.icon}
               name="search"
               size={20}
-              color={darkGray}
+              color={"#636f77"}
             />
             <TextInput
               style={styles.textInput}
               onSubmitEditing={this.actionSubmit}
-              onChangeText={search => this.setState({ value: search })}
+              onChangeText={(search) => this.setState({ value: search })}
               value={value}
               returnKeyType="search"
               keyboardType="default"
@@ -85,9 +85,9 @@ class Search extends Component {
               multiline={false}
               autoCorrect={false}
               underlineColorAndroid="transparent"
-              placeholderTextColor={darkGray}
-              placeholder="Search"
-              autoFocus
+              placeholderTextColor={"#636f77"}
+              placeholder="Search for movie, tv show, person..."
+              // autoFocus
               enablesReturnKeyAutomatically
             />
             {value.length > 0 && (
@@ -102,7 +102,7 @@ class Search extends Component {
             )}
           </View>
         </View>
-        {this.state.searchBarFocused ? (
+        {this.state.searchBarFocused && (
           <TouchableOpacity
             onPress={Keyboard.dismiss}
             style={styles.cancelContainer}
@@ -114,12 +114,6 @@ class Search extends Component {
             >
               Cancel
             </Animatable.Text>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity onPress={this.actionFilter} style={styles.filter}>
-            <Animatable.View animation="slideInRight" duration={600}>
-              <Feather name="settings" color={primary} size={22} />
-            </Animatable.View>
           </TouchableOpacity>
         )}
       </View>

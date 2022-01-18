@@ -40,13 +40,12 @@ const styles = StyleSheet.create({
   },
   playButtonContainer: {
     flex: 1,
-    height: 33,
+    height: 37,
     zIndex: 1000,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 4,
-    borderColor: "#82c596",
-    borderWidth: 1,
+    borderRadius: 5,
+    backgroundColor: secondaryTint,
     flexDirection: "row",
     alignItems: "center",
     alignSelf: "center",
@@ -54,7 +53,7 @@ const styles = StyleSheet.create({
   playButtonText: {
     fontWeight: "600",
     fontSize: 15,
-    color: primary,
+    color: "white",
     paddingLeft: 10,
   },
   photoInfo: {

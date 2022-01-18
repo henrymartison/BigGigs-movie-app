@@ -7,18 +7,18 @@ import {
   FlatList,
 } from "react-native";
 import { Ionicons, Feather } from "@expo/vector-icons";
+import { RectButton } from "react-native-gesture-handler";
 
 import {
   white,
   primaryTint,
   darkBlue,
   secondaryTint,
-} from "../../../styles/Colors";
-import { TouchableOpacity } from "../../../components/commons/TouchableOpacity";
-import { fsr } from "../../../components/commons/metrics";
-import request from "../../../services/api";
-import { RectButton } from "react-native-gesture-handler";
-import EpisodeModal from "../../../components/modals/EpisodeModal";
+} from "../../styles/Colors";
+import { TouchableOpacity } from "../../components/commons/TouchableOpacity";
+import { fsr } from "../../components/commons/metrics";
+import request from "../../services/api";
+import EpisodeModal from "../../components/modals/EpisodeModal";
 
 const getEpNumber = (epNumber) => {
   epNumber = epNumber < 10 ? `0${epNumber}` : epNumber;
@@ -130,8 +130,8 @@ class SeasonDetails extends Component {
               </Text>
               {item.air_date && (
                 <Text style={styles.dateText}>
-                  Aired on {convertToMonth(item.air_date)}{" "}
-                  {convertToDay(item.air_date)}, {convertToYear(item.air_date)}
+                  {convertToMonth(item.air_date)} {convertToDay(item.air_date)},{" "}
+                  {convertToYear(item.air_date)}
                 </Text>
               )}
             </View>

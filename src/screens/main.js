@@ -1,29 +1,19 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { withNavigation } from "react-navigation";
 
-import SegmentedControlTab from "react-native-segmented-control-tab";
 import SegmentedControl from "@react-native-community/segmented-control";
 
-import MovieListScreen from "./Trending/MovieListScreen";
-import {
-  white,
-  primaryTint,
-  darkBlue,
-  primary,
-  inactiveTint,
-} from "../styles/Colors";
+import { white, primaryTint, darkBlue } from "../styles/Colors";
 import { TouchableOpacity } from "../components/commons/TouchableOpacity";
 import { Feather } from "@expo/vector-icons";
 import CustomMenuIcon from "../components/commons/MenuIcon";
-import TVList from "./TVSeries/TVList";
+import { HomeList } from "./HomeScreen";
 
 class Main extends Component {
   static navigationOptions = ({ navigation }) => {
-    const params = navigation.state.params || {};
-
     return {
-      title: "Hooli",
+      title: "MovieCouch 🛋️",
       headerTitleStyle: {
         color: white,
         fontFamily: "balooBhaina-regular",
@@ -69,15 +59,28 @@ class Main extends Component {
     super();
     this.state = {
       selectedIndex: 0,
+      values: [
+        { title: "TV Series", media_type: "tv" },
+        { title: "Movies", media_type: "movie" },
+      ],
+      media_type: "tv",
     };
   }
 
-  handleSingleIndexSelect = (index = number) => {
-    this.setState((prevState) => ({ ...prevState, selectedIndex: index }));
+  _onChange = (event) => {
+    this.setState({
+      selectedIndex: event.nativeEvent.selectedSegmentIndex,
+    });
+  };
+
+  _onValueChange = (value) => {
+    this.setState({
+      media_type: value,
+    });
   };
 
   render() {
-    const { selectedIndex } = this.state;
+    const { selectedIndex, values } = this.state;
     return (
       <View style={styles.container}>
         <View
@@ -87,23 +90,30 @@ class Main extends Component {
           }}
         >
           <SegmentedControl
-            values={["TV Series", "Movies"]}
+            values={values.map((e) => e.title)}
             selectedIndex={selectedIndex}
-            onTabPress={this.handleSingleIndexSelect}
-            onChange={(event) => {
-              this.setState({
-                selectedIndex: event.nativeEvent.selectedSegmentIndex,
-              });
-            }}
+            onChange={this._onChange}
+            onValueChange={this._onValueChange}
             tintColor="#69696f"
-            // backgroundColor=""
             fontStyle={{ fontSize: 14, color: white }}
             appearance="dark"
           />
         </View>
 
-        {selectedIndex === 0 && <TVList />}
-        {selectedIndex === 1 && <MovieListScreen />}
+        {selectedIndex === 0 && (
+          <HomeList
+            media_type="tv"
+            detailsRoute={"TVDetails"}
+            category={"tv"}
+          />
+        )}
+        {selectedIndex === 1 && (
+          <HomeList
+            media_type="movie"
+            detailsRoute={"MovieDetails"}
+            category={"movie"}
+          />
+        )}
       </View>
     );
   }
